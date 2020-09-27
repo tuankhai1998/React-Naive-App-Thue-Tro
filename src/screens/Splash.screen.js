@@ -5,9 +5,6 @@ import { View } from 'react-native';
 import styled from 'styled-components';
 import { Colors } from '../constants/Colors';
 import { ScreenWidth } from '../constants/Layout';
-import { useTheme } from 'react-native-paper';
-
-
 
 // SplashScreen.propTypes = {
 //     isLoading: PropTypes.bool,
@@ -19,7 +16,6 @@ import { useTheme } from 'react-native-paper';
 const SplashScreen = (props) => {
     const { isLoading, SetLoading } = props;
 
-    const { fonts } = useTheme();
 
     useEffect(() => {
         setTimeout(() => {
@@ -96,5 +92,4 @@ const SubTitle = styled.View`
 
 
 
-//make this component available to the app
 export default SplashScreen;

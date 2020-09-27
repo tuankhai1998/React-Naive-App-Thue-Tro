@@ -1,4 +1,4 @@
-import { configureFonts, DefaultTheme } from "react-native-paper";
+import { DefaultTheme } from "react-native-paper";
 
 
 
@@ -8,6 +8,7 @@ const theme = {
         ...DefaultTheme.colors,
         primary: 'tomato',
         accent: 'yellow',
+
     },
 
 };
