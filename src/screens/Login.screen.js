@@ -1,3 +1,4 @@
+import { Formik } from 'formik';
 //import liraries
 import React, { useState } from 'react';
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -14,6 +15,17 @@ const LoginScreen = () => {
     const [userName, setUserName] = useState('');
     const [passWord, setPassWord] = useState('');
     const [retypePassword, setRetypePassword] = useState('');
+
+    const initialValuesLogin = {
+        email: '',
+        password: ''
+    }
+
+    const initialValues = {
+        email: '',
+        password: '',
+        retypePassword: ''
+    }
 
 
     const { colors } = useTheme();
@@ -45,6 +57,8 @@ const LoginScreen = () => {
     }
 
 
+
+
     return (
         <View style={styles.container}>
             <ImageBackground source={{ uri: 'https://divui.com/blog/wp-content/uploads/2016/11/nha-hang-bangkok-view-dep.jpg' }} style={styles.background} >
@@ -54,6 +68,8 @@ const LoginScreen = () => {
                 </View>
             </ImageBackground>
             <View style={{ flex: 1, alignItems: "center" }}>
+
+
                 <View style={styles.login}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                         <TouchableOpacity
@@ -66,27 +82,46 @@ const LoginScreen = () => {
                         </TouchableOpacity>
                     </View>
                     <View style={{ width: '100%', flex: 3, justifyContent: 'center', alignItems: 'center' }}>
-                        <TextInput placeholder="Username" style={styles.textInput} onChangeText={(text) => setUserName(text)} value={userName} keyboardType={"email-address"} />
-                        <TextInput placeholder="Password" style={styles.textInput} secureTextEntry={true} onChangeText={(text) => setPassWord(text)} value={passWord} />
-                        {login ? (<TouchableOpacity><Text style={{ color: '#ccc', fontSize: 14, marginVertical: 20 }}>Quên mật khẩu</Text></TouchableOpacity>)
-                            : (<TextInput
-                                placeholder="Retype password"
-                                style={styles.textInput}
-                                secureTextEntry={true}
-                                onChangeText={(text) => setRetypePassword(text)} value={retypePassword}
-                            />)}
-                        {login ? <PrimaryButton text='Login' buttonWidth={"90%"} onclick={() => handleLogin()} /> : <PrimaryButton text='Sign up' buttonWidth={"90%"} onclick={() => handleSignUp()} />}
+
+                        <Formik
+                            initialValues={login ? initialValuesLogin : initialValues}
+                            onSubmit={values => console.log(values)}
+                        >
+
+                            {
+                                ({ handleChange, handleBlur, handleSubmit, values }) => (
+                                    <>
+                                        <TextInput placeholder="Username" style={styles.textInput} onChangeText={handleChange('email')} onBlur={handleBlur('email')} value={values.email} keyboardType={"email-address"} />
+                                        <TextInput placeholder="Password" style={styles.textInput} onChangeText={handleChange('password')} onBlur={handleBlur('password')} secureTextEntry={true} value={values.password} />
+                                        {login ? (<TouchableOpacity><Text style={{ color: '#ccc', fontSize: 14, marginVertical: 20 }}>Quên mật khẩu</Text></TouchableOpacity>)
+                                            : (<TextInput
+                                                placeholder="Retype password"
+                                                style={styles.textInput}
+                                                secureTextEntry={true}
+                                                onChangeText={handleChange('retypePassword')}
+                                                onBlur={handleBlur('retypePassword')}
+                                                value={values.retypePassword}
+                                            />)}
+                                        {login ? <PrimaryButton text='Login' buttonWidth={"90%"} onclick={() => handleSubmit()} /> : <PrimaryButton text='Sign up' buttonWidth={"90%"} onclick={() => handleSubmit()} />}
+                                    </>
+                                )
+                            }
+                        </Formik>
+
 
                     </View>
                 </View>
-                {login ? (<View style={{ width: ScreenWidth * 3 / 4, flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
-                    <TouchableOpacity style={[styles.borderButtonLogin, { backgroundColor: Colors.Facebook }]}>
-                        <Text style={styles.fbGoogle}>FaceBook</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.borderButtonLogin, { backgroundColor: Colors.Google }]}>
-                        <Text style={styles.fbGoogle}>Google</Text>
-                    </TouchableOpacity>
-                </View>) : null}
+                {
+                    login ? (<View style={{ width: ScreenWidth * 3 / 4, flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+                        <TouchableOpacity style={[styles.borderButtonLogin, { backgroundColor: Colors.Facebook }]}>
+                            <Text style={styles.fbGoogle}>FaceBook</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.borderButtonLogin, { backgroundColor: Colors.Google }]}>
+                            <Text style={styles.fbGoogle}>Google</Text>
+                        </TouchableOpacity>
+                    </View>) : null
+                }
+
             </View>
         </View >
     );

@@ -9,7 +9,11 @@ const LikeStack = createStackNavigator();
 // create a component
 const LikeStackNavigator = () => {
     return (
-        <LikeStack.Navigator>
+        <LikeStack.Navigator
+            options={
+                { ...TransitionPresets.ModalSlideFromBottomIOS, }  // tao truyen giua cac stack nhu trong ios
+            }
+        >
             <LikeStack.Screen name="LikeScreen" component={LikeScreen} />
         </LikeStack.Navigator>
     );

@@ -9,9 +9,14 @@ const HomeStack = createStackNavigator();
 // create a component
 const HomeStackNavigator = () => {
     return (
-        <HomeStack.Navigator>
+        <HomeStack.Navigator
+            options={
+                // tao truyen giua cac stack nhu trong ios
+                { ...TransitionPresets.ModalSlideFromBottomIOS, }
+            }
+        >
             <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
-        </HomeStack.Navigator>
+        </HomeStack.Navigator >
     );
 };
 

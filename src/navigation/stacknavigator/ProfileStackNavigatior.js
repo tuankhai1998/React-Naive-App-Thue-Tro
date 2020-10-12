@@ -9,7 +9,11 @@ const ProfileStack = createStackNavigator();
 // create a component
 const ProfileStackNavigator = () => {
     return (
-        <ProfileStack.Navigator>
+        <ProfileStack.Navigator
+            options={
+                { ...TransitionPresets.ModalSlideFromBottomIOS, }  // tao truyen giua cac stack nhu trong ios
+            }
+        >
             <ProfileStack.Screen name="ProfileScreen" component={ProfileScreen} />
         </ProfileStack.Navigator>
     );

@@ -9,7 +9,11 @@ const SettingStack = createStackNavigator();
 // create a component
 const SettingStackNavigator = () => {
     return (
-        <SettingStack.Navigator>
+        <SettingStack.Navigator
+            options={
+                { ...TransitionPresets.ModalSlideFromBottomIOS, }  // tao truyen giua cac stack nhu trong ios
+            }
+        >
             <SettingStack.Screen name="SettingScreen" component={SettingScreen} />
         </SettingStack.Navigator>
     );

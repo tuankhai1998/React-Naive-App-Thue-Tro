@@ -86,8 +86,6 @@ const SubTitle = styled.View`
     left: 30%;
     align-items: center;
     justify-content: flex-end;
-
-
 `
 
 
