@@ -10,8 +10,9 @@ import theme from './src/constants/theme';
 export default function App() {
 
   let [fontLoaded] = useFonts({
-    'Roboto': require('./assets/fonts/Roboto-Medium.ttf'),
+    'Roboto-Regular': require('./assets/fonts/Roboto-Medium.ttf'),
     'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
+    'Roboto-Black': require('./assets/fonts/Roboto-Black.ttf'),
   })
   return (
     <PaperProvider theme={theme}>

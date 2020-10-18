@@ -7,9 +7,13 @@ const AuthStack = createStackNavigator();
 
 // create a component
 const Authentication = () => {
+
+
+
     return (
         <AuthStack.Navigator
             screenOptions={{
+                ...TransitionPresets.ModalSlideFromBottomIOS,
                 headerShown: false,
             }}
         >

@@ -1,11 +1,9 @@
 import { Formik } from 'formik';
-//import liraries
 import React, { useState } from 'react';
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import PrimaryButton from '../components/PrimaryButton';
-import { Colors } from '../constants/Colors';
-import { ScreenHeight, ScreenWidth } from '../constants/Layout';
+import { COLORS, SIZES } from '../constants/theme';
 
 
 
@@ -113,10 +111,10 @@ const LoginScreen = () => {
                 </View>
                 {
                     login ? (<View style={{ width: ScreenWidth * 3 / 4, flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
-                        <TouchableOpacity style={[styles.borderButtonLogin, { backgroundColor: Colors.Facebook }]}>
+                        <TouchableOpacity style={[styles.borderButtonLogin, { backgroundColor: COLORS.Facebook }]}>
                             <Text style={styles.fbGoogle}>FaceBook</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.borderButtonLogin, { backgroundColor: Colors.Google }]}>
+                        <TouchableOpacity style={[styles.borderButtonLogin, { backgroundColor: COLORS.Google }]}>
                             <Text style={styles.fbGoogle}>Google</Text>
                         </TouchableOpacity>
                     </View>) : null
@@ -139,13 +137,13 @@ const styles = StyleSheet.create({
 
     },
     background: {
-        width: ScreenWidth,
-        height: ScreenHeight / 3,
+        width: SIZES.width,
+        height: SIZE.height / 3,
         position: 'relative'
     },
     login: {
-        width: 3 * ScreenWidth / 4,
-        height: 3 * ScreenHeight / 6,
+        width: 3 * SIZES.width / 4,
+        height: 3 * SIZES.height / 6,
         justifyContent: "center",
         alignItems: "center",
         marginTop: -40,

@@ -3,8 +3,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import styled from 'styled-components';
-import { Colors } from '../constants/Colors';
-import { ScreenWidth } from '../constants/Layout';
+import { COLORS, SIZES } from '../constants/theme';
 
 // SplashScreen.propTypes = {
 //     isLoading: PropTypes.bool,
@@ -37,7 +36,7 @@ const SplashScreen = (props) => {
                         <Title>
                             h
                         </Title>
-                        <FontAwesome name='search' color={Colors.primaryColor} size={50} />
+                        <FontAwesome name='search' color={COLORS.primary} size={50} />
                         <Title>
                             me
                         </Title>
@@ -68,7 +67,7 @@ const Background = styled.ImageBackground`
 
 const TitleContent = styled.View`
     margin-bottom: 70px;
-    width: ${ScreenWidth * .5};
+    width: ${SIZES.width * .5};
     position: absolute;
     top: ${props => props.isLoading ? '75%' : '25%'};
 `
