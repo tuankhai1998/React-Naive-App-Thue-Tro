@@ -10,7 +10,6 @@ export default function Main(props) {
 
 
     const [loading, setLoading] = useState(false);
-    console.log(loading && fontLoaded)
 
     if (fontLoaded && loading) {
         return (

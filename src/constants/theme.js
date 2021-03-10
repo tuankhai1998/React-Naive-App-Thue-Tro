@@ -5,22 +5,28 @@ const { width, height } = Dimensions.get("window");
 export const COLORS = {
     // base colors
     primary: "#a6c13c", // Green
-    secondary: "#454c5d",   // Gray
-
+    secondary: "#ff784f",  // Orange
     // colors
     black: "#1E1F20",
     white: "#FFFFFF",
+    lineGreen: "#daf46d",
+    lineOrange: "#ffa97c",
     lightGray: "#ABAFB8",
     lightGray2: "#EFEFF0",
     lightGray3: '#D4D5D6',
     gray: "#BEC1D2",
     blue: '#42B0FF',
-    darkGreen: '#59990F',
+    darkGreen: '#749100',
+    darkOrange: "#c64824",
     darkGray: '#898C95',
     transparentLightGray: '#CCD4D5D6',
     transparentLightGray1: 'rgba(255,255,255,0.7)',
     Facebook: "#3b5998",
+    fireOpal: '#F25F5C',
     Google: "#db3236",
+    primaryTextColor: "rgba(0,0,0,0.6)",
+    darkSecondaryTextCode: "rgba(255,255,255,0.8)"
+
 };
 
 export const SIZES = {

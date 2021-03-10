@@ -1,11 +1,13 @@
 //import liraries
 import React from 'react';
 import { Text, View } from 'react-native';
+import Header from '../components/Header';
 
 // create a component
 const HomeScreen = () => {
     return (
-        <View >
+        <View>
+            <Header title="Home"/>
             <Text>HomeScreen</Text>
         </View>
     );
