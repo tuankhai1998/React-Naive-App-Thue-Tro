@@ -1,5 +1,5 @@
 //import liraries
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 import ProfileScreen from '../../screens/Profile.screen';
 
@@ -13,6 +13,9 @@ const ProfileStackNavigator = () => {
             options={
                 { ...TransitionPresets.ModalSlideFromBottomIOS, }  // tao truyen giua cac stack nhu trong ios
             }
+            screenOptions={{
+                headerShown: false
+            }}
         >
             <ProfileStack.Screen name="ProfileScreen" component={ProfileScreen} />
         </ProfileStack.Navigator>

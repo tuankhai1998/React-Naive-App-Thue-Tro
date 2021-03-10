@@ -1,5 +1,5 @@
 //import liraries
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 import LikeScreen from '../../screens/Like.screen';
 
@@ -13,6 +13,9 @@ const LikeStackNavigator = () => {
             options={
                 { ...TransitionPresets.ModalSlideFromBottomIOS, }  // tao truyen giua cac stack nhu trong ios
             }
+            screenOptions={{
+                headerShown: false
+            }}
         >
             <LikeStack.Screen name="LikeScreen" component={LikeScreen} />
         </LikeStack.Navigator>

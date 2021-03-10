@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/core';
 import { Formik } from 'formik';
 import React, { useState } from 'react';
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -13,6 +14,7 @@ const LoginScreen = () => {
     const [userName, setUserName] = useState('');
     const [passWord, setPassWord] = useState('');
     const [retypePassword, setRetypePassword] = useState('');
+    const navigation = useNavigation();
 
     const initialValuesLogin = {
         email: '',
@@ -62,7 +64,7 @@ const LoginScreen = () => {
             <ImageBackground source={{ uri: 'https://divui.com/blog/wp-content/uploads/2016/11/nha-hang-bangkok-view-dep.jpg' }} style={styles.background} >
                 <View style={{ position: 'absolute', top: '30%', left: '10%' }}>
                     <Text style={{ fontSize: 40, color: '#fff', fontFamily: "Roboto-Bold" }}>Welcome</Text>
-                    <Text style={{ color: '#fff', width: ScreenWidth * 3 / 4 }}>It is a long established fact that a reader will be distracted by the</Text>
+                    <Text style={{ color: '#fff', width: SIZES.width * 3 / 4 }}>It is a long established fact that a reader will be distracted by the</Text>
                 </View>
             </ImageBackground>
             <View style={{ flex: 1, alignItems: "center" }}>
@@ -110,7 +112,7 @@ const LoginScreen = () => {
                     </View>
                 </View>
                 {
-                    login ? (<View style={{ width: ScreenWidth * 3 / 4, flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+                    login ? (<View style={{ width: SIZES.width * 3 / 4, flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                         <TouchableOpacity style={[styles.borderButtonLogin, { backgroundColor: COLORS.Facebook }]}>
                             <Text style={styles.fbGoogle}>FaceBook</Text>
                         </TouchableOpacity>
@@ -138,7 +140,7 @@ const styles = StyleSheet.create({
     },
     background: {
         width: SIZES.width,
-        height: SIZE.height / 3,
+        height: SIZES.height / 3,
         position: 'relative'
     },
     login: {

@@ -1,6 +1,7 @@
 //import liraries
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
+import { Text, View } from 'react-native';
 import SettingScreen from '../../screens/Setting.screen';
 
 const SettingStack = createStackNavigator();
@@ -11,8 +12,11 @@ const SettingStackNavigator = () => {
     return (
         <SettingStack.Navigator
             options={
-                { ...TransitionPresets.ModalSlideFromBottomIOS, }  // tao truyen giua cac stack nhu trong ios
+                { ...TransitionPresets.ModalSlideFromBottomIOS }  // tao truyen giua cac stack nhu trong ios
             }
+            screenOptions={{
+                headerShown: false
+            }}
         >
             <SettingStack.Screen name="SettingScreen" component={SettingScreen} />
         </SettingStack.Navigator>

@@ -5,11 +5,6 @@ import { View } from 'react-native';
 import styled from 'styled-components';
 import { COLORS, SIZES } from '../constants/theme';
 
-// SplashScreen.propTypes = {
-//     isLoading: PropTypes.bool,
-//     SetLoading: PropTypes.func,
-// }
-
 
 // create a component
 const SplashScreen = (props) => {

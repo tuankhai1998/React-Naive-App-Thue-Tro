@@ -1,5 +1,5 @@
 //import liraries
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 import HomeScreen from '../../screens/Home.screen';
 
@@ -12,8 +12,14 @@ const HomeStackNavigator = () => {
         <HomeStack.Navigator
             options={
                 // tao truyen giua cac stack nhu trong ios
-                { ...TransitionPresets.ModalSlideFromBottomIOS, }
+                {
+                    ...TransitionPresets.ModalSlideFromBottomIOS,
+                }
             }
+
+            screenOptions={{
+                headerShown: false
+            }}
         >
             <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
         </HomeStack.Navigator >

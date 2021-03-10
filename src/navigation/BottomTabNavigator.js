@@ -16,12 +16,16 @@ const Drawer = createDrawerNavigator();
 const BottomTabNavigator = () => {
     return (
 
-        <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen name="Home" component={HomeStackNavigator} />
-            <Drawer.Screen name="Like" component={LikeStackNavigator} />
-            <Drawer.Screen name="Profile" component={ProfileStackNavigator} />
-            <Drawer.Screen name="Settings" component={SettingStackNavigator} />
-        </Drawer.Navigator>
+        <Tab.Navigator
+            screenOptions={{
+                headerShown: false
+            }}
+        >
+            <Tab.Screen name="Home" component={HomeStackNavigator} />
+            <Tab.Screen name="Like" component={LikeStackNavigator} />
+            <Tab.Screen name="Profile" component={ProfileStackNavigator} />
+            <Tab.Screen name="Settings" component={SettingStackNavigator} />
+        </Tab.Navigator>
 
 
     );
