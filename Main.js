@@ -11,15 +11,17 @@ export default function Main(props) {
 
     const [loading, setLoading] = useState(false);
 
+
+
     if (fontLoaded && loading) {
         return (
             <NavigationContainer>
                 <Authentication />
             </NavigationContainer>
         )
-    } else {
-        return <SplashScreen isLoading={fontLoaded} SetLoading={() => setLoading(true)} />
     }
+    return <SplashScreen isLoading={fontLoaded} SetLoading={() => setLoading(true)} />
+
 
 
 }

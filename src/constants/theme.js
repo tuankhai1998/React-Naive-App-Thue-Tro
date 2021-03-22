@@ -64,6 +64,20 @@ export const FONTS = {
     body4: { fontFamily: "Roboto-Regular", fontSize: SIZES.body4, lineHeight: 22 },
 };
 
+export const SHADOW = {
+    shadow1: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 5,
+    }
+}
+
 const theme = {
     ...DefaultTheme,
     colors: {

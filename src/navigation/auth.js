@@ -8,10 +8,6 @@ const AuthStack = createStackNavigator();
 // create a component
 const Authentication = () => {
     const [client, setClient] = React.useState(null);
-
-
-
-
     return (
         <AuthStack.Navigator
             screenOptions={{
@@ -19,7 +15,8 @@ const Authentication = () => {
                 headerShown: false,
             }}
         >
-            {client ? <AuthStack.Screen name="LoginScreen" component={LoginScreen} /> : <AuthStack.Screen name="Dashboard" component={BottomTabNavigator} />}
+            {/* {client ? <AuthStack.Screen name="LoginScreen" component={LoginScreen} /> : null} */}
+            <AuthStack.Screen name="Dashboard" component={BottomTabNavigator} />
 
         </AuthStack.Navigator>
     );

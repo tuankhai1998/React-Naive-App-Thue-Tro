@@ -2,6 +2,8 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 import HomeScreen from '../../screens/Home.screen';
+import { COLORS, SIZES } from '../../constants/theme'
+import Header from '../../components/Header';
 
 const HomeStack = createStackNavigator();
 
@@ -11,17 +13,15 @@ const HomeStackNavigator = () => {
     return (
         <HomeStack.Navigator
             options={
-                // tao truyen giua cac stack nhu trong ios
                 {
                     ...TransitionPresets.ModalSlideFromBottomIOS,
                 }
             }
-
             screenOptions={{
-                headerShown: false
+                headerShown: false,
             }}
         >
-            <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
+            <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Home' }} />
         </HomeStack.Navigator >
     );
 };

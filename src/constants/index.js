@@ -1,7 +1,7 @@
 import Images from './Images';
-import { COLORS, SIZES, FONTS } from './theme';
+import { COLORS, SIZES, FONTS, SHADOW } from './theme';
 
 export {
     Images,
-    COLORS, SIZES, FONTS
+    COLORS, SIZES, FONTS, SHADOW
 }
