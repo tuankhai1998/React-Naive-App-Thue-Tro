@@ -2,8 +2,7 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 import HomeScreen from '../../screens/Home.screen';
-import { COLORS, SIZES } from '../../constants/theme'
-import Header from '../../components/Header';
+import SearchScreen from '../../screens/Search.screen';
 
 const HomeStack = createStackNavigator();
 
@@ -22,6 +21,7 @@ const HomeStackNavigator = () => {
             }}
         >
             <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Home' }} />
+
         </HomeStack.Navigator >
     );
 };

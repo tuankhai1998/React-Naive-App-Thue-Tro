@@ -1,6 +1,7 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 import LoginScreen from '../screens/Login.screen';
+import SearchScreen from '../screens/Search.screen';
 import BottomTabNavigator from './BottomTabNavigator';
 
 const AuthStack = createStackNavigator();
@@ -17,7 +18,7 @@ const Authentication = () => {
         >
             {/* {client ? <AuthStack.Screen name="LoginScreen" component={LoginScreen} /> : null} */}
             <AuthStack.Screen name="Dashboard" component={BottomTabNavigator} />
-
+            <AuthStack.Screen name="SearchScreen" component={SearchScreen} />
         </AuthStack.Navigator>
     );
 };

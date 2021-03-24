@@ -1,36 +1,13 @@
 //import liraries
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/core';
 import React, { useState } from 'react';
-import { ImageBackground, Modal, Text, View, TouchableOpacity, ScrollView, FlatList, Image } from 'react-native';
+import { FlatList, Image, ImageBackground, Modal, ScrollView, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import { Images } from '../constants';
 import { bigCity } from '../constants/bigCity';
 import { COLORS, FONTS, SHADOW, SIZES } from '../constants/theme';
 
 const containerWidth = SIZES.width - 2 * SIZES.padding
-
-let buttonSearchHeader = [
-    {
-        background: "#17BEBB",
-        text: "Tìm theo nhiều quận",
-        icon: () => <Ionicons name="md-flash-outline" size={40} color={COLORS.white} />,
-        onPress: () => { console.log("haha") },
-
-    },
-    {
-        background: "#E4572E",
-        text: "Tìm gần nơi học & làm",
-        icon: () => <MaterialCommunityIcons name="google-nearby" size={40} color={COLORS.white} />,
-        onPress: () => { console.log("haha") }
-
-    },
-    {
-        background: "#27FB6B",
-        text: "Đăng phòng",
-        icon: () => <MaterialCommunityIcons name="home-plus-outline" size={40} color={COLORS.white} />,
-        onPress: () => { console.log("haha") }
-
-    }
-]
 
 let district = {
     1: [
@@ -64,11 +41,15 @@ let district = {
 // create a component
 
 const HomeHeader = ({ citySelected, changeCitySelected }) => {
-    let [modalVisible, setModalVisible] = useState(false)
+    let [modalVisible, setModalVisible] = useState(false),
+        [modalDistrict, setModalDistrict] = useState(false)
+
+    const navigation = useNavigation();
 
     let selected = bigCity.filter(city => {
         return city.id == citySelected
     })[0].acronym
+
 
 
     let renderImageHeader = () => {
@@ -96,12 +77,13 @@ const HomeHeader = ({ citySelected, changeCitySelected }) => {
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
                     setModalVisible(!modalVisible);
                 }}
             >
-                <View
+                <TouchableHighlight
                     style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.1)' }}
+                    onPress={() => { setModalVisible(!modalVisible); }}
+                    underlayColor="rgba(0,0,0,0)"
                 >
                     <View
                         style={{
@@ -138,7 +120,7 @@ const HomeHeader = ({ citySelected, changeCitySelected }) => {
 
                                     onPress={() => {
                                         changeCitySelected(city.id)
-                                        setModalVisible(!modalVisible);
+                                        setModalVisible(false);
                                     }}
                                 >
                                     <View
@@ -174,9 +156,207 @@ const HomeHeader = ({ citySelected, changeCitySelected }) => {
                         </View>
 
                     </View>
-                </View>
+                </TouchableHighlight>
             </Modal>
-            {renderImageHeader()}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalDistrict}
+                onRequestClose={() => {
+                    setModalDistrict(!modalDistrict);
+                }}
+            >
+                <TouchableHighlight
+                    style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.1)' }}
+                    onPress={() => { setModalDistrict(!modalDistrict); }}
+                    underlayColor="rgba(0,0,0,0)"
+                >
+                    <View
+                        style={{
+                            width: SIZES.width - SIZES.padding * 2,
+                            borderRadius: SIZES.radius,
+                            maxHeight: SIZES.height * 3 / 4,
+                            ...SHADOW.shadow1,
+                            padding: SIZES.padding,
+                            backgroundColor: COLORS.white
+                        }}
+                    >
+                        <ScrollView
+                            style={{
+                                maxHeight: SIZES.height / 3,
+                            }}
+
+                        >
+                            <View>
+                                <Text
+                                    style={{
+                                        ...FONTS.body3
+                                    }}
+                                >
+                                    Chọn loại phòng
+                                </Text>
+                                <TouchableOpacity
+                                    style={{
+                                        padding: SIZES.base,
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        borderBottomColor: COLORS.primaryTextColor,
+                                        borderBottomWidth: 1,
+                                        marginBottom: SIZES.base
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            ...FONTS.body4
+                                        }}
+                                    >
+                                        Phòng trọ, ký túc xá...
+                                    </Text>
+                                    <Ionicons name="chevron-down" size={20} color="black" />
+                                </TouchableOpacity>
+                                <Text
+                                    style={{
+                                        ...FONTS.body3
+                                    }}
+                                >
+                                    Chọn giới tính
+                                </Text>
+                                <TouchableOpacity
+                                    style={{
+                                        padding: SIZES.base,
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        borderBottomColor: COLORS.primaryTextColor,
+                                        borderBottomWidth: 1,
+                                        marginBottom: SIZES.base
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            ...FONTS.body4
+                                        }}
+                                    >
+                                        Tất cả
+                                    </Text>
+                                    <Ionicons name="chevron-down" size={20} color="black" />
+                                </TouchableOpacity>
+
+                                <Text
+                                    style={{
+                                        ...FONTS.body3
+                                    }}
+                                >
+                                    Các quận muốn tìm
+                                </Text>
+                                <View
+                                    style={{
+
+                                        marginTop: SIZES.base,
+                                        marginBottom: SIZES.padding,
+                                        flexDirection: 'row',
+
+                                    }}
+                                >
+                                    <TouchableOpacity
+                                        style={{
+                                            padding: SIZES.base,
+                                            borderRadius: SIZES.radius,
+                                            backgroundColor: COLORS.lightGray3,
+                                            marginRight: SIZES.base
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                ...FONTS.body4
+                                            }}
+                                        >
+                                            Cầu Giấy
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={{
+                                            padding: SIZES.base,
+                                            borderRadius: SIZES.radius,
+                                            backgroundColor: COLORS.lightGray3,
+                                            marginRight: SIZES.base
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                ...FONTS.body4
+                                            }}
+                                        >
+                                            Cầu Giấy
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={{
+                                            padding: SIZES.base,
+                                            borderRadius: SIZES.radius,
+                                            backgroundColor: COLORS.lightGray3,
+                                            marginRight: SIZES.base
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                ...FONTS.body4
+                                            }}
+                                        >
+                                            Cầu Giấy
+                                        </Text>
+                                    </TouchableOpacity>
+
+
+
+                                </View>
+                            </View>
+                        </ScrollView>
+                        <TouchableOpacity
+                            style={{
+                                backgroundColor: COLORS.primary,
+                                padding: SIZES.base,
+                                borderRadius: SIZES.radius / 2,
+                                ...SHADOW.shadow1,
+                                marginBottom: SIZES.base
+                            }}
+                            onPress={() => {
+                                setModalDistrict(!modalDistrict);
+                            }}
+                        >
+
+                            <Text
+                                style={{
+                                    textAlign: 'center',
+                                    ...FONTS.body4
+                                }}
+                            >Tìm Kiếm</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={{
+                                padding: SIZES.base
+                            }}
+                            onPress={() => {
+                                setModalDistrict(!modalDistrict);
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    textAlign: 'center',
+                                    ...FONTS.body4,
+                                    ...SHADOW.shadow1
+                                }}
+                            >Hủy</Text>
+                        </TouchableOpacity>
+                    </View>
+
+
+
+                </TouchableHighlight>
+            </Modal>
+            { renderImageHeader()}
             <View
                 style={{
                     marginTop: - SIZES.height / 8,
@@ -221,6 +401,8 @@ const HomeHeader = ({ citySelected, changeCitySelected }) => {
                             marginHorizontal: SIZES.base,
                             borderRadius: SIZES.borderRadius
                         }}
+
+                        onPress={() => navigation.push('SearchScreen')}
                     >
                         <Text style={{ color: COLORS.white, ...FONTS.body4, overflow: 'hidden' }}>Tìm theo địa chỉ</Text>
                     </TouchableOpacity>
@@ -230,39 +412,74 @@ const HomeHeader = ({ citySelected, changeCitySelected }) => {
                     style={{
                         marginTop: SIZES.padding,
                         flexDirection: "row",
-                        justifyContent: 'space-between'
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start'
                     }}
+
                 >
-                    {
-                        buttonSearchHeader.map(button => (
-                            <View
-                                style={{
-                                    width: (SIZES.width - SIZES.padding * 4) / 3 - (SIZES.base * 3),
-                                    justifyContent: 'center',
-                                    alignItems: 'center'
-                                }}
-                            >
-                                <TouchableOpacity
-                                    style={{
-                                        backgroundColor: `${button.background}`,
-                                        borderRadius: SIZES.radius * 1.75,
-                                        width: (SIZES.width - SIZES.padding * 4) / 4 - (SIZES.base * 3),
-                                        height: (SIZES.width - SIZES.padding * 4) / 4 - (SIZES.base * 3),
-                                        justifyContent: 'center',
-                                        alignItems: 'center'
-                                    }}
+                    <TouchableOpacity
+                        style={{
+                            width: (SIZES.width - SIZES.padding * 4) / 3 - (SIZES.base * 3),
+                            alignItems: 'center',
+                        }}
+                        onPress={() => setModalDistrict(true)}
+                    >
+                        <View
+                            style={{
+                                backgroundColor: `#17BEBB`,
+                                ...styles.headerFindItem
+                            }}
+                        >
+                            <Ionicons name="md-flash-outline" size={40} color={COLORS.white} />
+                        </View>
+                        <Text style={{
+                            textAlign: 'center'
+                        }}>Tìm theo nhiều quận</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{
+                            width: (SIZES.width - SIZES.padding * 4) / 3 - (SIZES.base * 3),
+                            alignItems: 'center',
+                        }}
+                        onPress={() => console.log("hahaha")}
+                    >
+                        <View
+                            style={{
+                                backgroundColor: `#E4572E`,
+                                ...styles.headerFindItem
+                            }}
 
-                                    onPress={() => button.onPress()}
-                                >
-                                    {button.icon()}
-                                </TouchableOpacity>
-                                <Text style={{
-                                    textAlign: 'center'
-                                }}>{button.text}</Text>
-                            </View>
-                        ))
-                    }
 
+                        >
+                            <MaterialCommunityIcons name="google-nearby" size={40} color={COLORS.white} />
+                        </View>
+                        <Text style={{
+                            textAlign: 'center'
+                        }}>Địa điểm gần đây</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{
+                            width: (SIZES.width - SIZES.padding * 4) / 3 - (SIZES.base * 3),
+                            justifyContent: 'center',
+                            alignItems: 'center',
+
+                        }}
+                        onPress={() => console.log("hahaha")}
+                    >
+                        <View
+                            style={{
+                                backgroundColor: `#27FB6B`,
+                                ...styles.headerFindItem
+                            }}
+
+
+                        >
+                            <MaterialCommunityIcons name="home-plus-outline" size={40} color={COLORS.white} />
+                        </View>
+                        <Text style={{
+                            textAlign: 'center'
+                        }}>Đăng phòng</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View >
@@ -625,6 +842,15 @@ const HomeScreen = () => {
         </ScrollView>
     );
 };
+const styles = StyleSheet.create({
+    headerFindItem: {
+        borderRadius: SIZES.radius * 1.75,
+        width: (SIZES.width - SIZES.padding * 4) / 4 - (SIZES.base * 3),
+        height: (SIZES.width - SIZES.padding * 4) / 4 - (SIZES.base * 3),
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
+})
 
 
 //make this component available to the app
