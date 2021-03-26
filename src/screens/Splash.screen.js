@@ -1,7 +1,7 @@
 //import liraries
 import { FontAwesome } from '@expo/vector-icons';
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import styled from 'styled-components';
 import { COLORS, SIZES } from '../constants/theme';
 

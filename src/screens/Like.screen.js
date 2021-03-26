@@ -1,12 +1,14 @@
 //import liraries
-import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import Header from '../components/Header';
+import { COLORS } from '../constants';
 
 // create a component
 const LikeScreen = () => {
     return (
         <View style={styles.container}>
-            <Text>LikeScreen</Text>
+            <Header title="Like" />
         </View>
     );
 };
@@ -15,9 +17,7 @@ const LikeScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#2c3e50',
+        backgroundColor: COLORS.white,
     },
 });
 

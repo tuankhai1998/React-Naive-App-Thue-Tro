@@ -1,5 +1,6 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
+import { StatusBar } from 'react-native';
 import LoginScreen from '../screens/Login.screen';
 import SearchScreen from '../screens/Search.screen';
 import BottomTabNavigator from './BottomTabNavigator';
@@ -9,7 +10,9 @@ const AuthStack = createStackNavigator();
 // create a component
 const Authentication = () => {
     const [client, setClient] = React.useState(null);
-    return (
+    return (<>
+
+       
         <AuthStack.Navigator
             screenOptions={{
                 ...TransitionPresets.ModalSlideFromBottomIOS,
@@ -20,6 +23,7 @@ const Authentication = () => {
             <AuthStack.Screen name="Dashboard" component={BottomTabNavigator} />
             <AuthStack.Screen name="SearchScreen" component={SearchScreen} />
         </AuthStack.Navigator>
+    </>
     );
 };
 

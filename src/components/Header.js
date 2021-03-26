@@ -1,29 +1,21 @@
+import { AntDesign } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/core'
 import React from 'react'
 import { StatusBar, StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { COLORS, FONTS, SIZES } from '../constants/theme'
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { COLORS, FONTS, SHADOW, SIZES } from '../constants/theme'
 
 export default function Header(props) {
     let { title, left, right } = props
     const navigate = useNavigation()
     return (
         <View style={{
-            height: SIZES.height / 10, backgroundColor: COLORS.primary, shadowColor: "#000",
-            shadowOffset: {
-                width: 0,
-                height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-
-            elevation: 5,
+            height: SIZES.height / 12, backgroundColor: COLORS.white, ...SHADOW.shadow1,
+            marginTop: SIZES.base,
+            borderBottomColor: COLORS.gray,
+            borderBottomWidth: 1
         }}>
-            <StatusBar
-                animated={true}
-                backgroundColor={COLORS.darkGreen}
-            />
+
             <View style={{
                 paddingHorizontal: SIZES.base,
                 paddingVertical: SIZES.body3,
