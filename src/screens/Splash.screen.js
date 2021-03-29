@@ -12,9 +12,12 @@ const SplashScreen = (props) => {
 
 
     useEffect(() => {
-        setTimeout(() => {
-            SetLoading()
-        }, 500);
+        if (SetLoading) {
+            setTimeout(() => {
+                SetLoading()
+            }, 500);
+        }
+
     }, [isLoading]);
     return (
         <Container >

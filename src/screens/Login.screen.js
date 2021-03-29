@@ -5,16 +5,45 @@ import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } 
 import { useTheme } from 'react-native-paper';
 import PrimaryButton from '../components/PrimaryButton';
 import { COLORS, SIZES } from '../constants/theme';
+import * as Yup from 'yup';
+import { useMutation, useQuery } from '@apollo/client';
+import { CREATE_USER, CURET_USER, LOGIN } from '../graphql/user';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const SignupSchema = Yup.object().shape({
+    email: Yup.string().email('Invalid email').required('Required'),
+    password: Yup.string().min(6).max(50).required('Password is required!'),
+    retypePassword: Yup.string().min(6).max(50).required('Password is required!')
+});
+const SignInSchema = Yup.object().shape({
+    email: Yup.string().email('Invalid email').required('Required'),
+    password: Yup.string().min(6).max(50).required('Password is required!'),
+});
+
+let setStorage = async (data) => {
+    try {
+        await AsyncStorage.setItem("@AHome-graphql:", data.token)
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 
 
 // create a component
 const LoginScreen = () => {
     const [login, setLogin] = useState(true);
-    const [userName, setUserName] = useState('');
-    const [passWord, setPassWord] = useState('');
-    const [retypePassword, setRetypePassword] = useState('');
+    // const { data , loading, error } = useQuery(LOGIN);
     const navigation = useNavigation();
+    const [createUser, { data, loading, error }] = useMutation(CREATE_USER, {
+        onCompleted({ createUser }) {
+            setStorage(createUser)
+            navigation.push("Dashboard")
+        }
+    })
+
+
+
 
     const initialValuesLogin = {
         email: '',
@@ -29,35 +58,6 @@ const LoginScreen = () => {
 
 
     const { colors } = useTheme();
-
-    const handleLogin = async () => {
-        if (userName && passWord) {
-            if (loginUser.login) {
-                alert('Tên đăng nhập hoặc mật khẩu sai ')
-            }
-        } else {
-            alert('Bạn phải nhập đủ tên đăng nhập và mật khẩu')
-        }
-    }
-
-    const handleSignUp = async () => {
-        if (userName && passWord && retypePassword) {
-            if (passWord === retypePassword) {
-                let user = await {
-                    email: userName,
-                    password: passWord
-                }
-                setLogin(true)
-            } else {
-                alert('nhập lại password')
-            }
-        } else {
-            alert('Bạn phải nhập đủ tên đăng nhập và mật khẩu')
-        }
-    }
-
-
-
 
     return (
         <View style={styles.container}>
@@ -85,7 +85,16 @@ const LoginScreen = () => {
 
                         <Formik
                             initialValues={login ? initialValuesLogin : initialValues}
-                            onSubmit={values => console.log(values)}
+                            onSubmit={values => {
+
+                                if (!login) {
+                                    createUser({
+                                        variables: { ...values }
+                                    })
+                                }
+
+                            }}
+                            validationSchema={login ? SignInSchema : SignupSchema}
                         >
 
                             {

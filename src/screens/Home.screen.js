@@ -1,11 +1,13 @@
 //import liraries
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FlatList, Image, ImageBackground, Modal, ScrollView, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import { Images } from '../constants';
 import { COLORS, FONTS, SHADOW, SIZES } from '../constants/theme';
+import { FETCH_LOCAL_ADDRESS } from '../graphql/locationAddress';
+import SplashScreen from './Splash.screen';
 
 const containerWidth = SIZES.width - 2 * SIZES.padding
 
@@ -38,31 +40,13 @@ let district = {
     ]
 }
 
-export const FETCH_LOCATION_ADDRESS = gql`
-   query{
-    localAddress {
-        name 
-        code 
-        districts{
-            name
-            wards{
-                name 
-                prefix
-            }
-            streets{
-                name 
-                prefix
-            }
-        }
-    }
-}
-`
-
 // create a component
 
 const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
     let [modalVisible, setModalVisible] = useState(false),
         [modalDistrict, setModalDistrict] = useState(false);
+
+    console.log(city)
 
     const navigation = useNavigation();
     let bigCity = city.localAddress.map((data, index) => ({ ...data, id: index + 1 }));
@@ -483,7 +467,7 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
 
 const HomeScreen = () => {
     let [citySelect, setCitySelect] = useState(1);
-    const { loading, error, data } = useQuery(FETCH_LOCATION_ADDRESS);
+    const { loading, error, data } = useQuery(FETCH_LOCAL_ADDRESS);
 
 
     const renderItemSearchTrend = ({ item, index }) => {
@@ -674,17 +658,7 @@ const HomeScreen = () => {
 
     if (loading) {
         return (
-            <View
-                style={{
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }
-                }
-            >
-                <Text>
-                    Loading....
-                </Text>
-            </View>
+            <SplashScreen isLoading={loading} />
         )
     }
     return (
