@@ -8,20 +8,19 @@ import BottomTabNavigator from './BottomTabNavigator';
 const AuthStack = createStackNavigator();
 
 // create a component
-const Authentication = () => {
-    const [client, setClient] = React.useState(null);
-    return (<>
+const Authentication = ({ client }) => {
 
-       
+    return (<>
         <AuthStack.Navigator
             screenOptions={{
                 ...TransitionPresets.ModalSlideFromBottomIOS,
                 headerShown: false,
             }}
         >
-            {/* {client ? <AuthStack.Screen name="LoginScreen" component={LoginScreen} /> : null} */}
-            <AuthStack.Screen name="Dashboard" component={BottomTabNavigator} />
-            <AuthStack.Screen name="SearchScreen" component={SearchScreen} />
+            {!client ? (<AuthStack.Screen name="LoginScreen" component={LoginScreen} />) : (<>
+                <AuthStack.Screen name="Dashboard" component={BottomTabNavigator} />
+                <AuthStack.Screen name="SearchScreen" component={SearchScreen} />
+            </>)}
         </AuthStack.Navigator>
     </>
     );

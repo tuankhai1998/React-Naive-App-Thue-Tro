@@ -1,10 +1,10 @@
 //import liraries
+import { gql, useQuery } from '@apollo/client';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, Image, ImageBackground, Modal, ScrollView, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import { Images } from '../constants';
-import { bigCity } from '../constants/bigCity';
 import { COLORS, FONTS, SHADOW, SIZES } from '../constants/theme';
 
 const containerWidth = SIZES.width - 2 * SIZES.padding
@@ -38,24 +38,46 @@ let district = {
     ]
 }
 
+export const FETCH_LOCATION_ADDRESS = gql`
+   query{
+    localAddress {
+        name 
+        code 
+        districts{
+            name
+            wards{
+                name 
+                prefix
+            }
+            streets{
+                name 
+                prefix
+            }
+        }
+    }
+}
+`
+
 // create a component
 
-const HomeHeader = ({ citySelected, changeCitySelected }) => {
+const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
     let [modalVisible, setModalVisible] = useState(false),
-        [modalDistrict, setModalDistrict] = useState(false)
+        [modalDistrict, setModalDistrict] = useState(false);
 
     const navigation = useNavigation();
+    let bigCity = city.localAddress.map((data, index) => ({ ...data, id: index + 1 }));
 
     let selected = bigCity.filter(city => {
         return city.id == citySelected
-    })[0].acronym
+    })[0]
 
+    let { districts } = selected
 
 
     let renderImageHeader = () => {
         let image = Images.HANOI;
-        if (citySelected == 2) image = Images.DANANG
-        if (citySelected == 3) image = Images.HCM
+        if (citySelected == 3) image = Images.DANANG
+        if (citySelected == 1) image = Images.HCM
 
 
         return (
@@ -69,6 +91,7 @@ const HomeHeader = ({ citySelected, changeCitySelected }) => {
             />
         )
     }
+
 
     return (
         <View>
@@ -166,7 +189,7 @@ const HomeHeader = ({ citySelected, changeCitySelected }) => {
                     setModalDistrict(!modalDistrict);
                 }}
             >
-                <TouchableHighlight
+                <View
                     style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.1)' }}
                     onPress={() => { setModalDistrict(!modalDistrict); }}
                     underlayColor="rgba(0,0,0,0)"
@@ -250,67 +273,38 @@ const HomeHeader = ({ citySelected, changeCitySelected }) => {
                                 >
                                     Các quận muốn tìm
                                 </Text>
-                                <View
+                                <FlatList
+                                    numColumns={3}
                                     style={{
-
                                         marginTop: SIZES.base,
                                         marginBottom: SIZES.padding,
                                         flexDirection: 'row',
-
+                                        width: "100%",
                                     }}
-                                >
-                                    <TouchableOpacity
-                                        style={{
-                                            padding: SIZES.base,
-                                            borderRadius: SIZES.radius,
-                                            backgroundColor: COLORS.lightGray3,
-                                            marginRight: SIZES.base
-                                        }}
-                                    >
-                                        <Text
+
+                                    data={districts}
+                                    renderItem={({ item }) => (
+                                        <TouchableOpacity
                                             style={{
-                                                ...FONTS.body4
+                                                padding: SIZES.base,
+                                                borderRadius: SIZES.radius,
+                                                backgroundColor: COLORS.lightGray3,
+                                                marginRight: SIZES.base,
+                                                marginBottom: SIZES.base
                                             }}
                                         >
-                                            Cầu Giấy
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={{
-                                            padding: SIZES.base,
-                                            borderRadius: SIZES.radius,
-                                            backgroundColor: COLORS.lightGray3,
-                                            marginRight: SIZES.base
-                                        }}
-                                    >
-                                        <Text
-                                            style={{
-                                                ...FONTS.body4
-                                            }}
-                                        >
-                                            Cầu Giấy
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={{
-                                            padding: SIZES.base,
-                                            borderRadius: SIZES.radius,
-                                            backgroundColor: COLORS.lightGray3,
-                                            marginRight: SIZES.base
-                                        }}
-                                    >
-                                        <Text
-                                            style={{
-                                                ...FONTS.body4
-                                            }}
-                                        >
-                                            Cầu Giấy
-                                        </Text>
-                                    </TouchableOpacity>
+                                            <Text
+                                                style={{
+                                                    ...FONTS.body4
+                                                }}
+                                            >
+                                                {item.name}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    )}
 
+                                />
 
-
-                                </View>
                             </View>
                         </ScrollView>
                         <TouchableOpacity
@@ -354,9 +348,9 @@ const HomeHeader = ({ citySelected, changeCitySelected }) => {
 
 
 
-                </TouchableHighlight>
+                </View>
             </Modal>
-            { renderImageHeader()}
+            {renderImageHeader()}
             <View
                 style={{
                     marginTop: - SIZES.height / 8,
@@ -391,7 +385,7 @@ const HomeHeader = ({ citySelected, changeCitySelected }) => {
                         <Text style={{
                             color: COLORS.secondary,
                             ...FONTS.body4
-                        }}>{selected}</Text>
+                        }}>{selected.name.length < 10 ? selected.name : selected.code}</Text>
                     </TouchableOpacity>
                     {/* Input */}
                     <TouchableOpacity
@@ -489,6 +483,7 @@ const HomeHeader = ({ citySelected, changeCitySelected }) => {
 
 const HomeScreen = () => {
     let [citySelect, setCitySelect] = useState(1);
+    const { loading, error, data } = useQuery(FETCH_LOCATION_ADDRESS);
 
 
     const renderItemSearchTrend = ({ item, index }) => {
@@ -676,12 +671,28 @@ const HomeScreen = () => {
             </TouchableOpacity >
         )
     }
+
+    if (loading) {
+        return (
+            <View
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }
+                }
+            >
+                <Text>
+                    Loading....
+                </Text>
+            </View>
+        )
+    }
     return (
         <ScrollView style={{
             flex: 1,
             backgroundColor: 'rgba(0,0,0,0.1)'
         }}>
-            <HomeHeader citySelected={citySelect} changeCitySelected={(id) => setCitySelect(id)} />
+            <HomeHeader citySelected={citySelect} changeCitySelected={(id) => setCitySelect(id)} city={data} />
             <View
                 style={{
                     marginVertical: SIZES.padding,

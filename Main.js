@@ -1,27 +1,29 @@
+import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import { ApolloProvider } from '@apollo/react-hooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
-import {
-    InMemoryCache
-} from 'apollo-cache-inmemory';
-import { ApolloClient } from 'apollo-client';
-import { HttpLink } from 'apollo-link-http';
 import React, { useEffect, useState } from 'react';
-import { ApolloProvider } from 'react-apollo';
 import Authentication from './src/navigation/auth';
 import SplashScreen from './src/screens/Splash.screen';
 
 const makeApolloClient = (token) => {
-    const link = new HttpLink({
-        uri: "http://localhost:8000/graphql",
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
+    const link = createHttpLink({
+        uri: "http://192.168.1.58:8000/graphql",
     })
 
+    const authLink = setContext((_, { headers }) => {
+        return {
+            headers: {
+                ...headers,
+                authorization: token ? `Bearer ${token}` : "",
+            }
+        }
+    });
     const cache = new InMemoryCache();
 
     const client = new ApolloClient({
-        link,
+        link: authLink.concat(link),
         cache
     })
 
@@ -56,7 +58,7 @@ export default function Main(props) {
                 client={client}
             >
                 <NavigationContainer>
-                    <Authentication />
+                    <Authentication client={client} />
                 </NavigationContainer>
             </ApolloProvider>
         )
