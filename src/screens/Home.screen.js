@@ -47,8 +47,10 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
     let [modalVisible, setModalVisible] = useState(false),
         [modalDistrict, setModalDistrict] = useState(false);
 
+    if (!city) return null
+
     const navigation = useNavigation();
-    let bigCity = city.localAddress.map((data, index) => ({ ...data, id: index + 1 }));
+    let bigCity = city.map((data, index) => ({ ...data, id: index + 1 }));
 
     let selected = bigCity.filter(city => {
         return city.id == citySelected
@@ -470,7 +472,7 @@ const HomeScreen = () => {
     const { error: errorRoom, data: dataRoom } = useQuery(FETCH_ROOM, {
         variables: {
             page: 0,
-            per_page: 12
+            per_page: 6
         }
     });
 
@@ -501,9 +503,7 @@ const HomeScreen = () => {
 
 
     const renderItem = ({ item, index }) => {
-
-        console.log(item.images[0])
-
+        if (loading) return <Text>loading ....</Text>
         return (
             <TouchableOpacity
                 style={{
@@ -555,9 +555,9 @@ const HomeScreen = () => {
                             color: COLORS.secondary
                         }}
                     >
-                        1.2 triệu/phòng
+                        {`${item.price.room.price} triệu/phòng`}
                     </Text>
-                    <Text numberOfLines={2} ellipsizeMode='middle'>3A, ngõ 82, Duy Tân, Dịch Vọng Hậu, Cầu Giấy</Text>
+                    <Text numberOfLines={2} ellipsizeMode='middle'>{item.address.name}</Text>
                 </View>
             </TouchableOpacity >
         )
@@ -619,7 +619,7 @@ const HomeScreen = () => {
                     }}
                 >
                     <ImageBackground
-                        source={item && item.images ? { uri: `${item.images[0]}` } : ''}
+                        source={item.image}
                         style={{
                             width: '100%',
                             height: "100%",
@@ -665,17 +665,13 @@ const HomeScreen = () => {
         )
     }
 
-    if (loading) {
-        return (
-            <SplashScreen isLoading={loading} />
-        )
-    }
+
     return (
         <ScrollView style={{
             flex: 1,
             backgroundColor: 'rgba(0,0,0,0.1)'
         }}>
-            <HomeHeader citySelected={citySelect} changeCitySelected={(id) => setCitySelect(id)} city={data} />
+            <HomeHeader citySelected={citySelect} changeCitySelected={(id) => setCitySelect(id)} city={data && data.localAddress ? data.localAddress : null} />
             <View
                 style={{
                     marginVertical: SIZES.padding,

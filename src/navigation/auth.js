@@ -1,12 +1,11 @@
-import { useQuery } from '@apollo/client';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
-import React from 'react';
-import { CURET_USER } from '../graphql/user';
+import React, { useEffect } from 'react';
 import LoginScreen from '../screens/Login.screen';
 import SearchScreen from '../screens/Search.screen';
-import SplashScreen from '../screens/Splash.screen';
 import BottomTabNavigator from './BottomTabNavigator';
+import { getStorage } from '../helpers/storage';
+import { useLazyQuery } from '@apollo/client';
+import { CURET_USER } from '../graphql/user';
 
 const AuthStack = createStackNavigator();
 
@@ -14,7 +13,11 @@ const AuthStack = createStackNavigator();
 // create a component
 const Authentication = () => {
 
-    let { data, loading, error } = useQuery(CURET_USER)
+    const [curetUser, { data, loading }] = useLazyQuery(CURET_USER)
+
+    useEffect(() => {
+        curetUser()
+    }, []);
 
 
 
@@ -37,3 +40,4 @@ const Authentication = () => {
 
 //make this component available to the app
 export default Authentication;
+
