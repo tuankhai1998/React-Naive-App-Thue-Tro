@@ -1,28 +1,28 @@
+import { useLazyQuery, useMutation } from '@apollo/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/core';
 import { Formik } from 'formik';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
+import * as Yup from 'yup';
 import PrimaryButton from '../components/PrimaryButton';
 import { COLORS, SIZES } from '../constants/theme';
-import * as Yup from 'yup';
-import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_USER, CURET_USER, LOGIN } from '../graphql/user';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
     password: Yup.string().min(6).max(50).required('Password is required!'),
     retypePassword: Yup.string().min(6).max(50).required('Password is required!')
 });
-const SignInSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string().min(6).max(50).required('Password is required!'),
-});
+// const null = Yup.object().shape({
+//     email: Yup.string().email('Invalid email').required('Required'),
+//     password: Yup.string().min(6).max(50).required('Password is required!'),
+// });
 
 let setStorage = async (data) => {
     try {
-        await AsyncStorage.setItem("@AHome-graphql:", data.token)
+        await AsyncStorage.setItem("@AHome-graphql:", data)
     } catch (error) {
         console.log(error)
     }
@@ -33,16 +33,20 @@ let setStorage = async (data) => {
 // create a component
 const LoginScreen = () => {
     const [login, setLogin] = useState(true);
-    // const { data , loading, error } = useQuery(LOGIN);
-    const navigation = useNavigation();
-    const [createUser, { data, loading, error }] = useMutation(CREATE_USER, {
+    const [loginQuery, { data, loading }] = useLazyQuery(LOGIN);
+    const [getCuretUser] = useLazyQuery(CURET_USER);
+    const [createUser] = useMutation(CREATE_USER, {
         onCompleted({ createUser }) {
             setStorage(createUser)
-            navigation.push("Dashboard")
         }
     })
-
-
+    useEffect(() => {
+        if (data && data.login) {
+            let { login } = data;
+            setStorage(JSON.stringify(login))
+            getCuretUser()
+        }
+    }, [data])
 
 
     const initialValuesLogin = {
@@ -93,8 +97,17 @@ const LoginScreen = () => {
                                     })
                                 }
 
+
+
+                                loginQuery({
+                                    variables: {
+                                        email: values.email,
+                                        password: values.password
+                                    }
+                                })
+
+
                             }}
-                            validationSchema={login ? SignInSchema : SignupSchema}
                         >
 
                             {

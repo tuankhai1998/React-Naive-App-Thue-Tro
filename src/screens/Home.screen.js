@@ -7,6 +7,7 @@ import { FlatList, Image, ImageBackground, Modal, ScrollView, StyleSheet, Text, 
 import { Images } from '../constants';
 import { COLORS, FONTS, SHADOW, SIZES } from '../constants/theme';
 import { FETCH_LOCAL_ADDRESS } from '../graphql/locationAddress';
+import { getStorage } from './Login.screen';
 import SplashScreen from './Splash.screen';
 
 const containerWidth = SIZES.width - 2 * SIZES.padding

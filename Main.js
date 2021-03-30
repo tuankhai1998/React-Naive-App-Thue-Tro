@@ -19,8 +19,6 @@ export default function Main(props) {
             return JSON.parse(section)
         }
 
-        console.log(sectionObj())
-
         let { id, token } = sectionObj();
 
         const makeClient = makeApolloClient(token)
@@ -35,7 +33,7 @@ export default function Main(props) {
                 client={client}
             >
                 <NavigationContainer>
-                    <Authentication client={client} />
+                    <Authentication />
                 </NavigationContainer>
             </ApolloProvider>
         )

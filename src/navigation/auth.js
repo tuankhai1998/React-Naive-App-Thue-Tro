@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 import { CURET_USER } from '../graphql/user';
@@ -8,9 +9,15 @@ import BottomTabNavigator from './BottomTabNavigator';
 
 const AuthStack = createStackNavigator();
 
+let sectionObj = async () => {
+    let section = await AsyncStorage.getItem("@AHome-graphql:")
+    return JSON.parse(section)
+}
 // create a component
 const Authentication = ({ client }) => {
-    const { data } = useQuery(CURET_USER)
+
+    let { data, loading, error } = useQuery(CURET_USER)
+
 
     return (<>
         <AuthStack.Navigator
@@ -19,7 +26,7 @@ const Authentication = ({ client }) => {
                 headerShown: false,
             }}
         >
-            {client ? (<AuthStack.Screen name="LoginScreen" component={LoginScreen} />) : (<>
+            {data && data.login ? (<AuthStack.Screen name="LoginScreen" component={LoginScreen} />) : (<>
                 <AuthStack.Screen name="Dashboard" component={BottomTabNavigator} />
                 <AuthStack.Screen name="SearchScreen" component={SearchScreen} />
             </>)}
