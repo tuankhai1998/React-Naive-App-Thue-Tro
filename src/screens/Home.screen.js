@@ -7,7 +7,7 @@ import { FlatList, Image, ImageBackground, Modal, ScrollView, StyleSheet, Text, 
 import { Images } from '../constants';
 import { COLORS, FONTS, SHADOW, SIZES } from '../constants/theme';
 import { FETCH_LOCAL_ADDRESS } from '../graphql/locationAddress';
-import { getStorage } from './Login.screen';
+import { FETCH_ROOM } from '../graphql/room';
 import SplashScreen from './Splash.screen';
 
 const containerWidth = SIZES.width - 2 * SIZES.padding
@@ -46,8 +46,6 @@ let district = {
 const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
     let [modalVisible, setModalVisible] = useState(false),
         [modalDistrict, setModalDistrict] = useState(false);
-
-    console.log(city)
 
     const navigation = useNavigation();
     let bigCity = city.localAddress.map((data, index) => ({ ...data, id: index + 1 }));
@@ -469,6 +467,12 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
 const HomeScreen = () => {
     let [citySelect, setCitySelect] = useState(1);
     const { loading, error, data } = useQuery(FETCH_LOCAL_ADDRESS);
+    const { error: errorRoom, data: dataRoom } = useQuery(FETCH_ROOM, {
+        variables: {
+            page: 0,
+            per_page: 12
+        }
+    });
 
 
     const renderItemSearchTrend = ({ item, index }) => {
@@ -497,6 +501,9 @@ const HomeScreen = () => {
 
 
     const renderItem = ({ item, index }) => {
+
+        console.log(item.images[0])
+
         return (
             <TouchableOpacity
                 style={{
@@ -515,7 +522,7 @@ const HomeScreen = () => {
                     }}
                 >
                     <ImageBackground
-                        source={item.image}
+                        source={{ uri: item.images[0] }}
                         style={{
                             width: '100%',
                             height: "100%",
@@ -593,6 +600,7 @@ const HomeScreen = () => {
     }
 
     const newRoomItem = ({ item, index }) => {
+
         return (
             <TouchableOpacity
                 style={{
@@ -611,7 +619,7 @@ const HomeScreen = () => {
                     }}
                 >
                     <ImageBackground
-                        source={item.image}
+                        source={item && item.images ? { uri: `${item.images[0]}` } : ''}
                         style={{
                             width: '100%',
                             height: "100%",
@@ -717,7 +725,7 @@ const HomeScreen = () => {
                     numColumns={2}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
-                    data={district['1']}
+                    data={dataRoom && dataRoom.rooms ? dataRoom.rooms : district['1']}
                     renderItem={renderItem}
                     style={{
                         marginTop: SIZES.base,

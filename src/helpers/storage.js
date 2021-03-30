@@ -8,3 +8,12 @@ export const getStorage = async () => {
         console.log(error)
     }
 }
+
+export const setStorage = async (name, data) => {
+    try {
+        await AsyncStorage.setItem(name, JSON.stringify(data))
+    } catch (error) {
+        console.log(error)
+    }
+}
+

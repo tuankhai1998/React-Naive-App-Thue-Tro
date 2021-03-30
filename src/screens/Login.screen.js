@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 import PrimaryButton from '../components/PrimaryButton';
 import { COLORS, SIZES } from '../constants/theme';
 import { CREATE_USER, CURET_USER, LOGIN } from '../graphql/user';
+import { setStorage } from '../helpers/storage';
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -20,13 +21,6 @@ const SignupSchema = Yup.object().shape({
 //     password: Yup.string().min(6).max(50).required('Password is required!'),
 // });
 
-let setStorage = async (data) => {
-    try {
-        await AsyncStorage.setItem("@AHome-graphql:", data)
-    } catch (error) {
-        console.log(error)
-    }
-}
 
 
 
@@ -43,7 +37,7 @@ const LoginScreen = () => {
     useEffect(() => {
         if (data && data.login) {
             let { login } = data;
-            setStorage(JSON.stringify(login))
+            setStorage('@AHome-graphql', login)
             getCuretUser()
         }
     }, [data])
@@ -96,8 +90,6 @@ const LoginScreen = () => {
                                         variables: { ...values }
                                     })
                                 }
-
-
 
                                 loginQuery({
                                     variables: {

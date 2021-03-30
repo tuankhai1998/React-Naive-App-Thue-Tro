@@ -5,18 +5,17 @@ import React from 'react';
 import { CURET_USER } from '../graphql/user';
 import LoginScreen from '../screens/Login.screen';
 import SearchScreen from '../screens/Search.screen';
+import SplashScreen from '../screens/Splash.screen';
 import BottomTabNavigator from './BottomTabNavigator';
 
 const AuthStack = createStackNavigator();
 
-let sectionObj = async () => {
-    let section = await AsyncStorage.getItem("@AHome-graphql:")
-    return JSON.parse(section)
-}
+
 // create a component
-const Authentication = ({ client }) => {
+const Authentication = () => {
 
     let { data, loading, error } = useQuery(CURET_USER)
+
 
 
     return (<>
@@ -26,7 +25,7 @@ const Authentication = ({ client }) => {
                 headerShown: false,
             }}
         >
-            {data && data.login ? (<AuthStack.Screen name="LoginScreen" component={LoginScreen} />) : (<>
+            {data && data.user ? (<AuthStack.Screen name="LoginScreen" component={LoginScreen} />) : (<>
                 <AuthStack.Screen name="Dashboard" component={BottomTabNavigator} />
                 <AuthStack.Screen name="SearchScreen" component={SearchScreen} />
             </>)}
