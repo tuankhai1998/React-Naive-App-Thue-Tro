@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { FlatList, Image, ImageBackground, Modal, ScrollView, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import { Images } from '../constants';
 import { COLORS, FONTS, SHADOW, SIZES } from '../constants/theme';
+import { roomType } from '../constants/variable';
 import { FETCH_LOCAL_ADDRESS } from '../graphql/locationAddress';
 import { FETCH_ROOM } from '../graphql/room';
 import SplashScreen from './Splash.screen';
@@ -476,6 +477,16 @@ const HomeScreen = () => {
         }
     });
 
+    const navigation = useNavigation();
+
+    if (loading) {
+        return (<View
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+
+            <Text>Loading ...</Text>
+        </View>)
+    }
+
 
     const renderItemSearchTrend = ({ item, index }) => {
         return (
@@ -503,7 +514,7 @@ const HomeScreen = () => {
 
 
     const renderItem = ({ item, index }) => {
-        if (loading) return <Text>loading ....</Text>
+
         return (
             <TouchableOpacity
                 style={{
@@ -512,6 +523,8 @@ const HomeScreen = () => {
                     marginLeft: index % 2 == 0 ? 0 : SIZES.base,
                     marginBottom: SIZES.padding
                 }}
+
+                onPress={() => navigation.push('ProductScreen')}
             >
                 <View
                     style={{
@@ -522,7 +535,7 @@ const HomeScreen = () => {
                     }}
                 >
                     <ImageBackground
-                        source={{ uri: item.images[0] }}
+                        source={{ uri: item && item.images ? item.images[0] : null }}
                         style={{
                             width: '100%',
                             height: "100%",
@@ -544,9 +557,9 @@ const HomeScreen = () => {
                     </ImageBackground>
                 </View>
                 <View>
-                    <Text style={{ ...FONTS.body4, textTransform: "uppercase", fontSize: 12 }}>Tìm người thuê</Text>
+                    <Text style={{ ...FONTS.body4, textTransform: "uppercase", fontSize: 12 }}>{roomType(item.type)}</Text>
                     <Text style={{ ...FONTS.h4 }} numberOfLines={2}>
-                        Phòng cho thuê ở Duy Tân quận Cầu Giấy
+                        {`${roomType(item.type)} ${item.address.name}`}
                     </Text>
                     <Text
                         style={{

@@ -1,7 +1,6 @@
 //import liraries
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import { StatusBar } from 'react-native';
 import HomeStackNavigator from './stacknavigator/HomeStackNavigator';
 import LikeStackNavigator from './stacknavigator/LikeStackNavigatior';
 import ProfileStackNavigator from './stacknavigator/ProfileStackNavigatior';
@@ -13,7 +12,6 @@ const BottomTabNavigator = () => {
     return (
         <>
             <Tab.Navigator>
-
                 <Tab.Screen name="Home" component={HomeStackNavigator} />
                 <Tab.Screen name="Like" component={LikeStackNavigator} />
                 <Tab.Screen name="Profile" component={ProfileStackNavigator} />

@@ -19,6 +19,7 @@
 		"apollo-cache-inmemory": "^1.6.6",
 		"apollo-client": "^2.6.10",
 		"apollo-link-http": "^1.5.17",
+		"apollo-link-timeout": "^4.0.0",
 		"component": "^1.1.0",
 		"expo": "^40.0.1",
 		"expo-font": "~8.4.0",
@@ -36,6 +37,7 @@
 		"react-native-safe-area-context": "3.1.9",
 		"react-native-screens": "~2.15.2",
 		"react-native-svg": "12.1.0",
+		"react-native-swiper": "^1.6.0",
 		"react-native-web": "~0.13.12",
 		"styled-components": "^5.2.1",
 		"yup": "^0.32.9"

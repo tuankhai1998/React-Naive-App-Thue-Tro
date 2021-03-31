@@ -10,8 +10,9 @@ export default function Header(props) {
     const navigate = useNavigation()
     return (
         <View style={{
-            height: SIZES.height / 12, backgroundColor: COLORS.white, ...SHADOW.shadow1,
-            marginTop: SIZES.base,
+            height: SIZES.height / 10,
+            maxHeight: 70,
+            backgroundColor: COLORS.white, ...SHADOW.shadow1,
             borderBottomColor: COLORS.gray,
             borderBottomWidth: 1
         }}>
@@ -34,12 +35,12 @@ export default function Header(props) {
                     }
                 </View>
 
-                <Text style={{ ...FONTS.body1, color: COLORS.primaryTextColor, textAlign: "center" }}>
+                <Text style={{ ...FONTS.body2, color: COLORS.primaryTextColor, textAlign: "center" }}>
                     {title}
                 </Text>
                 <View>
                     <TouchableOpacity style={{ marginHorizontal: SIZES.base, marginVertical: -SIZES.base, paddingHorizontal: -SIZES.base, paddingVertical: 2 * SIZES.base }}>
-                        <AntDesign name="search1" size={24} color={COLORS.primaryTextColor} />
+                        <AntDesign name="search1" size={19} color={COLORS.primaryTextColor} />
                     </TouchableOpacity>
                 </View>
             </View>

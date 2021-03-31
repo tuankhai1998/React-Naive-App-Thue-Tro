@@ -6,6 +6,7 @@ export const FETCH_ROOM = gql`
             _id
             images
             roomNum
+            type
             address{
                 name
                 latitude
