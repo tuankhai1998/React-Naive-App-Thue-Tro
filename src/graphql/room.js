@@ -9,12 +9,9 @@ export const FETCH_ROOM = gql`
             type
             address{
                 name
-                latitude
-                longitude
             }
             price {
                 room{
-                    free
                     price
                 }
             }

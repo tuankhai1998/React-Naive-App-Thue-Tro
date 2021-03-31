@@ -9,7 +9,6 @@ import { COLORS, FONTS, SHADOW, SIZES } from '../constants/theme';
 import { roomType } from '../constants/variable';
 import { FETCH_LOCAL_ADDRESS } from '../graphql/locationAddress';
 import { FETCH_ROOM } from '../graphql/room';
-import SplashScreen from './Splash.screen';
 
 const containerWidth = SIZES.width - 2 * SIZES.padding
 
@@ -479,13 +478,13 @@ const HomeScreen = () => {
 
     const navigation = useNavigation();
 
-    if (loading) {
-        return (<View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    // if (loading) {
+    //     return (<View
+    //         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
-            <Text>Loading ...</Text>
-        </View>)
-    }
+    //         <Text>Loading ...</Text>
+    //     </View>)
+    // }
 
 
     const renderItemSearchTrend = ({ item, index }) => {
@@ -515,6 +514,56 @@ const HomeScreen = () => {
 
     const renderItem = ({ item, index }) => {
 
+
+        if (loading && item.images) {
+            return (
+                <View
+                    style={{
+                        width: containerWidth / 2 - SIZES.base / 2,
+                        minHeight: 50,
+                        marginLeft: index % 2 == 0 ? 0 : SIZES.base,
+                        marginBottom: SIZES.padding
+                    }}
+                >
+                    <View
+                        style={{
+                            width: '100%',
+                            height: (containerWidth / 2 - SIZES.base) * 11 / 16,
+                            borderRadius: SIZES.radius,
+                            overflow: 'hidden'
+                        }}
+                    >
+                        <View
+                            style={{
+                                width: '100%',
+                                height: "100%",
+                                backgroundColor: COLORS.lightGray
+                            }}
+                        >
+                            <TouchableOpacity
+                                style={{
+                                    marginTop: 5,
+                                    marginLeft: 'auto',
+                                    marginRight: 5,
+                                    backgroundColor: 'rgba(0,0,0,0.3)',
+                                    padding: 2,
+                                    borderRadius: 10
+                                }}
+                            >
+                                <Ionicons name="heart-outline" size={16} color={COLORS.white} />
+                                {/* <Ionicons name="heart-sharp" size={24} color="black" /> */}
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View>
+                        <View style={{ width: '60%', height: 10, backgroundColor: COLORS.gray, marginBottom: 5 }}></View>
+                        <View style={{ width: '80%', height: 10, backgroundColor: COLORS.gray, marginBottom: 5 }}></View>
+                        <View style={{ width: '80%', height: 10, backgroundColor: COLORS.gray, marginBottom: 5 }}></View>
+                        <View style={{ width: '80%', height: 10, backgroundColor: COLORS.gray, marginBottom: 5 }}></View>
+                    </View>
+                </View>
+            )
+        }
         return (
             <TouchableOpacity
                 style={{
@@ -534,32 +583,59 @@ const HomeScreen = () => {
                         overflow: 'hidden'
                     }}
                 >
-                    <ImageBackground
-                        source={{ uri: item && item.images ? item.images[0] : null }}
-                        style={{
-                            width: '100%',
-                            height: "100%",
-                        }}
-                    >
-                        <TouchableOpacity
-                            style={{
-                                marginTop: 5,
-                                marginLeft: 'auto',
-                                marginRight: 5,
-                                backgroundColor: 'rgba(0,0,0,0.3)',
-                                padding: 2,
-                                borderRadius: 10
-                            }}
-                        >
-                            <Ionicons name="heart-outline" size={16} color={COLORS.white} />
-                            {/* <Ionicons name="heart-sharp" size={24} color="black" /> */}
-                        </TouchableOpacity>
-                    </ImageBackground>
+                    {
+                        item && item.images ? (
+                            <ImageBackground
+                                source={{ uri: item.images[0] }}
+                                style={{
+                                    width: '100%',
+                                    height: "100%",
+                                }}
+                            >
+                                <TouchableOpacity
+                                    style={{
+                                        marginTop: 5,
+                                        marginLeft: 'auto',
+                                        marginRight: 5,
+                                        backgroundColor: 'rgba(0,0,0,0.3)',
+                                        padding: 2,
+                                        borderRadius: 10
+                                    }}
+                                >
+                                    <Ionicons name="heart-outline" size={16} color={COLORS.white} />
+                                    {/* <Ionicons name="heart-sharp" size={24} color="black" /> */}
+                                </TouchableOpacity>
+                            </ImageBackground>
+                        ) : (
+                            <View
+                                style={{
+                                    width: '100%',
+                                    height: "100%",
+                                    backgroundColor: COLORS.lightGray
+                                }}
+                            >
+                                <TouchableOpacity
+                                    style={{
+                                        marginTop: 5,
+                                        marginLeft: 'auto',
+                                        marginRight: 5,
+                                        backgroundColor: 'rgba(0,0,0,0.3)',
+                                        padding: 2,
+                                        borderRadius: 10
+                                    }}
+                                >
+                                    <Ionicons name="heart-outline" size={16} color={COLORS.white} />
+                                    {/* <Ionicons name="heart-sharp" size={24} color="black" /> */}
+                                </TouchableOpacity>
+                            </View>
+                        )
+                    }
+
                 </View>
                 <View>
-                    <Text style={{ ...FONTS.body4, textTransform: "uppercase", fontSize: 12 }}>{roomType(item.type)}</Text>
+                    <Text style={{ ...FONTS.body4, textTransform: "uppercase", fontSize: 12 }}>{item.type ? roomType(item.type) : null}</Text>
                     <Text style={{ ...FONTS.h4 }} numberOfLines={2}>
-                        {`${roomType(item.type)} ${item.address.name}`}
+                        {item.type ? `${roomType(item.type)} ${item.address.name}` : null}
                     </Text>
                     <Text
                         style={{
@@ -568,9 +644,9 @@ const HomeScreen = () => {
                             color: COLORS.secondary
                         }}
                     >
-                        {`${item.price.room.price} triệu/phòng`}
+                        {item.price ? `${item.price.room.price} triệu/phòng` : null}
                     </Text>
-                    <Text numberOfLines={2} ellipsizeMode='middle'>{item.address.name}</Text>
+                    <Text numberOfLines={2} ellipsizeMode='middle'>{item.address ? item.address.name : null}</Text>
                 </View>
             </TouchableOpacity >
         )
@@ -728,7 +804,6 @@ const HomeScreen = () => {
                         ...FONTS.body2,
                     }}
                 >Phòng nổi bật</Text>
-
                 <FlatList
                     contentContainerStyle={{ alignSelf: 'flex-start' }}
                     numColumns={2}
@@ -740,6 +815,8 @@ const HomeScreen = () => {
                         marginTop: SIZES.base,
                     }}
                 />
+
+
                 <TouchableOpacity>
                     <Text
                         style={{

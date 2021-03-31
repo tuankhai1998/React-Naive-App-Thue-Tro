@@ -11,10 +11,6 @@ query{
              name 
              prefix
          }
-         streets{
-             name 
-             prefix
-         }
      }
  }
 }
