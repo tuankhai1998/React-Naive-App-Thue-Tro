@@ -1,13 +1,13 @@
 //import liraries
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, Image, ImageBackground, Modal, ScrollView, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import { Images } from '../constants';
+import { city } from '../constants/city';
 import { COLORS, FONTS, SHADOW, SIZES } from '../constants/theme';
 import { roomType } from '../constants/variable';
-import { FETCH_LOCAL_ADDRESS } from '../graphql/locationAddress';
 import { FETCH_ROOM } from '../graphql/room';
 
 const containerWidth = SIZES.width - 2 * SIZES.padding
@@ -186,6 +186,7 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
                             maxHeight: SIZES.height * 3 / 4,
                             ...SHADOW.shadow1,
                             padding: SIZES.padding,
+                            paddingBottom: 0,
                             backgroundColor: COLORS.white
                         }}
                     >
@@ -292,43 +293,50 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
 
                             </View>
                         </ScrollView>
-                        <TouchableOpacity
+                        <View
                             style={{
-                                backgroundColor: COLORS.primary,
-                                padding: SIZES.base,
-                                borderRadius: SIZES.radius / 2,
-                                ...SHADOW.shadow1,
-                                marginBottom: SIZES.base
-                            }}
-                            onPress={() => {
-                                setModalDistrict(!modalDistrict);
+                                paddingTop: SIZES.padding,
+                                paddingBottom: SIZES.base
                             }}
                         >
-
-                            <Text
+                            <TouchableOpacity
                                 style={{
-                                    textAlign: 'center',
-                                    ...FONTS.body4
+                                    backgroundColor: COLORS.primary,
+                                    padding: SIZES.base,
+                                    borderRadius: SIZES.radius / 2,
+                                    ...SHADOW.shadow1,
+                                    marginBottom: SIZES.base
                                 }}
-                            >Tìm Kiếm</Text>
-                        </TouchableOpacity>
+                                onPress={() => {
+                                    setModalDistrict(!modalDistrict);
+                                }}
+                            >
 
-                        <TouchableOpacity
-                            style={{
-                                padding: SIZES.base
-                            }}
-                            onPress={() => {
-                                setModalDistrict(!modalDistrict);
-                            }}
-                        >
-                            <Text
+                                <Text
+                                    style={{
+                                        textAlign: 'center',
+                                        ...FONTS.body4
+                                    }}
+                                >Tìm Kiếm</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
                                 style={{
-                                    textAlign: 'center',
-                                    ...FONTS.body4,
-                                    ...SHADOW.shadow1
+                                    padding: SIZES.base
                                 }}
-                            >Hủy</Text>
-                        </TouchableOpacity>
+                                onPress={() => {
+                                    setModalDistrict(!modalDistrict);
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        textAlign: 'center',
+                                        ...FONTS.body4,
+                                        ...SHADOW.shadow1
+                                    }}
+                                >Hủy</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
 
 
@@ -467,16 +475,51 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
 
 
 const HomeScreen = () => {
-    let [citySelect, setCitySelect] = useState(1);
-    const { loading, error, data } = useQuery(FETCH_LOCAL_ADDRESS);
-    const { error: errorRoom, data: dataRoom } = useQuery(FETCH_ROOM, {
-        variables: {
-            page: 0,
-            per_page: 6
-        }
-    });
+    let [citySelect, setCitySelect] = useState(2),
+        [hotRooms, setHotRooms] = useState([]),
+        [hotRoomPage, setHotRoomPage] = useState(0);
+    const [fetchRoom, { error: errorRoom, data: dataRoom, loading }] = useLazyQuery(FETCH_ROOM);
+    let [hotRoomsLoad, setHotRoomsLoad] = useState([...district['1']]);
 
     const navigation = useNavigation();
+
+    useEffect(() => {
+        fetchRoom({
+            variables: {
+                page: hotRoomPage,
+                per_page: 6,
+                query: {
+                    addressName: citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'
+                }
+            }
+        })
+
+
+    }, [hotRoomPage])
+
+    useEffect(() => {
+        if (dataRoom && hotRoomPage > 0) {
+            setHotRooms([...hotRooms, ...dataRoom.rooms]);
+            setHotRoomsLoad([...hotRooms, ...district['1']])
+        } else if (dataRoom) {
+            setHotRooms([...dataRoom.rooms]);
+            setHotRoomsLoad([...hotRooms, ...district['1']])
+        }
+    }, [dataRoom])
+
+    useEffect(() => {
+        setHotRoomPage(0)
+        fetchRoom({
+            variables: {
+                page: hotRoomPage,
+                per_page: 6,
+                query: {
+                    addressName: citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'
+                }
+            }
+        })
+
+    }, [citySelect])
 
     // if (loading) {
     //     return (<View
@@ -689,7 +732,6 @@ const HomeScreen = () => {
     }
 
     const newRoomItem = ({ item, index }) => {
-
         return (
             <TouchableOpacity
                 style={{
@@ -754,13 +796,109 @@ const HomeScreen = () => {
         )
     }
 
+    const NewRoom = (city) => {
+        let [page, setPage] = useState(0);
+        let [fetchNewRoom, { data: newRoomData, loading: newRoomLoading }] = useLazyQuery(FETCH_ROOM);
+        let [newRoom, setNewRoom] = useState([]);
+
+        useEffect(() => {
+
+            console.log(page)
+            fetchNewRoom({
+                variables: {
+                    page: page,
+                    per_page: 6,
+                    query: {
+                        addressName: city ? city : 'Hà Nội'
+                    },
+
+                }
+            })
+        }, [page])
+
+
+        useEffect(() => {
+            console.log({ newRoomData })
+            if (newRoomData && page > 0) {
+                setNewRoom([...newRoom, ...newRoomData])
+            } else if (newRoomData) {
+                setNewRoom(newRoomData)
+            }
+        }, [newRoomData])
+
+
+
+        return (
+            <>
+                <View
+                    style={{
+                        backgroundColor: COLORS.white,
+                        paddingVertical: SIZES.base,
+                        marginBottom: SIZES.base,
+                        marginTop: SIZES.padding,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                >
+
+                    <Image
+                        source={Images.NEWROOM}
+                        style={{
+                            width: SIZES.width - 2 * SIZES.base,
+                            height: SIZES.width * 1 / 3,
+                            resizeMode: 'cover',
+                            borderRadius: SIZES.radius / 2
+                        }}
+
+
+                    />
+                </View>
+                <View
+                    style={{
+                        flex: 1,
+                        backgroundColor: COLORS.white,
+                        borderRadius: SIZES.radius,
+                        paddingVertical: SIZES.base,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginBottom: SIZES.padding,
+                    }}
+                >
+                    <FlatList
+                        contentContainerStyle={{ alignSelf: 'flex-start' }}
+                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
+                        data={newRoomData && newRoomData.rooms ? newRoomData.rooms : district['1']}
+                        renderItem={newRoomItem}
+                        style={{
+                            marginTop: SIZES.base,
+                        }}
+                    />
+
+                    <TouchableOpacity
+                        onPress={() => setPage(page + 1)}
+                    >
+                        <Text
+                            style={{
+                                textAlign: 'center',
+                                ...FONTS.body3,
+                                color: '#0000EE'
+                            }}
+                        >Xem Thêm</Text>
+                    </TouchableOpacity>
+
+                </View>
+            </>
+        )
+    }
+
 
     return (
         <ScrollView style={{
             flex: 1,
             backgroundColor: 'rgba(0,0,0,0.1)'
         }}>
-            <HomeHeader citySelected={citySelect} changeCitySelected={(id) => setCitySelect(id)} city={data && data.localAddress ? data.localAddress : null} />
+            <HomeHeader citySelected={citySelect} changeCitySelected={(id) => setCitySelect(id)} city={city} />
             <View
                 style={{
                     marginVertical: SIZES.padding,
@@ -809,7 +947,7 @@ const HomeScreen = () => {
                     numColumns={2}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
-                    data={dataRoom && dataRoom.rooms ? dataRoom.rooms : district['1']}
+                    data={hotRooms.length > 0 ? hotRooms : hotRoomsLoad}
                     renderItem={renderItem}
                     style={{
                         marginTop: SIZES.base,
@@ -817,7 +955,9 @@ const HomeScreen = () => {
                 />
 
 
-                <TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => setHotRoomPage(hotRoomPage + 1)}
+                >
                     <Text
                         style={{
                             textAlign: 'center',
@@ -872,52 +1012,9 @@ const HomeScreen = () => {
                 />
             </View>
 
-            <View
-                style={{
-                    backgroundColor: COLORS.white,
-                    paddingVertical: SIZES.base,
-                    marginVertical: SIZES.base,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}
-            >
-
-                <Image
-                    source={Images.NEWROOM}
-                    style={{
-                        width: SIZES.width - 2 * SIZES.base,
-                        height: SIZES.width * 1 / 3,
-                        resizeMode: 'cover',
-                        borderRadius: SIZES.radius / 2
-                    }}
+            <NewRoom />
 
 
-                />
-            </View>
-
-            <View
-                style={{
-                    flex: 1,
-                    backgroundColor: COLORS.white,
-                    borderRadius: SIZES.radius,
-                    marginVertical: SIZES.padding,
-                    paddingVertical: SIZES.base,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}
-            >
-                <FlatList
-                    contentContainerStyle={{ alignSelf: 'flex-start' }}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                    data={district['1']}
-                    renderItem={newRoomItem}
-                    style={{
-                        marginTop: SIZES.base,
-                    }}
-                />
-
-            </View>
 
         </ScrollView>
     );

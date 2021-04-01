@@ -7,10 +7,6 @@ query{
      code 
      districts{
          name
-         wards{
-             name 
-             prefix
-         }
      }
  }
 }
