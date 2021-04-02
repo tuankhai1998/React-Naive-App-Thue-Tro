@@ -10,6 +10,7 @@ const HANOI = require('../../assets/images/HaNoi.jpg')
 const DANANG = require('../../assets/images/DaNang.jpg')
 const HCM = require('../../assets/images/HCM.jpg')
 const NEWROOM = require('../../assets/images/newRoom.jpeg')
+const ImageLoading = 'https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png';
 
 export default {
     SplashScreenBG,
@@ -23,5 +24,6 @@ export default {
     HANOI,
     DANANG,
     HCM,
-    NEWROOM
+    NEWROOM,
+    ImageLoading
 }

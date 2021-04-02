@@ -19,7 +19,7 @@ export default function Header(props) {
 
             <View style={{
                 paddingHorizontal: SIZES.base,
-                paddingVertical: SIZES.body3,
+                paddingTop: SIZES.body2,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: "space-between"
@@ -27,7 +27,7 @@ export default function Header(props) {
                 <View style={!left ? { width: 27.3 } : null}>
                     {left &&
                         <TouchableOpacity
-                            onPress={() => console.log("hahah")}
+                            onPress={() => navigate.goBack()}
                             style={{ marginHorizontal: SIZES.base, marginVertical: -SIZES.base, paddingHorizontal: -SIZES.base, paddingVertical: 2 * SIZES.base }}
                         >
                             <AntDesign name="arrowleft" size={24} color={COLORS.primaryTextColor} />
@@ -38,10 +38,10 @@ export default function Header(props) {
                 <Text style={{ ...FONTS.body2, color: COLORS.primaryTextColor, textAlign: "center" }}>
                     {title}
                 </Text>
-                <View>
-                    <TouchableOpacity style={{ marginHorizontal: SIZES.base, marginVertical: -SIZES.base, paddingHorizontal: -SIZES.base, paddingVertical: 2 * SIZES.base }}>
+                <View style={!right ? { width: 27.3 } : null}>
+                    {right && <TouchableOpacity style={{ marginHorizontal: SIZES.base, marginVertical: -SIZES.base, paddingHorizontal: -SIZES.base, paddingVertical: 2 * SIZES.base }}>
                         <AntDesign name="search1" size={19} color={COLORS.primaryTextColor} />
-                    </TouchableOpacity>
+                    </TouchableOpacity>}
                 </View>
             </View>
 

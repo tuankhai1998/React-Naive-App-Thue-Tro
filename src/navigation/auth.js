@@ -7,6 +7,7 @@ import { getStorage } from '../helpers/storage';
 import { useLazyQuery } from '@apollo/client';
 import { CURET_USER } from '../graphql/user';
 import ProductScreen from '../screens/Product.screen';
+import ListProductSearchScreen from '../screens/ListProductSearch.screen';
 
 const AuthStack = createStackNavigator();
 
@@ -33,6 +34,7 @@ const Authentication = () => {
                 <AuthStack.Screen name="Dashboard" component={BottomTabNavigator} />
                 <AuthStack.Screen name="SearchScreen" component={SearchScreen} />
                 <AuthStack.Screen name="ProductScreen" component={ProductScreen} />
+                <AuthStack.Screen name="ProductListScreen" component={ListProductSearchScreen} />
             </>)}
         </AuthStack.Navigator>
     </>

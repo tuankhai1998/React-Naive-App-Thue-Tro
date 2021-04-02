@@ -1,16 +1,14 @@
 //import liraries
-import { useLazyQuery } from '@apollo/client';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Image, ImageBackground, Modal, ScrollView, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import HotRoom from '../components/Home/HotRoom';
+import NewRoom from '../components/Home/NewRoom';
 import { Images } from '../constants';
 import { city } from '../constants/city';
 import { COLORS, FONTS, SHADOW, SIZES } from '../constants/theme';
-import { roomType } from '../constants/variable';
-import { FETCH_ROOM } from '../graphql/room';
 
-const containerWidth = SIZES.width - 2 * SIZES.padding
 
 let district = {
     1: [
@@ -474,74 +472,26 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
 }
 
 
+
+
 const HomeScreen = () => {
-    let [citySelect, setCitySelect] = useState(2),
-        [hotRooms, setHotRooms] = useState([]),
-        [hotRoomPage, setHotRoomPage] = useState(0);
-    const [fetchRoom, { error: errorRoom, data: dataRoom, loading }] = useLazyQuery(FETCH_ROOM);
-    let [hotRoomsLoad, setHotRoomsLoad] = useState([...district['1']]);
-
+    let [citySelect, setCitySelect] = useState(1);
     const navigation = useNavigation();
-
-    useEffect(() => {
-        fetchRoom({
-            variables: {
-                page: hotRoomPage,
-                per_page: 6,
-                query: {
-                    addressName: citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'
-                }
-            }
-        })
-
-
-    }, [hotRoomPage])
-
-    useEffect(() => {
-        if (dataRoom && hotRoomPage > 0) {
-            setHotRooms([...hotRooms, ...dataRoom.rooms]);
-            setHotRoomsLoad([...hotRooms, ...district['1']])
-        } else if (dataRoom) {
-            setHotRooms([...dataRoom.rooms]);
-            setHotRoomsLoad([...hotRooms, ...district['1']])
-        }
-    }, [dataRoom])
-
-    useEffect(() => {
-        setHotRoomPage(0)
-        fetchRoom({
-            variables: {
-                page: hotRoomPage,
-                per_page: 6,
-                query: {
-                    addressName: citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'
-                }
-            }
-        })
-
-    }, [citySelect])
-
-    // if (loading) {
-    //     return (<View
-    //         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-
-    //         <Text>Loading ...</Text>
-    //     </View>)
-    // }
-
 
     const renderItemSearchTrend = ({ item, index }) => {
         return (
             <TouchableOpacity
                 style={{
-                    width: containerWidth / 3 - SIZES.radius / 3 * 2,
-                    height: containerWidth / 3 - SIZES.radius / 3 * 2,
+                    width: SIZES.containerWidth / 3 - SIZES.radius / 3 * 2,
+                    height: SIZES.containerWidth / 3 - SIZES.radius / 3 * 2,
                     borderRadius: SIZES.radius,
                     overflow: 'hidden',
                     marginLeft: index % 3 === 0 ? 0 : SIZES.radius,
                     marginBottom: SIZES.radius,
                     ...SHADOW.shadow1
                 }}
+
+                onPress={() => { navigation.push('ProductListScreen', { district: item.name }) }}
             >
                 <Image source={item.image} style={{
                     resizeMode: 'cover',
@@ -554,152 +504,11 @@ const HomeScreen = () => {
         )
     }
 
-
-    const renderItem = ({ item, index }) => {
-
-
-        if (loading && item.images) {
-            return (
-                <View
-                    style={{
-                        width: containerWidth / 2 - SIZES.base / 2,
-                        minHeight: 50,
-                        marginLeft: index % 2 == 0 ? 0 : SIZES.base,
-                        marginBottom: SIZES.padding
-                    }}
-                >
-                    <View
-                        style={{
-                            width: '100%',
-                            height: (containerWidth / 2 - SIZES.base) * 11 / 16,
-                            borderRadius: SIZES.radius,
-                            overflow: 'hidden'
-                        }}
-                    >
-                        <View
-                            style={{
-                                width: '100%',
-                                height: "100%",
-                                backgroundColor: COLORS.lightGray
-                            }}
-                        >
-                            <TouchableOpacity
-                                style={{
-                                    marginTop: 5,
-                                    marginLeft: 'auto',
-                                    marginRight: 5,
-                                    backgroundColor: 'rgba(0,0,0,0.3)',
-                                    padding: 2,
-                                    borderRadius: 10
-                                }}
-                            >
-                                <Ionicons name="heart-outline" size={16} color={COLORS.white} />
-                                {/* <Ionicons name="heart-sharp" size={24} color="black" /> */}
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View>
-                        <View style={{ width: '60%', height: 10, backgroundColor: COLORS.gray, marginBottom: 5 }}></View>
-                        <View style={{ width: '80%', height: 10, backgroundColor: COLORS.gray, marginBottom: 5 }}></View>
-                        <View style={{ width: '80%', height: 10, backgroundColor: COLORS.gray, marginBottom: 5 }}></View>
-                        <View style={{ width: '80%', height: 10, backgroundColor: COLORS.gray, marginBottom: 5 }}></View>
-                    </View>
-                </View>
-            )
-        }
-        return (
-            <TouchableOpacity
-                style={{
-                    width: containerWidth / 2 - SIZES.base / 2,
-                    minHeight: 50,
-                    marginLeft: index % 2 == 0 ? 0 : SIZES.base,
-                    marginBottom: SIZES.padding
-                }}
-
-                onPress={() => navigation.push('ProductScreen')}
-            >
-                <View
-                    style={{
-                        width: '100%',
-                        height: (containerWidth / 2 - SIZES.base) * 11 / 16,
-                        borderRadius: SIZES.radius,
-                        overflow: 'hidden'
-                    }}
-                >
-                    {
-                        item && item.images ? (
-                            <ImageBackground
-                                source={{ uri: item.images[0] }}
-                                style={{
-                                    width: '100%',
-                                    height: "100%",
-                                }}
-                            >
-                                <TouchableOpacity
-                                    style={{
-                                        marginTop: 5,
-                                        marginLeft: 'auto',
-                                        marginRight: 5,
-                                        backgroundColor: 'rgba(0,0,0,0.3)',
-                                        padding: 2,
-                                        borderRadius: 10
-                                    }}
-                                >
-                                    <Ionicons name="heart-outline" size={16} color={COLORS.white} />
-                                    {/* <Ionicons name="heart-sharp" size={24} color="black" /> */}
-                                </TouchableOpacity>
-                            </ImageBackground>
-                        ) : (
-                            <View
-                                style={{
-                                    width: '100%',
-                                    height: "100%",
-                                    backgroundColor: COLORS.lightGray
-                                }}
-                            >
-                                <TouchableOpacity
-                                    style={{
-                                        marginTop: 5,
-                                        marginLeft: 'auto',
-                                        marginRight: 5,
-                                        backgroundColor: 'rgba(0,0,0,0.3)',
-                                        padding: 2,
-                                        borderRadius: 10
-                                    }}
-                                >
-                                    <Ionicons name="heart-outline" size={16} color={COLORS.white} />
-                                    {/* <Ionicons name="heart-sharp" size={24} color="black" /> */}
-                                </TouchableOpacity>
-                            </View>
-                        )
-                    }
-
-                </View>
-                <View>
-                    <Text style={{ ...FONTS.body4, textTransform: "uppercase", fontSize: 12 }}>{item.type ? roomType(item.type) : null}</Text>
-                    <Text style={{ ...FONTS.h4 }} numberOfLines={2}>
-                        {item.type ? `${roomType(item.type)} ${item.address.name}` : null}
-                    </Text>
-                    <Text
-                        style={{
-                            ...FONTS.body4,
-                            fontWeight: 'bold',
-                            color: COLORS.secondary
-                        }}
-                    >
-                        {item.price ? `${item.price.room.price} triệu/phòng` : null}
-                    </Text>
-                    <Text numberOfLines={2} ellipsizeMode='middle'>{item.address ? item.address.name : null}</Text>
-                </View>
-            </TouchableOpacity >
-        )
-    }
-
     const blogItem = ({ item, index }) => {
         return (
             <TouchableOpacity
                 style={{
-                    width: containerWidth / 1.5 - SIZES.base / 2,
+                    width: SIZES.containerWidth / 1.5 - SIZES.base / 2,
                     minHeight: 50,
                     marginLeft: index === 0 ? 0 : SIZES.padding,
                     marginBottom: SIZES.padding
@@ -708,7 +517,7 @@ const HomeScreen = () => {
                 <View
                     style={{
                         width: '100%',
-                        height: (containerWidth / 2 - SIZES.base) * 14 / 16,
+                        height: (SIZES.containerWidth / 2 - SIZES.base) * 14 / 16,
                         borderRadius: SIZES.radius,
                         overflow: 'hidden'
                     }}
@@ -731,166 +540,9 @@ const HomeScreen = () => {
         )
     }
 
-    const newRoomItem = ({ item, index }) => {
-        return (
-            <TouchableOpacity
-                style={{
-                    width: containerWidth + SIZES.base,
-                    minHeight: 50,
-                    marginBottom: SIZES.padding,
-                    flexDirection: "row"
-                }}
-            >
-                <View
-                    style={{
-                        width: containerWidth / 2 - SIZES.base / 2,
-                        height: (containerWidth / 2 - SIZES.base) * 12 / 16,
-                        borderRadius: SIZES.radius,
-                        overflow: 'hidden'
-                    }}
-                >
-                    <ImageBackground
-                        source={item.image}
-                        style={{
-                            width: '100%',
-                            height: "100%",
-                        }}
-                    >
-                        <TouchableOpacity
-                            style={{
-                                marginTop: 5,
-                                marginLeft: 'auto',
-                                marginRight: 5,
-                                backgroundColor: 'rgba(0,0,0,0.3)',
-                                padding: 2,
-                                borderRadius: 10
-                            }}
-                        >
-                            <Ionicons name="heart-outline" size={16} color={COLORS.white} />
-                            {/* <Ionicons name="heart-sharp" size={24} color="black" /> */}
-                        </TouchableOpacity>
-                    </ImageBackground>
-                </View>
-                <View
-                    style={{
-                        flex: 1,
-                        marginLeft: SIZES.base
-                    }}
-                >
-                    <Text style={{ ...FONTS.body4, textTransform: "uppercase", fontSize: 12 }}>Tìm người thuê</Text>
-                    <Text style={{ ...FONTS.h4 }} numberOfLines={2}>
-                        Phòng cho thuê ở Duy Tân quận Cầu Giấy
-        </Text>
-                    <Text
-                        style={{
-                            ...FONTS.body4,
-                            fontWeight: 'bold',
-                            color: COLORS.secondary
-                        }}
-                    >
-                        1.2 triệu/phòng
-        </Text>
-                    <Text numberOfLines={2} ellipsizeMode='middle'>3A, ngõ 82, Duy Tân, Dịch Vọng Hậu, Cầu Giấy</Text>
-                </View>
-            </TouchableOpacity >
-        )
-    }
-
-    const NewRoom = (city) => {
-        let [page, setPage] = useState(0);
-        let [fetchNewRoom, { data: newRoomData, loading: newRoomLoading }] = useLazyQuery(FETCH_ROOM);
-        let [newRoom, setNewRoom] = useState([]);
-
-        useEffect(() => {
-
-            console.log(page)
-            fetchNewRoom({
-                variables: {
-                    page: page,
-                    per_page: 6,
-                    query: {
-                        addressName: city ? city : 'Hà Nội'
-                    },
-
-                }
-            })
-        }, [page])
-
-
-        useEffect(() => {
-            console.log({ newRoomData })
-            if (newRoomData && page > 0) {
-                setNewRoom([...newRoom, ...newRoomData])
-            } else if (newRoomData) {
-                setNewRoom(newRoomData)
-            }
-        }, [newRoomData])
 
 
 
-        return (
-            <>
-                <View
-                    style={{
-                        backgroundColor: COLORS.white,
-                        paddingVertical: SIZES.base,
-                        marginBottom: SIZES.base,
-                        marginTop: SIZES.padding,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}
-                >
-
-                    <Image
-                        source={Images.NEWROOM}
-                        style={{
-                            width: SIZES.width - 2 * SIZES.base,
-                            height: SIZES.width * 1 / 3,
-                            resizeMode: 'cover',
-                            borderRadius: SIZES.radius / 2
-                        }}
-
-
-                    />
-                </View>
-                <View
-                    style={{
-                        flex: 1,
-                        backgroundColor: COLORS.white,
-                        borderRadius: SIZES.radius,
-                        paddingVertical: SIZES.base,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginBottom: SIZES.padding,
-                    }}
-                >
-                    <FlatList
-                        contentContainerStyle={{ alignSelf: 'flex-start' }}
-                        showsVerticalScrollIndicator={false}
-                        showsHorizontalScrollIndicator={false}
-                        data={newRoomData && newRoomData.rooms ? newRoomData.rooms : district['1']}
-                        renderItem={newRoomItem}
-                        style={{
-                            marginTop: SIZES.base,
-                        }}
-                    />
-
-                    <TouchableOpacity
-                        onPress={() => setPage(page + 1)}
-                    >
-                        <Text
-                            style={{
-                                textAlign: 'center',
-                                ...FONTS.body3,
-                                color: '#0000EE'
-                            }}
-                        >Xem Thêm</Text>
-                    </TouchableOpacity>
-
-                </View>
-            </>
-        )
-    }
 
 
     return (
@@ -926,47 +578,8 @@ const HomeScreen = () => {
                     renderItem={renderItemSearchTrend}
                 />
             </View>
+            <HotRoom city={citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'} />
 
-            <View
-                style={{
-                    flex: 1,
-                    backgroundColor: COLORS.white,
-                    borderRadius: SIZES.radius,
-                    marginVertical: SIZES.padding,
-                    paddingHorizontal: SIZES.padding,
-                    paddingVertical: SIZES.radius
-                }}
-            >
-                <Text
-                    style={{
-                        ...FONTS.body2,
-                    }}
-                >Phòng nổi bật</Text>
-                <FlatList
-                    contentContainerStyle={{ alignSelf: 'flex-start' }}
-                    numColumns={2}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                    data={hotRooms.length > 0 ? hotRooms : hotRoomsLoad}
-                    renderItem={renderItem}
-                    style={{
-                        marginTop: SIZES.base,
-                    }}
-                />
-
-
-                <TouchableOpacity
-                    onPress={() => setHotRoomPage(hotRoomPage + 1)}
-                >
-                    <Text
-                        style={{
-                            textAlign: 'center',
-                            ...FONTS.body3,
-                            color: '#0000EE'
-                        }}
-                    >Xem Thêm</Text>
-                </TouchableOpacity>
-            </View>
 
             <View
                 style={{
@@ -1012,7 +625,7 @@ const HomeScreen = () => {
                 />
             </View>
 
-            <NewRoom />
+            <NewRoom city={citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'} />
 
 
 

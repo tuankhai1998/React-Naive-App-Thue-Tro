@@ -2,6 +2,8 @@ import { DefaultTheme } from "react-native-paper";
 import { Dimensions } from "react-native";
 const { width, height } = Dimensions.get("window");
 
+const containerWidth = width - 2 * 24;
+
 export const COLORS = {
     // base colors
     primary: "#a6c13c", // Green
@@ -49,7 +51,8 @@ export const SIZES = {
 
     // app dimensions
     width,
-    height
+    height,
+    containerWidth
 };
 
 export const FONTS = {
