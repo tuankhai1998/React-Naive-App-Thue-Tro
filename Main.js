@@ -19,7 +19,7 @@ export default function Main(props) {
             return JSON.parse(section)
         }
 
-        let { id, token } = sectionObj();
+        let { token } = sectionObj();
 
         const makeClient = makeApolloClient(token)
         setClient(makeClient)

@@ -17,3 +17,12 @@ export const setStorage = async (name, data) => {
     }
 }
 
+
+export const removeStorage = async () => {
+    try {
+        await AsyncStorage.removeItem("@AHome-graphql:")
+    } catch (error) {
+        console.log(error)
+    }
+}
+

@@ -8,10 +8,7 @@ import ItemHorizontalList from '../ItemHorizontalList'
 export default function HotRoom({ city }) {
     const [fetchRoom, { error: errorRoom, data: dataRoom, loading }] = useLazyQuery(FETCH_ROOM);
     const [hotRooms, setHotRooms] = useState([]),
-        [page, setPage] = useState(0);
-
-
-    console.log({ errorRoom })
+        [page, setPage] = useState(0)
 
     useEffect(() => {
         fetchRoom({

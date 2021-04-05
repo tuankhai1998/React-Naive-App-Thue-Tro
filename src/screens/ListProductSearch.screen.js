@@ -4,24 +4,25 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, FlatList } from 'react-native'
 import Header from '../components/Header';
 import ItemVerticalList from '../components/ItemVerticalList';
-import { COLORS, SIZES } from '../constants'
+import { COLORS, FONTS, SIZES } from '../constants'
 import { FETCH_ROOM } from '../graphql/room';
 
 export default function ListProductSearchScreen() {
     const [page, setPage] = useState(0);
     const route = useRoute();
     const { params } = route;
-    const [fetchRoom, { data, error }] = useLazyQuery(FETCH_ROOM);
+    const [fetchRoom, { data, error, loading }] = useLazyQuery(FETCH_ROOM);
+    console.log(data, error, loading)
+
 
     useEffect(() => {
         fetchRoom({
             variables: {
-                page: page,
+                page,
                 per_page: 6,
                 query: {
                     addressName: {
-                        district: params.district,
-                        city: params.city
+                        districts: params.district
                     }
                 }
             }
@@ -41,16 +42,27 @@ export default function ListProductSearchScreen() {
                     marginBottom: SIZES.padding,
                 }}
             >
-                <FlatList
-                    contentContainerStyle={{ alignSelf: 'flex-start' }}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                    data={data && data.rooms ? data.rooms : []}
-                    renderItem={({ item, index }) => <ItemVerticalList item={item} index={index} />}
-                    style={{
-                        marginTop: SIZES.base,
-                    }}
-                />
+                {
+                    !loading && data && data.rooms.length == 0 ? (<View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
+                    >
+                        <Text style={{ ...FONTS.body2 }}>Không có kết quả nào !</Text>
+                    </View>) : <FlatList
+                        contentContainerStyle={{ alignSelf: 'flex-start' }}
+                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
+                        data={data && data.rooms ? data.rooms : []}
+                        renderItem={({ item, index }) => <ItemVerticalList item={item} index={index} />}
+                        style={{
+                            marginTop: SIZES.base,
+                        }}
+                    />
+                }
+
+
 
             </View>
         </>

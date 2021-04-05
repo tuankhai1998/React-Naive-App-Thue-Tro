@@ -1,9 +1,9 @@
-import { Ionicons } from '@expo/vector-icons'
+import { Fontisto, Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/core'
 import React from 'react'
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import Swiper from 'react-native-swiper'
-import { COLORS, SIZES } from '../constants'
+import { COLORS, FONTS, SIZES } from '../constants'
 
 
 let listImage = [
@@ -14,7 +14,7 @@ let listImage = [
 ]
 
 export default function ProductScreen() {
-
+    let sex;
     const navigation = useNavigation();
     const RenderHeader = ({ showBg }) => {
         return (
@@ -95,8 +95,24 @@ export default function ProductScreen() {
         )
     }
 
+    const sub = (base, exponent, color) => {
+        return <View style={{ flexDirection: 'row' }}>
+            <View style={{ alignItems: 'flex-end' }}>
+                <Text style={{ fontSize: 13, color: `${color}` }}>{base}</Text>
+            </View>
+            <View style={{ alignItems: 'flex-start' }}>
+                <Text style={{ fontSize: 10, color: `${color}` }}>{exponent}</Text>
+            </View>
+        </View>
+    }
+
+
     return (
-        <ScrollView>
+        <ScrollView
+            style={{
+                backgroundColor: 'rgba(0,0,0,0.1)'
+            }}
+        >
             <RenderHeader />
             <View
                 style={{
@@ -107,19 +123,351 @@ export default function ProductScreen() {
             >
                 {renderSlideProduct(listImage)}
             </View>
-            <View>
-                <Text>What is Lorem Ipsum?
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            {/* -------header-------- */}
+            <View
+                style={{
+                    backgroundColor: COLORS.white,
+                    marginBottom: SIZES.base,
+                    padding: SIZES.base * 2
+                }}
+            >
+                <Text
+                    style={{
+                        ...FONTS.body4,
+                        textTransform: 'uppercase',
+                        fontSize: 13,
+                    }}
+                >Tìm người thuê. 3 <Ionicons name={sex == 0 ? "male-female-outline" : sex == 1 ? "female-outline" : "female-outline"} size={13} color="black" /></Text>
+                <Text
+                    style={{
+                        ...FONTS.body2,
+                        color: '#333333'
+                    }}
+                >
+                    Phòng cho thuê Đường Phạm Hùng, Quận Cầu Giấy
+                </Text>
+                <View
+                    style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Text style={{ ...FONTS.h3, color: COLORS.primary, marginVertical: SIZES.base }}>5 triệu VND/phòng</Text>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-around',
+                            width: '100%'
+                        }}
+                    >
+                        <View
+                            style={{
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}
+                        >
+                            <Text style={{
+                                color: '#6C6C6C',
+                                ...FONTS.body4, textTransform: 'uppercase', fontSize: 13, marginBottom: SIZES.base
+                            }}>Còn Phòng</Text>
+                            <Text
+                                style={{
+                                    color: COLORS.primary,
+                                    ...FONTS.body3
+                                }}
+                            >Còn</Text>
+                        </View>
+                        <View
+                            style={{
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}
+                        >
+                            <Text style={{
+                                color: '#6C6C6C',
+                                ...FONTS.body4, textTransform: 'uppercase', fontSize: 13, marginBottom: SIZES.base
+                            }}>Diện Tích</Text>
+                            <Text
+                                style={{
+                                    color: COLORS.primary,
+                                    ...FONTS.body3
+                                }}
+                            >30 {sub('m', '2', COLORS.primary)}</Text>
+                        </View>
+                        <View
+                            style={{
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}
+                        >
+                            <Text style={{
+                                color: '#6C6C6C',
+                                ...FONTS.body4, textTransform: 'uppercase', fontSize: 13, marginBottom: SIZES.base
+                            }}>Đặt Cọc</Text>
+                            <Text
+                                style={{
+                                    color: COLORS.primary,
+                                    ...FONTS.body3
+                                }}
+                            >5tr </Text>
+                        </View>
+                    </View>
 
-                Why do we use it?
-                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                </View>
+                <View
+                    style={{
+                        width: "100%",
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        marginTop: SIZES.base,
+                        paddingTop: SIZES.base,
+                        borderTopColor: COLORS.primaryTextColor,
+                        borderTopWidth: 1
+                    }}
+                >
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
+                    >
+                        <Ionicons name="flash-outline" size={24} color="black" />
+                        <Text
+                            style={{
+                                ...FONTS.body4,
+                                marginTop: SIZES.base
+                            }}>3k</Text>
+                    </View>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
+                    >
+                        <Ionicons name="water-outline" size={24} color="black" />
+                        <Text
+                            style={{
+                                ...FONTS.body4,
+                                marginTop: SIZES.base
+                            }}>3k</Text>
+                    </View>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
+                    >
+                        <Ionicons name="wifi-outline" size={24} color="black" />
+                        <Text
+                            style={{
+                                ...FONTS.body4,
+                                marginTop: SIZES.base
+                            }}>80k</Text>
+                    </View>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
+                    >
+                        <Fontisto name="motorcycle" size={24} color="black" />
+                        <Text
+                            style={{
+                                ...FONTS.body4,
+                                marginTop: SIZES.base
+                            }}>80k</Text>
+                    </View>
 
-
-                Where does it come from?
-                Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-
-The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</Text>
+                </View>
             </View>
+            {/* --------------- ----- */}
+            <View
+                style={{
+                    backgroundColor: COLORS.white,
+                    padding: SIZES.padding,
+                    marginBottom: SIZES.base
+                }}
+            >
+                <Text
+                    style={{
+                        ...FONTS.body3,
+                        color: COLORS.primary
+                    }}
+                >
+                    Phòng đã xác thực
+                </Text>
+                <Text
+                    style={{ ...FONTS.body3, textAlign: 'justify' }}
+                >
+                    Phòng đã xác thực là phòng được FindHome đảm bảo chất lượng và giá cả. Nơi bạn có thể yên thâm đặt đọc giữ chỗ ngay trên FindHome. Bạn không phải lo lắng mỗi khi đặt cọc giữu chỗ với chủ nhà xa lạ nưa.
+                </Text>
+            </View>
+            {/* ---------------Utilities----------- */}
+            <View
+                style={{
+                    backgroundColor: COLORS.white,
+                    padding: SIZES.padding,
+                    marginBottom: SIZES.padding
+                }}
+            >
+                <Text
+                    style={{
+                        ...FONTS.body3
+                    }}
+                >
+                    Tiện ích
+                </Text>
+                <View style={{
+                    width: '100%',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    flexWrap: 'wrap'
+
+                }}>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginBottom: SIZES.base,
+                            width: (SIZES.width - SIZES.padding * 2) / 4
+                        }}
+                    >
+                        <Ionicons name="wifi-outline" size={24} color="black" />
+                        <Text
+                            style={{
+                                ...FONTS.body4,
+                                marginTop: SIZES.base / 2
+                            }}>wifi</Text>
+                    </View>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginBottom: SIZES.base,
+                            width: (SIZES.width - SIZES.padding * 2) / 4
+                        }}
+                    >
+                        <Ionicons name="wifi-outline" size={24} color="black" />
+                        <Text
+                            style={{
+                                ...FONTS.body4,
+                                marginTop: SIZES.base / 2
+                            }}>wifi</Text>
+                    </View>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginBottom: SIZES.base,
+                            width: (SIZES.width - SIZES.padding * 2) / 4
+                        }}
+                    >
+                        <Ionicons name="wifi-outline" size={24} color="black" />
+                        <Text
+                            style={{
+                                ...FONTS.body4,
+                                marginTop: SIZES.base / 2
+                            }}>wifi</Text>
+                    </View>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginBottom: SIZES.base,
+                            width: (SIZES.width - SIZES.padding * 2) / 4
+                        }}
+                    >
+                        <Ionicons name="wifi-outline" size={24} color="black" />
+                        <Text
+                            style={{
+                                ...FONTS.body4,
+                                marginTop: SIZES.base / 2
+                            }}>wifi</Text>
+                    </View>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginBottom: SIZES.base,
+                            width: (SIZES.width - SIZES.padding * 2) / 4
+                        }}
+                    >
+                        <Ionicons name="wifi-outline" size={24} color="black" />
+                        <Text
+                            style={{
+                                ...FONTS.body4,
+                                marginTop: SIZES.base / 2
+                            }}>wifi</Text>
+                    </View>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginBottom: SIZES.base,
+                            width: (SIZES.width - SIZES.padding * 2) / 4
+                        }}
+                    >
+                        <Ionicons name="wifi-outline" size={24} color="black" />
+                        <Text
+                            style={{
+                                ...FONTS.body4,
+                                marginTop: SIZES.base / 2
+                            }}>wifi</Text>
+                    </View>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginBottom: SIZES.base,
+                            width: (SIZES.width - SIZES.padding * 2) / 4,
+                            borderRadius: SIZES.radius,
+                        }}
+                    >
+                        <Ionicons name="wifi-outline" size={24} color="black" />
+                        <Text
+                            style={{
+                                ...FONTS.body4,
+                                marginTop: SIZES.base / 2
+                            }}>wifi</Text>
+                    </View>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginBottom: SIZES.base,
+                            width: (SIZES.width - SIZES.padding * 2) / 4
+                        }}
+                    >
+                        <Ionicons name="wifi-outline" size={24} color="black" />
+                        <Text
+                            style={{
+                                ...FONTS.body4,
+                                marginTop: SIZES.base / 2
+                            }}>wifi</Text>
+                    </View>
+
+                </View>
+                <TouchableOpacity
+                    style={{
+                        marginTop: SIZES.base,
+                        borderTopWidth: 1,
+                        borderColor: COLORS.primaryTextColor,
+                        paddingTop: SIZES.base
+
+                    }}
+                >
+                    <Text
+                        style={{
+                            textAlign: 'center',
+                            ...FONTS.body3,
+                            color: '#0000EE'
+                        }}
+                    >
+                        Xem Thêm
+                    </Text>
+                </TouchableOpacity>
+            </View>
+            {/* ---------------Utilities----------- */}
 
         </ScrollView>
     )

@@ -1,14 +1,32 @@
 //import liraries
+import { useLazyQuery } from '@apollo/client';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
+import { useEffect } from 'react/cjs/react.development';
+import { CURET_USER } from '../graphql/user';
 import HomeStackNavigator from './stacknavigator/HomeStackNavigator';
 import LikeStackNavigator from './stacknavigator/LikeStackNavigatior';
 import ProfileStackNavigator from './stacknavigator/ProfileStackNavigatior';
 import SettingStackNavigator from './stacknavigator/SettingStackNavigator';
+import { removeStorage } from '../helpers/storage'
 const Tab = createBottomTabNavigator();
 
 // create a component
-const BottomTabNavigator = () => {
+const BottomTabNavigator = ({ handleLogin }) => {
+    const [getCurrentUser, { data, loading, error }] = useLazyQuery(CURET_USER);
+    useEffect(() => {
+        if (!error) {
+            getCurrentUser()
+        } else {
+            removeStorage().then(
+                () => {
+                    handleLogin(false)
+                }
+            ).catch(err => console.log(err))
+        }
+    }, [data])
+
+
     return (
         <>
             <Tab.Navigator>

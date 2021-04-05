@@ -478,6 +478,11 @@ const HomeScreen = () => {
     let [citySelect, setCitySelect] = useState(2);
     const navigation = useNavigation();
 
+    const getCity = () => {
+        return citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'
+    }
+
+
     const renderItemSearchTrend = ({ item, index }) => {
         return (
             <TouchableOpacity
@@ -491,7 +496,7 @@ const HomeScreen = () => {
                     ...SHADOW.shadow1
                 }}
 
-                onPress={() => { navigation.push('ProductListScreen', { district: item.name }) }}
+                onPress={() => { navigation.push('ProductListScreen', { district: item.name, city: 'Hà Nội' }) }}
             >
                 <Image source={item.image} style={{
                     resizeMode: 'cover',
@@ -545,6 +550,7 @@ const HomeScreen = () => {
 
 
 
+
     return (
         <ScrollView style={{
             flex: 1,
@@ -575,7 +581,7 @@ const HomeScreen = () => {
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
                     data={district['1']}
-                    renderItem={renderItemSearchTrend}
+                    renderItem={({ item, index }) => renderItemSearchTrend({ item, index, city: getCity() })}
                 />
             </View>
             <HotRoom city={citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'} />
@@ -625,7 +631,7 @@ const HomeScreen = () => {
                 />
             </View>
 
-            <NewRoom city={citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'} />
+            <NewRoom city={getCity()} />
 
 
 

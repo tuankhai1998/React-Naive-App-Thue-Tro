@@ -25,20 +25,21 @@ const SignupSchema = Yup.object().shape({
 
 
 // create a component
-const LoginScreen = () => {
+const LoginScreen = ({ handleLogin }) => {
     const [login, setLogin] = useState(true);
     const [loginQuery, { data, loading }] = useLazyQuery(LOGIN);
-    const [getCuretUser] = useLazyQuery(CURET_USER);
     const [createUser] = useMutation(CREATE_USER, {
         onCompleted({ createUser }) {
-            setStorage(createUser)
+            setStorage('@AHome-graphql:', createUser)
         }
     })
     useEffect(() => {
         if (data && data.login) {
             let { login } = data;
-            setStorage('@AHome-graphql', login)
-            getCuretUser()
+            setStorage('@AHome-graphql:', login).then(() => {
+                handleLogin()
+            })
+
         }
     }, [data])
 
@@ -125,7 +126,7 @@ const LoginScreen = () => {
 
                     </View>
                 </View>
-                {
+                {/* {
                     login ? (<View style={{ width: SIZES.width * 3 / 4, flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                         <TouchableOpacity style={[styles.borderButtonLogin, { backgroundColor: COLORS.Facebook }]}>
                             <Text style={styles.fbGoogle}>FaceBook</Text>
@@ -134,7 +135,7 @@ const LoginScreen = () => {
                             <Text style={styles.fbGoogle}>Google</Text>
                         </TouchableOpacity>
                     </View>) : null
-                }
+                } */}
 
             </View>
         </View >
