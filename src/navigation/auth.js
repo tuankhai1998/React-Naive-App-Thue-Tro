@@ -6,7 +6,7 @@ import BottomTabNavigator from './BottomTabNavigator';
 import { getStorage } from '../helpers/storage';
 import { useLazyQuery } from '@apollo/client';
 import { CURET_USER } from '../graphql/user';
-import ProductScreen from '../screens/Product.screen';
+import ProductScreen from '../screens/ProductScreen/Product.screen';
 import ListProductSearchScreen from '../screens/ListProductSearch.screen';
 
 const AuthStack = createStackNavigator();
