@@ -475,7 +475,7 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
 
 
 const HomeScreen = () => {
-    let [citySelect, setCitySelect] = useState(1);
+    let [citySelect, setCitySelect] = useState(2);
     const navigation = useNavigation();
 
     const renderItemSearchTrend = ({ item, index }) => {

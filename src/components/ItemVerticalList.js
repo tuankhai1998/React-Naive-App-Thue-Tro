@@ -7,7 +7,6 @@ import { roomType } from '../constants/variable';
 
 
 const ItemVerticalList = ({ item, index }) => {
-
     const navigation = useNavigation();
     return (
         <TouchableOpacity
@@ -52,6 +51,8 @@ const ItemVerticalList = ({ item, index }) => {
             </View>
 
             {
+
+
                 item && item.type && item.address && item.price ? (
                     <View
                         style={{
@@ -61,7 +62,7 @@ const ItemVerticalList = ({ item, index }) => {
                     >
                         <Text style={{ ...FONTS.body4, textTransform: "uppercase", fontSize: 12 }}>{roomType(item.type)}</Text>
                         <Text style={{ ...FONTS.h4 }} numberOfLines={2}>
-                            {`${roomType(item.type)} ${item.address.name}`}
+                            {`${roomType(item.type)} ${item.address.name.city}, ${item.address.name.districts}`}
                         </Text>
                         <Text
                             style={{
@@ -72,7 +73,7 @@ const ItemVerticalList = ({ item, index }) => {
                         >
                             {`${item.price.room.price} triệu/phòng`}
                         </Text>
-                        <Text numberOfLines={2} ellipsizeMode='middle'>{item.address.name}</Text>
+                        <Text numberOfLines={2} ellipsizeMode='middle'>{`${item.address.name.city}, ${item.address.name.districts}, ${item.address.name.wardsAndStreet}`}</Text>
                     </View>
                 ) : (<View
                     style={{

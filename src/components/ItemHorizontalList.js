@@ -58,7 +58,7 @@ export default function ItemHorizontalList({ item, index }) {
                     <View>
                         <Text style={{ ...FONTS.body4, textTransform: "uppercase", fontSize: 12 }}></Text>
                         <Text style={{ ...FONTS.h4 }} numberOfLines={2}>
-                            {`${roomType(item.type)} ${item.address.name}`}
+                            {`${roomType(item.type)} ${item.address.name.city}, ${item.address.name.district}`}
                         </Text>
                         <Text
                             style={{
@@ -69,7 +69,7 @@ export default function ItemHorizontalList({ item, index }) {
                         >
                             {`${item.price.room.price} triệu/phòng`}
                         </Text>
-                        <Text numberOfLines={2} ellipsizeMode='middle'>{item.address.name}</Text>
+                        <Text numberOfLines={2} ellipsizeMode='middle'>{`${item.address.name.city}, ${item.address.name.districts}, ${item.address.name.wardsAndStreet}`}</Text>
                     </View>
                 ) : (<View>
                     <View style={{ backgroundColor: COLORS.gray, width: '80%', height: 10, marginTop: SIZES.base / 2 }}></View>

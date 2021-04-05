@@ -10,14 +10,17 @@ export default function HotRoom({ city }) {
     const [hotRooms, setHotRooms] = useState([]),
         [page, setPage] = useState(0);
 
+
+    console.log({ errorRoom })
+
     useEffect(() => {
         fetchRoom({
             variables: {
-                page: page,
+                page,
                 per_page: 6,
                 query: {
                     addressName: {
-                        city: "Hà Nội"
+                        city
                     }
                 }
             }

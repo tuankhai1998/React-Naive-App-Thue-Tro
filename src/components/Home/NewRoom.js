@@ -36,8 +36,10 @@ let district = {
 
 const NewRoom = ({ city }) => {
     let [page, setPage] = useState(0);
-    let [fetchNewRoom, { data, loading }] = useLazyQuery(FETCH_ROOM);
+    let [fetchNewRoom, { data, loading, error }] = useLazyQuery(FETCH_ROOM);
     let [newRoom, setNewRoom] = useState([]);
+
+
 
     useEffect(() => {
         fetchNewRoom({
@@ -46,7 +48,7 @@ const NewRoom = ({ city }) => {
                 per_page: 5,
                 query: {
                     addressName: {
-                        city: "Hà Nôi"
+                        city
                     }
                 },
                 sortBy: [
