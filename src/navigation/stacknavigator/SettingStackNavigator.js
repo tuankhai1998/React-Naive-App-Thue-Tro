@@ -2,7 +2,7 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 import { Text, View } from 'react-native';
-import SettingScreen from '../../screens/Setting.screen';
+import SettingScreen from '../../screens/SettingScreen/Setting.screen';
 
 const SettingStack = createStackNavigator();
 

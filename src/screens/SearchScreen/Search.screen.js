@@ -2,7 +2,7 @@ import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/core';
 import React, { useState, useEffect } from 'react';
 import { FlatList, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { COLORS, FONTS, Images, SIZES } from '../constants';
+import { COLORS, FONTS, Images, SIZES } from '../../constants';
 
 export default function SearchScreen() {
     let [modalVisible, setModalVisible] = useState(false),

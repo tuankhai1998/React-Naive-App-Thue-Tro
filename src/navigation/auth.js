@@ -2,9 +2,10 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 import React, { useEffect, useState } from 'react';
 import { getStorage } from '../helpers/storage';
 import ListProductSearchScreen from '../screens/ListProductSearch.screen';
-import LoginScreen from '../screens/Login.screen';
+import LoginScreen from '../screens/LoginScreen/Login.screen';
 import ProductScreen from '../screens/ProductScreen/Product.screen';
-import SearchScreen from '../screens/Search.screen';
+import SearchScreen from '../screens/SearchScreen/Search.screen';
+
 import BottomTabNavigator from './BottomTabNavigator';
 
 

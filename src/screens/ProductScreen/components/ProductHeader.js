@@ -1,27 +1,18 @@
-import React, { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/core";
+import React from "react";
 import {
-    View,
     Animated,
     Platform,
-    ActivityIndicator,
     StyleSheet,
-    TouchableOpacity,
-    Dimensions,
-    Text,
+    Text, TouchableOpacity, View
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 //Animatable
 import * as Animatable from "react-native-animatable";
-import { COLORS, FONTS, SHADOW, SIZES } from "../../../constants";
-import { useNavigation } from "@react-navigation/core";
-
-
-
-const { height } = Dimensions.get("window");
+import { COLORS, FONTS, SIZES } from "../../../constants";
 
 const HEADER_MAX_HEIGHT = SIZES.width * 2 / 3;
-const HEADER_MIN_HEIGHT =
-    Platform.OS === "android" ? 70 : height > 667 ? 80 : 70;
+const HEADER_MIN_HEIGHT = Platform.OS === "android" ? SIZES.height / 11 : SIZES.height > 667 ? 80 : 70;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
 export const ProductHeader = ({ scrollY }) => {
@@ -123,7 +114,7 @@ export const ProductHeader = ({ scrollY }) => {
 
 const styles = StyleSheet.create({
     topBar: {
-        paddingTop: Platform.OS === "android" ? 15 : 25,
+        paddingTop: Platform.OS !== "android" ? 25 : SIZES.height > 2 * SIZES.width ? 40 : 15,
         width: "100%",
         display: "flex",
         flexDirection: "row",

@@ -1,15 +1,13 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/core';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import * as Yup from 'yup';
-import PrimaryButton from '../components/PrimaryButton';
-import { COLORS, SIZES } from '../constants/theme';
-import { CREATE_USER, CURET_USER, LOGIN } from '../graphql/user';
-import { setStorage } from '../helpers/storage';
+import { SIZES } from '../../constants';
+import { CREATE_USER, LOGIN } from '../../graphql/user';
+import { setStorage } from '../../helpers/storage';
+import PrimaryButton from '../../components/PrimaryButton'
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -67,8 +65,6 @@ const LoginScreen = ({ handleLogin }) => {
                 </View>
             </ImageBackground>
             <View style={{ flex: 1, alignItems: "center" }}>
-
-
                 <View style={styles.login}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                         <TouchableOpacity
@@ -81,7 +77,6 @@ const LoginScreen = ({ handleLogin }) => {
                         </TouchableOpacity>
                     </View>
                     <View style={{ width: '100%', flex: 3, justifyContent: 'center', alignItems: 'center' }}>
-
                         <Formik
                             initialValues={login ? initialValuesLogin : initialValues}
                             onSubmit={values => {

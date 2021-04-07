@@ -1,4 +1,4 @@
-import { Fontisto, Ionicons } from '@expo/vector-icons'
+import { Feather, Fontisto, Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/core'
 import React from 'react'
 import { Animated, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
@@ -317,7 +317,7 @@ export default function ProductScreen() {
                     style={{
                         backgroundColor: COLORS.white,
                         padding: SIZES.padding,
-                        marginBottom: SIZES.padding
+                        marginBottom: SIZES.base
                     }}
                 >
                     <Text
@@ -326,7 +326,7 @@ export default function ProductScreen() {
                         }}
                     >
                         Tiện ích
-                </Text>
+                    </Text>
                     <View style={{
                         width: '100%',
                         flexDirection: 'row',
@@ -478,506 +478,113 @@ export default function ProductScreen() {
                     </TouchableOpacity>
                 </View>
                 {/* ---------------Utilities----------- */}
-                {/* ---------------Utilities----------- */}
+
+                {/*----------------address------------- */}
                 <View
                     style={{
                         backgroundColor: COLORS.white,
                         padding: SIZES.padding,
-                        marginBottom: SIZES.padding
+                        marginBottom: SIZES.base
                     }}
                 >
                     <Text
                         style={{
-                            ...FONTS.body3
+                            ...FONTS.body3,
+                            marginBottom: SIZES.base
                         }}
                     >
-                        Tiện ích
-                </Text>
-                    <View style={{
-                        width: '100%',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        flexWrap: 'wrap'
+                        Địa chỉ
+                    </Text>
 
-                    }}>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4,
-                                borderRadius: SIZES.radius,
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
 
-                    </View>
                     <TouchableOpacity
                         style={{
-                            marginTop: SIZES.base,
-                            borderTopWidth: 1,
-                            borderColor: COLORS.primaryTextColor,
-                            paddingTop: SIZES.base
-
+                            ...FONTS.body3,
+                            flexDirection: 'row',
+                            flexWrap: 'wrap',
+                            marginBottom: SIZES.base
                         }}
                     >
-                        <Text
-                            style={{
-                                textAlign: 'center',
-                                ...FONTS.body3,
-                                color: '#0000EE'
-                            }}
-                        >
-                            Xem Thêm
-                    </Text>
+                        <Text>
+                            <Feather name="map-pin" size={SIZES.body3} color="black" />
+                            <Text > 127 Đường Phạm Hùng, Trung Hòa, Cầu Giấy, Hà Nội.</Text>
+                            <Text> </Text>
+                            <Text style={{ fontSize: SIZES.body3 - 1, color: '#0000EE' }}>
+                                Chỉ đường
+                            </Text>
+                        </Text>
                     </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={{
+                            ...FONTS.body3,
+                            flexDirection: 'row',
+                            flexWrap: 'wrap',
+                            marginBottom: SIZES.base
+                        }}
+                    >
+                        <Text>
+                            <Feather name="phone" size={SIZES.body3} color="black" />
+                            <Text>  </Text>
+                            <Text >035 706 0055.</Text>
+                        </Text>
+                    </TouchableOpacity>
+
                 </View>
-                {/* ---------------Utilities----------- */}
-                {/* ---------------Utilities----------- */}
-                <View
+                {/*----------------address------------- */}
+
+                {/* ---------------Poster-------------- */}
+                <TouchableOpacity
                     style={{
                         backgroundColor: COLORS.white,
                         padding: SIZES.padding,
-                        marginBottom: SIZES.padding
+                        marginBottom: SIZES.base,
+                        flexDirection: 'row',
+                        alignItems: 'center'
                     }}
                 >
-                    <Text
+                    <View
                         style={{
-                            ...FONTS.body3
+                            width: 70,
+                            height: 70,
+                            borderRadius: 50,
+                            overflow: 'hidden',
+                            marginRight: SIZES.padding
                         }}
                     >
-                        Tiện ích
-                </Text>
-                    <View style={{
-                        width: '100%',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        flexWrap: 'wrap'
-
-                    }}>
-                        <View
+                        <Image source={{
+                            uri: 'https://loremflickr.com/320/240',
+                        }}
                             style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4,
-                                borderRadius: SIZES.radius,
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-
+                                resizeMode: 'stretch',
+                                width: '100%',
+                                height: '100%'
+                            }} />
                     </View>
-                    <TouchableOpacity
+                    <View
                         style={{
-                            marginTop: SIZES.base,
-                            borderTopWidth: 1,
-                            borderColor: COLORS.primaryTextColor,
-                            paddingTop: SIZES.base
-
+                            flex: 1
                         }}
                     >
                         <Text
-                            style={{
-                                textAlign: 'center',
-                                ...FONTS.body3,
-                                color: '#0000EE'
-                            }}
+                            style={{ ...FONTS.body2 }}
                         >
-                            Xem Thêm
-                    </Text>
-                    </TouchableOpacity>
-                </View>
-                {/* ---------------Utilities----------- */}
-                {/* ---------------Utilities----------- */}
-                <View
-                    style={{
-                        backgroundColor: COLORS.white,
-                        padding: SIZES.padding,
-                        marginBottom: SIZES.padding
-                    }}
-                >
-                    <Text
-                        style={{
-                            ...FONTS.body3
-                        }}
-                    >
-                        Tiện ích
-                </Text>
-                    <View style={{
-                        width: '100%',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        flexWrap: 'wrap'
+                            Đạt 1 Lít
+                        </Text>
 
-                    }}>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
+                        <Text
+                            style={{ color: COLORS.primary }}
                         >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4,
-                                borderRadius: SIZES.radius,
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
+                            n phòng
+                        </Text>
 
                     </View>
-                    <TouchableOpacity
-                        style={{
-                            marginTop: SIZES.base,
-                            borderTopWidth: 1,
-                            borderColor: COLORS.primaryTextColor,
-                            paddingTop: SIZES.base
+                    <Feather name="chevron-right" size={24} color="black" />
 
-                        }}
-                    >
-                        <Text
-                            style={{
-                                textAlign: 'center',
-                                ...FONTS.body3,
-                                color: '#0000EE'
-                            }}
-                        >
-                            Xem Thêm
-                    </Text>
-                    </TouchableOpacity>
-                </View>
-                {/* ---------------Utilities----------- */}
+                </TouchableOpacity>
+                {/* ---------------Poster-------------- */}
 
             </Animated.ScrollView>
-        </View>
+        </View >
     )
 }

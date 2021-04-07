@@ -1,7 +1,7 @@
 //import liraries
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
-import LikeScreen from '../../screens/Like.screen';
+import LikeScreen from '../../screens/LikeScreen/Like.screen';
 
 const LikeStack = createStackNavigator();
 

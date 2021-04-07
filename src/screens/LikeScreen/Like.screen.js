@@ -1,8 +1,8 @@
 //import liraries
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Header from '../components/Header';
-import { COLORS } from '../constants';
+import Header from '../../components/Header';
+import { COLORS } from '../../constants';
 
 // create a component
 const LikeScreen = () => {
