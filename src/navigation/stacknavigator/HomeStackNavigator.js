@@ -1,8 +1,7 @@
 //import liraries
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
-import HomeScreen from '../../screens/Home.screen';
-import SearchScreen from '../../screens/Search.screen';
+import HomeScreen from '../../screens/HomeScreen/Home.screen';
 
 const HomeStack = createStackNavigator();
 

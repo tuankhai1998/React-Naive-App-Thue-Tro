@@ -1,7 +1,7 @@
 //import liraries
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
-import ProfileScreen from '../../screens/Profile.screen';
+import ProfileScreen from '../../screens/ProfileScreen/Profile.screen';
 
 const ProfileStack = createStackNavigator();
 

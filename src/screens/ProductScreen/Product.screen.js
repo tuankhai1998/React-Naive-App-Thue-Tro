@@ -1,11 +1,10 @@
-import { Fontisto, Ionicons } from '@expo/vector-icons'
+import { Feather, Fontisto, Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/core'
 import React from 'react'
 import { Animated, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import Swiper from 'react-native-swiper'
 import { COLORS, FONTS, SIZES } from '../../constants'
-
-import { Header } from './components';
+import { ProductHeader } from './components/ProductHeader'
 
 
 let listImage = [
@@ -16,10 +15,9 @@ let listImage = [
 ]
 
 export default function ProductScreen() {
-
-    const scrollY = new Animated.Value(0);
     let sex;
     const navigation = useNavigation();
+    const scrollY = new Animated.Value(0);
     const RenderHeader = ({ showBg }) => {
         return (
             <View
@@ -114,25 +112,22 @@ export default function ProductScreen() {
     return (
         <View
             style={{
-                backgroundColor: 'rgba(0,0,0,0.1)',
                 flex: 1,
-                paddingBottom: 20
+                backgroundColor: 'rgba(0,0,0,0)'
             }}
         >
-
-            <Header scrollY={scrollY} />
+            <ProductHeader scrollY={scrollY} />
             <Animated.ScrollView
                 scrollEventThrottle={1}
                 onScroll={Animated.event(
                     [{ nativeEvent: { contentOffset: { y: scrollY } } }],
                     { useNativeDriver: false },
                 )}
+                style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}
             >
-
                 <View
                     style={{
                         height: SIZES.width * 2 / 3,
-                        marginTop: -SIZES.height / 12,
                         zIndex: 1
                     }}
                 >
@@ -322,7 +317,7 @@ export default function ProductScreen() {
                     style={{
                         backgroundColor: COLORS.white,
                         padding: SIZES.padding,
-                        marginBottom: SIZES.padding
+                        marginBottom: SIZES.base
                     }}
                 >
                     <Text
@@ -331,7 +326,7 @@ export default function ProductScreen() {
                         }}
                     >
                         Tiện ích
-                </Text>
+                    </Text>
                     <View style={{
                         width: '100%',
                         flexDirection: 'row',
@@ -484,8 +479,112 @@ export default function ProductScreen() {
                 </View>
                 {/* ---------------Utilities----------- */}
 
-            </Animated.ScrollView>
+                {/*----------------address------------- */}
+                <View
+                    style={{
+                        backgroundColor: COLORS.white,
+                        padding: SIZES.padding,
+                        marginBottom: SIZES.base
+                    }}
+                >
+                    <Text
+                        style={{
+                            ...FONTS.body3,
+                            marginBottom: SIZES.base
+                        }}
+                    >
+                        Địa chỉ
+                    </Text>
 
-        </View>
+
+                    <TouchableOpacity
+                        style={{
+                            ...FONTS.body3,
+                            flexDirection: 'row',
+                            flexWrap: 'wrap',
+                            marginBottom: SIZES.base
+                        }}
+                    >
+                        <Text>
+                            <Feather name="map-pin" size={SIZES.body3} color="black" />
+                            <Text > 127 Đường Phạm Hùng, Trung Hòa, Cầu Giấy, Hà Nội.</Text>
+                            <Text> </Text>
+                            <Text style={{ fontSize: SIZES.body3 - 1, color: '#0000EE' }}>
+                                Chỉ đường
+                            </Text>
+                        </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={{
+                            ...FONTS.body3,
+                            flexDirection: 'row',
+                            flexWrap: 'wrap',
+                            marginBottom: SIZES.base
+                        }}
+                    >
+                        <Text>
+                            <Feather name="phone" size={SIZES.body3} color="black" />
+                            <Text>  </Text>
+                            <Text >035 706 0055.</Text>
+                        </Text>
+                    </TouchableOpacity>
+
+                </View>
+                {/*----------------address------------- */}
+
+                {/* ---------------Poster-------------- */}
+                <TouchableOpacity
+                    style={{
+                        backgroundColor: COLORS.white,
+                        padding: SIZES.padding,
+                        marginBottom: SIZES.base,
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                    }}
+                >
+                    <View
+                        style={{
+                            width: 70,
+                            height: 70,
+                            borderRadius: 50,
+                            overflow: 'hidden',
+                            marginRight: SIZES.padding
+                        }}
+                    >
+                        <Image source={{
+                            uri: 'https://loremflickr.com/320/240',
+                        }}
+                            style={{
+                                resizeMode: 'stretch',
+                                width: '100%',
+                                height: '100%'
+                            }} />
+                    </View>
+                    <View
+                        style={{
+                            flex: 1
+                        }}
+                    >
+                        <Text
+                            style={{ ...FONTS.body2 }}
+                        >
+                            Đạt 1 Lít
+                        </Text>
+
+                        <Text
+                            style={{ color: COLORS.primary }}
+                        >
+                            n phòng
+                        </Text>
+
+                    </View>
+                    <Feather name="chevron-right" size={24} color="black" />
+
+                </TouchableOpacity>
+                {/* ---------------Poster-------------- */}
+
+            </Animated.ScrollView>
+        </View >
     )
 }

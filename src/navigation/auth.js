@@ -1,13 +1,13 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
-import LoginScreen from '../screens/Login.screen';
-import SearchScreen from '../screens/Search.screen';
-import BottomTabNavigator from './BottomTabNavigator';
 import { getStorage } from '../helpers/storage';
-import { useLazyQuery } from '@apollo/client';
-import { CURET_USER } from '../graphql/user';
-import ProductScreen from '../screens/ProductScreen/Product.screen';
 import ListProductSearchScreen from '../screens/ListProductSearch.screen';
+import LoginScreen from '../screens/LoginScreen/Login.screen';
+import ProductScreen from '../screens/ProductScreen/Product.screen';
+import SearchScreen from '../screens/SearchScreen/Search.screen';
+
+import BottomTabNavigator from './BottomTabNavigator';
+
 
 const AuthStack = createStackNavigator();
 
