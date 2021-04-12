@@ -1,11 +1,10 @@
 //import liraries
-import { useNavigation } from '@react-navigation/core';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
+import Messages from '../../screens/MessagesScreen/Message';
 import MessagesScreen from '../../screens/MessagesScreen/Messages.screen';
 
 const MessagesStack = createStackNavigator();
-
 
 // create a component
 const MessagesStackNavigator = () => {
@@ -17,10 +16,12 @@ const MessagesStackNavigator = () => {
                 { ...TransitionPresets.ModalSlideFromBottomIOS, }  // tao truyen giua cac stack nhu trong ios
             }
             screenOptions={{
-                headerShown: false
+                headerShown: false,
+                tabBarVisible: false
             }}
         >
-            <MessagesStack.Screen name="MessagesScreen" component={MessagesScreen} />
+            <MessagesStack.Screen name="ListMessage" component={MessagesScreen} />
+            <MessagesStack.Screen name="Message" component={Messages} />
         </MessagesStack.Navigator>
     );
 };

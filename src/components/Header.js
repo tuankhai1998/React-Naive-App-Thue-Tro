@@ -10,8 +10,7 @@ export default function Header(props) {
     const navigate = useNavigation()
     return (
         <View style={{
-            height: SIZES.height / 10,
-            maxHeight: 70,
+            height: SIZES.width * 2 > SIZES.height ? (SIZES.height / 10) : (SIZES.height / 9),
             backgroundColor: COLORS.white, ...SHADOW.shadow1,
             borderBottomColor: COLORS.gray,
             borderBottomWidth: 1
@@ -19,7 +18,7 @@ export default function Header(props) {
 
             <View style={{
                 paddingHorizontal: SIZES.base,
-                paddingTop: SIZES.body2,
+                paddingTop: SIZES.width * 2 > SIZES.height ? SIZES.body2 : SIZES.padding * 2,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: "space-between"

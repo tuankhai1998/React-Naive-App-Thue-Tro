@@ -1,3 +1,4 @@
+
 //import liraries
 import { useLazyQuery } from '@apollo/client';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -26,13 +27,27 @@ const BottomTabNavigator = ({ handleLogin }) => {
         }
     }, [data])
 
+    const getTabBarVisible = (route) => {
+        const routeName = route.state
+            ? route.state.routes[route.state.index].name
+            : route.params?.screen || 'ListMessage';
+
+        if (routeName !== 'ListMessage') {
+            return false;
+        }
+        return true;
+    }
+
 
     return (
         <>
             <Tab.Navigator>
                 <Tab.Screen name="Home" component={HomeStackNavigator} />
                 <Tab.Screen name="Like" component={LikeStackNavigator} />
-                <Tab.Screen name="Profile" component={MessagesStackNavigator} />
+                <Tab.Screen name="Messages" component={MessagesStackNavigator}
+                    options={({ route }) => ({
+                        tabBarVisible: getTabBarVisible(route)
+                    })} />
                 <Tab.Screen name="Settings" component={SettingStackNavigator} />
             </Tab.Navigator>
         </>
