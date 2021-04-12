@@ -1,9 +1,13 @@
+import { useLazyQuery } from '@apollo/client'
 import { Feather, Fontisto, Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/core'
-import React from 'react'
-import { Animated, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
+import { Animated, FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import Swiper from 'react-native-swiper'
+import { useEffect } from 'react/cjs/react.development'
+import ItemHorizontalList from '../../components/ItemHorizontalList'
 import { COLORS, FONTS, SIZES } from '../../constants'
+import { FETCH_ROOM } from '../../graphql/room'
 import { ProductHeader } from './components/ProductHeader'
 
 
@@ -18,51 +22,28 @@ export default function ProductScreen() {
     let sex;
     const navigation = useNavigation();
     const scrollY = new Animated.Value(0);
-    const RenderHeader = ({ showBg }) => {
-        return (
-            <View
-                style={{
-                    width: SIZES.width,
-                    height: SIZES.height / 12,
-                    maxHeight: 70,
-                    paddingHorizontal: SIZES.padding,
-                    justifyContent: 'space-between',
-                    paddingTop: 30,
-                    flexDirection: 'row',
-                    zIndex: 2
-                }}
-            >
+    const [fetchSameRoom, { error: errorRoom, data: dataRoom, loading }] = useLazyQuery(FETCH_ROOM);
+    const [sameRooms, setSameRooms] = useState([]);
 
-                <TouchableOpacity
-                    style={{
-                        width: 30,
-                        height: 30,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: 20,
-                        backgroundColor: 'rgba(0,0,0,0.2)'
-                    }}
-                    onPress={() => navigation.goBack()}
-                >
-                    <Ionicons name="arrow-back" size={24} color={COLORS.white} />
-                </TouchableOpacity>
+    useEffect(() => {
+        fetchSameRoom({
+            variables: {
+                page: 1,
+                per_page: 6,
+                query: {
+                    addressName: {
+                        city: 'Hà Nội'
+                    }
+                }
+            }
+        })
+    }, [])
 
-                <TouchableOpacity
-                    style={{
-                        width: 30,
-                        height: 30,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: 20,
-                        backgroundColor: 'rgba(0,0,0,0.2)'
-                    }}
-                >
-                    <Ionicons name="heart-outline" size={25} color={COLORS.white} />
-                </TouchableOpacity>
-
-            </View>
-        )
-    }
+    useEffect(() => {
+        if (dataRoom) {
+            setSameRooms([...dataRoom.rooms]);
+        }
+    }, [dataRoom])
 
     const renderSlideProduct = (itemList) => {
 
@@ -583,7 +564,56 @@ export default function ProductScreen() {
 
                 </TouchableOpacity>
                 {/* ---------------Poster-------------- */}
+                {/* ---------------Utilities----------- */}
+                <View
+                    style={{
+                        backgroundColor: COLORS.white,
+                        padding: SIZES.padding,
+                        marginBottom: SIZES.base
+                    }}
+                >
+                    <Text
+                        style={{
+                            ...FONTS.body3
+                        }}
+                    >
+                        Các phòng cùng tiêu chí
+                    </Text>
 
+
+                    <FlatList
+                        contentContainerStyle={{ alignSelf: 'flex-start' }}
+                        numColumns={2}
+                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
+                        data={sameRooms.length > 0 ? sameRooms : []}
+                        renderItem={({ item, index }) => <ItemHorizontalList index={index} item={item} />}
+                        style={{
+                            marginTop: SIZES.base,
+                        }}
+                    />
+                    <TouchableOpacity
+                        style={{
+                            marginTop: SIZES.base,
+                            borderTopWidth: 1,
+                            borderColor: COLORS.primaryTextColor,
+                            paddingTop: SIZES.base
+
+                        }}
+                    >
+                        <Text
+                            style={{
+                                textAlign: 'center',
+                                ...FONTS.body3,
+                                color: '#0000EE'
+                            }}
+                        >
+                            Xem Thêm
+                    </Text>
+                    </TouchableOpacity>
+
+                </View>
+                {/* ---------------Utilities----------- */}
             </Animated.ScrollView>
         </View >
     )

@@ -6,7 +6,7 @@ import { useEffect } from 'react/cjs/react.development';
 import { CURET_USER } from '../graphql/user';
 import HomeStackNavigator from './stacknavigator/HomeStackNavigator';
 import LikeStackNavigator from './stacknavigator/LikeStackNavigatior';
-import ProfileStackNavigator from './stacknavigator/ProfileStackNavigatior';
+import MessagesStackNavigator from './stacknavigator/MessagesStackNavigatior';
 import SettingStackNavigator from './stacknavigator/SettingStackNavigator';
 import { removeStorage } from '../helpers/storage'
 const Tab = createBottomTabNavigator();
@@ -32,7 +32,7 @@ const BottomTabNavigator = ({ handleLogin }) => {
             <Tab.Navigator>
                 <Tab.Screen name="Home" component={HomeStackNavigator} />
                 <Tab.Screen name="Like" component={LikeStackNavigator} />
-                <Tab.Screen name="Profile" component={ProfileStackNavigator} />
+                <Tab.Screen name="Profile" component={MessagesStackNavigator} />
                 <Tab.Screen name="Settings" component={SettingStackNavigator} />
             </Tab.Navigator>
         </>

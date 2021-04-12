@@ -15,17 +15,14 @@ const AuthStack = createStackNavigator();
 // create a component
 const Authentication = () => {
     const [login, setLogin] = useState(false),
-        [token, setToken] = useState('');
-
-
-
+        [token, setToken] = useState(null);
 
     useEffect(() => {
         getStorage().then(data => {
             if (data) {
                 setToken(data.token)
             } else {
-                setToken('')
+                setToken(null)
             }
         })
     }, [login])

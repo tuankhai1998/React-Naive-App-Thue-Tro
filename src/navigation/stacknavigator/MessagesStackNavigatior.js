@@ -1,15 +1,18 @@
 //import liraries
+import { useNavigation } from '@react-navigation/core';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
-import ProfileScreen from '../../screens/ProfileScreen/Profile.screen';
+import MessagesScreen from '../../screens/MessagesScreen/Messages.screen';
 
-const ProfileStack = createStackNavigator();
+const MessagesStack = createStackNavigator();
 
 
 // create a component
-const ProfileStackNavigator = () => {
+const MessagesStackNavigator = () => {
+
+
     return (
-        <ProfileStack.Navigator
+        <MessagesStack.Navigator
             options={
                 { ...TransitionPresets.ModalSlideFromBottomIOS, }  // tao truyen giua cac stack nhu trong ios
             }
@@ -17,11 +20,11 @@ const ProfileStackNavigator = () => {
                 headerShown: false
             }}
         >
-            <ProfileStack.Screen name="ProfileScreen" component={ProfileScreen} />
-        </ProfileStack.Navigator>
+            <MessagesStack.Screen name="MessagesScreen" component={MessagesScreen} />
+        </MessagesStack.Navigator>
     );
 };
 
 
 //make this component available to the app
-export default ProfileStackNavigator;
+export default MessagesStackNavigator;
