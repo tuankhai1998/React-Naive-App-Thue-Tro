@@ -2,14 +2,14 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Header from '../../components/Header';
+import ChatList from './components/ChatList';
 
 // create a component
 const Messages = () => {
     return (
         <View style={{ flex: 1 }}>
             <Header title="Tin nhắn" left />
-            <ScrollView style={{ flex: 1 }}></ScrollView>
-            <Text>this is th e screen </Text>
+            <ChatList />
         </View>
     );
 };

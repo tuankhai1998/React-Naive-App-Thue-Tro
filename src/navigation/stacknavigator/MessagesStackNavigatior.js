@@ -19,6 +19,7 @@ const MessagesStackNavigator = () => {
                 headerShown: false,
                 tabBarVisible: false
             }}
+            initialRouteName="ListMessage"
         >
             <MessagesStack.Screen name="ListMessage" component={MessagesScreen} />
             <MessagesStack.Screen name="Message" component={Messages} />

@@ -20,6 +20,8 @@ const Authentication = () => {
     useEffect(() => {
         getStorage().then(data => {
             if (data) {
+
+                console.log(data)
                 setToken(data.token)
             } else {
                 setToken(null)

@@ -23,32 +23,37 @@ export default function Header(props) {
                 alignItems: 'center',
                 justifyContent: "space-between"
             }}>
-                <View style={!left ? { width: 27.3 } : null}>
+                <View style={!left ? { width: 24, height: 3, ...styles.iconSpace } : null}>
                     {left &&
                         <TouchableOpacity
                             onPress={() => navigate.goBack()}
-                            style={{ marginHorizontal: SIZES.base, marginVertical: -SIZES.base, paddingHorizontal: -SIZES.base, paddingVertical: 2 * SIZES.base }}
+                            style={{ ...styles.iconSpace }}
                         >
                             <AntDesign name="arrowleft" size={24} color={COLORS.primaryTextColor} />
                         </TouchableOpacity>
                     }
                 </View>
 
-                <Text style={{ ...FONTS.body2, color: COLORS.primaryTextColor, textAlign: "center" }}>
+                <Text style={{ ...FONTS.body2, color: COLORS.primaryTextColor, textAlign: "center", flex: 1 }}>
                     {title}
                 </Text>
-                <View style={!right ? { width: 27.3 } : null}>
-                    {right && <TouchableOpacity style={{ marginHorizontal: SIZES.base, marginVertical: -SIZES.base, paddingHorizontal: -SIZES.base, paddingVertical: 2 * SIZES.base }}>
+                <View style={!right ? { width: 24, height: 3, ...styles.iconSpace } : null}>
+                    {right && <TouchableOpacity style={{ ...styles.iconSpace }}>
                         <AntDesign name="search1" size={19} color={COLORS.primaryTextColor} />
                     </TouchableOpacity>}
                 </View>
             </View>
 
-        </View>
+        </View >
     )
 }
 
 
 const styles = StyleSheet.create({
-
+    iconSpace: {
+        marginHorizontal: SIZES.base,
+        marginVertical: -SIZES.base,
+        paddingHorizontal: -SIZES.base,
+        paddingVertical: 2 * SIZES.base
+    }
 })

@@ -33,6 +33,8 @@ const LoginScreen = ({ handleLogin }) => {
     })
     useEffect(() => {
         if (data && data.login) {
+
+            console.log(data)
             let { login } = data;
             setStorage('@AHome-graphql:', login).then(() => {
                 handleLogin()
@@ -41,6 +43,8 @@ const LoginScreen = ({ handleLogin }) => {
         }
     }, [data])
 
+
+    console.log(loading)
 
     const initialValuesLogin = {
         email: '',
