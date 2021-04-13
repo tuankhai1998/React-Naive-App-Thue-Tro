@@ -337,8 +337,6 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
                         </View>
                     </View>
 
-
-
                 </View>
             </Modal>
             {renderImageHeader()}

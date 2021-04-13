@@ -1,13 +1,16 @@
 import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
 import React, { useState, useEffect } from 'react';
+import { useCallback } from 'react';
 import { FlatList, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS, FONTS, Images, SIZES } from '../../constants';
+import PriceRate from './components/PriceRate';
 
 export default function SearchScreen() {
     let [modalVisible, setModalVisible] = useState(false),
         [data, setData] = useState([1, 2]),
         [searching, setSearching] = useState(false),
+        [multiSearch, setMultiSearch] = useState('price'),
         [dataSearch, setDataSearch] = useState({
             addressName: "",
             priceRate: {
@@ -185,7 +188,10 @@ export default function SearchScreen() {
                 >
                     <TouchableOpacity
                         style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
-                        onPress={() => setSearching(!searching)}
+                        onPress={() => {
+                            setSearching(!searching);
+                            setMultiSearch('price')
+                        }}
                     >
                         <Text style={{ ...FONTS.body3 }}>
                             Giá
@@ -272,12 +278,12 @@ export default function SearchScreen() {
                     {
                         !searching && <View
                             style={{
-                                height: SIZES.height / 2,
+                                height: 'fit-content',
                                 backgroundColor: COLORS.white,
                                 width: SIZES.width
                             }}
                         >
-
+                            {renderSearch()}
                         </View>
                     }
 
@@ -285,6 +291,11 @@ export default function SearchScreen() {
             </>
         )
     }
+
+
+    const renderSearch = useCallback(() => {
+        if (multiSearch == 'price') return <PriceRate />
+    }, [multiSearch])
 
 
 

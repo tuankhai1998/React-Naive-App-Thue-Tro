@@ -38,6 +38,33 @@ const MessagesScreen = () => {
                         <Text>lorem text lorem text lorem text </Text>
                     </View>
                 </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={{
+                        padding: SIZES.padding,
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                    }}
+
+                    onPress={() => navigation.push('Message')}
+                >
+                    <Image source={{ uri: 'https://loremflickr.com/320/240' }}
+                        style={{
+                            width: SIZES.padding * 3,
+                            height: SIZES.padding * 3,
+                            borderRadius: SIZES.padding * 1.5,
+                            marginRight: SIZES.padding
+                        }}
+                    />
+                    <View>
+                        <Text
+                            style={{
+                                ...FONTS.h3
+                            }}
+                        >Nguyễn Thị T</Text>
+                        <Text>lorem text lorem text lorem text </Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         </View>
     );
