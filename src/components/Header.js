@@ -23,7 +23,7 @@ export default function Header(props) {
                 alignItems: 'center',
                 justifyContent: "space-between"
             }}>
-                <View style={!left ? { width: 24, height: 3, ...styles.iconSpace } : null}>
+                <View style={!left ? { width: SIZES.padding * 2 + 19, height: SIZES.padding * 2 + 19, ...styles.iconSpace } : null}>
                     {left &&
                         <TouchableOpacity
                             onPress={() => navigate.goBack()}
@@ -37,7 +37,7 @@ export default function Header(props) {
                 <Text style={{ ...FONTS.body2, color: COLORS.primaryTextColor, textAlign: "center", flex: 1 }}>
                     {title}
                 </Text>
-                <View style={!right ? { width: 24, height: 3, ...styles.iconSpace } : null}>
+                <View style={!right ? { width: SIZES.padding * 2 + 19, height: SIZES.padding * 2 + 19, ...styles.iconSpace } : null}>
                     {right && <TouchableOpacity style={{ ...styles.iconSpace }}>
                         <AntDesign name="search1" size={19} color={COLORS.primaryTextColor} />
                     </TouchableOpacity>}
@@ -51,9 +51,9 @@ export default function Header(props) {
 
 const styles = StyleSheet.create({
     iconSpace: {
-        marginHorizontal: SIZES.base,
+        marginHorizontal: -SIZES.base,
         marginVertical: -SIZES.base,
-        paddingHorizontal: -SIZES.base,
-        paddingVertical: 2 * SIZES.base
+        paddingHorizontal: 2 * SIZES.base,
+        paddingVertical: 2 * SIZES.base,
     }
 })

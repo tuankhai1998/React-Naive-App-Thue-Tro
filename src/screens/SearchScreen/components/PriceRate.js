@@ -1,13 +1,62 @@
 //import liraries
-import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { COLORS } from '../../../constants';
+import React, { useCallback } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react/cjs/react.development';
+import Slider from 'rn-range-slider';
+import { COLORS, SIZES } from '../../../constants';
+import Label from './Label';
+import Notch from './Notch';
+import Rail from './Rail';
+import RailSelected from './RailSelected';
+import Thumb from './Thumb';
 
 // create a component
 const PriceRate = () => {
+
+    const [low, setLow] = useState(0);
+    const [high, setHigh] = useState(100);
+
+    const renderThumb = useCallback(() => <Thumb />, []);
+    const renderRail = useCallback(() => <Rail />, []);
+    const renderRailSelected = useCallback(() => <RailSelected />, []);
+    const renderLabel = useCallback(value => <Label text={value} />, []);
+    const renderNotch = useCallback(() => <Notch />, []);
+    const handleValueChange = useCallback((low, high) => {
+        setLow(low);
+        setHigh(high);
+    }, []);
+
     return (
         <View style={styles.container}>
-            <Text>PriceRate</Text>
+            <View style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+            }}>
+                <Text>
+                    {low} triệu VND
+                </Text>
+
+                <Text>
+                    {high} triệu VND
+                </Text>
+            </View>
+            <View>
+                <Slider
+                    style={styles.slider}
+                    min={0}
+                    max={15}
+                    step={0.5}
+                    renderThumb={renderThumb}
+                    renderRail={renderRail}
+                    renderRailSelected={renderRailSelected}
+                    renderLabel={renderLabel}
+                    renderNotch={renderNotch}
+                    onValueChanged={handleValueChange}
+                />
+
+
+            </View>
+
         </View>
     );
 };
@@ -15,11 +64,42 @@ const PriceRate = () => {
 // define your styles
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: COLORS.white,
+        width: SIZES.width,
+        padding: SIZES.padding,
+
     },
+    root: {
+        alignItems: 'stretch',
+        padding: 12,
+        flex: 1,
+        backgroundColor: '#555',
+    },
+    slider: {
+
+    },
+    button: {
+    },
+    header: {
+        alignItems: 'center',
+        backgroundColor: 'black',
+        padding: 12,
+    },
+    horizontalContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 20,
+    },
+    text: {
+        color: 'white',
+        fontSize: 20,
+    },
+    valueText: {
+        width: 50,
+        color: 'white',
+        fontSize: 20,
+    },
+
 });
 
 //make this component available to the app

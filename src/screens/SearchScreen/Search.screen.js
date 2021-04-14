@@ -2,14 +2,17 @@ import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/core';
 import React, { useState, useEffect } from 'react';
 import { useCallback } from 'react';
-import { FlatList, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { COLORS, FONTS, Images, SIZES } from '../../constants';
+import NumberPeople from './components/NumberPeople';
 import PriceRate from './components/PriceRate';
+import RoomTypes from './components/RoomTypes';
+import Utility from './components/Utility';
 
 export default function SearchScreen() {
     let [modalVisible, setModalVisible] = useState(false),
         [data, setData] = useState([1, 2]),
-        [searching, setSearching] = useState(false),
+        [searching, setSearching] = useState(true),
         [multiSearch, setMultiSearch] = useState('price'),
         [dataSearch, setDataSearch] = useState({
             addressName: "",
@@ -81,17 +84,15 @@ export default function SearchScreen() {
                         }}>Hà Nội</Text>
                     </TouchableOpacity>
                     {/* Input */}
-                    <TouchableOpacity
+                    <TextInput
                         style={{
                             flex: 1,
                             justifyContent: 'center',
                             marginHorizontal: SIZES.base,
                             borderRadius: SIZES.borderRadius
                         }}
+                    />
 
-                    >
-                        <Text style={{ color: COLORS.white, ...FONTS.body4, overflow: 'hidden' }}>Tìm theo địa chỉ</Text>
-                    </TouchableOpacity>
                 </View>
                 <TouchableOpacity
                     onPress={() => navigation.goBack()}
@@ -189,7 +190,7 @@ export default function SearchScreen() {
                     <TouchableOpacity
                         style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
                         onPress={() => {
-                            setSearching(!searching);
+                            setSearching(true);
                             setMultiSearch('price')
                         }}
                     >
@@ -202,6 +203,11 @@ export default function SearchScreen() {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
+                        onPress={() => {
+                            console.log("hahaha")
+                            setSearching(true);
+                            setMultiSearch('roomType')
+                        }}
                     >
                         <Text style={{ ...FONTS.body3 }}>
                             Loại phòng
@@ -212,6 +218,10 @@ export default function SearchScreen() {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
+                        onPress={() => {
+                            setSearching(true);
+                            setMultiSearch('utility')
+                        }}
                     >
                         <Text style={{ ...FONTS.body3 }}>
                             Tiện ích
@@ -222,6 +232,10 @@ export default function SearchScreen() {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
+                        onPress={() => {
+                            setSearching(true);
+                            setMultiSearch('numberPeople')
+                        }}
                     >
                         <Text style={{ ...FONTS.body3 }}>
                             Số người
@@ -276,14 +290,25 @@ export default function SearchScreen() {
                     }
 
                     {
-                        !searching && <View
-                            style={{
-                                height: 'fit-content',
-                                backgroundColor: COLORS.white,
-                                width: SIZES.width
-                            }}
-                        >
+                        searching && <View style={{
+                            backgroundColor: COLORS.white,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            paddingBottom: SIZES.padding
+                        }}>
                             {renderSearch()}
+                            <TouchableOpacity
+                                style={{
+                                    width: SIZES.width / 2,
+                                    padding: SIZES.base,
+                                    backgroundColor: COLORS.primary,
+                                    alignItems: 'center',
+                                    borderRadius: SIZES.radius
+                                }}
+                            >
+                                <Text style={{ ...FONTS.body4 }}>Tìm kiếm</Text>
+                            </TouchableOpacity>
+
                         </View>
                     }
 
@@ -295,6 +320,9 @@ export default function SearchScreen() {
 
     const renderSearch = useCallback(() => {
         if (multiSearch == 'price') return <PriceRate />
+        if (multiSearch == 'roomType') return <RoomTypes />
+        if (multiSearch == 'numberPeople') return <NumberPeople />
+        if (multiSearch == 'utility') return <Utility />
     }, [multiSearch])
 
 
@@ -323,7 +351,7 @@ export default function SearchScreen() {
                         />
 
                     </View>
-                ) : searching ? (
+                ) : !searching ? (
                     <View
                         style={{
                             padding: SIZES.base
