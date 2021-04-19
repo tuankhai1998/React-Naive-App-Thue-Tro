@@ -38,3 +38,21 @@ export const CREATE_USER = gql`
         }
     }
 `;
+
+
+export const LIKE_ROOM = gql`
+    mutation($idRoom : ID!){
+        likedRoom(_idRoom : $idRoom){
+            user {
+                email
+                _id
+                liked{
+                    _id
+                }
+                created{
+                    _id
+                }   
+            }
+        }
+    }
+`;
