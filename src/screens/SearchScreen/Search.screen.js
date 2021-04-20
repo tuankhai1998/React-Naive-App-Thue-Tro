@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useCallback } from 'react';
 import { FlatList, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { COLORS, FONTS, Images, SIZES } from '../../constants';
+import Address from './components/Address';
 import NumberPeople from './components/NumberPeople';
 import PriceRate from './components/PriceRate';
 import RoomTypes from './components/RoomTypes';
@@ -92,6 +93,7 @@ export default function SearchScreen() {
                             borderRadius: SIZES.borderRadius
                         }}
                     />
+
 
                 </View>
                 <TouchableOpacity
@@ -187,66 +189,89 @@ export default function SearchScreen() {
                         paddingHorizontal: SIZES.base
                     }}
                 >
-                    <TouchableOpacity
-                        style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
-                        onPress={() => {
-                            setSearching(true);
-                            setMultiSearch('price')
+                    <ScrollView
+                        style={{
+                            width: SIZES.width,
+                            height: SIZES.width / 10,
                         }}
+                        showsHorizontalScrollIndicator={false}
+                        horizontal
                     >
-                        <Text style={{ ...FONTS.body3 }}>
-                            Giá
+                        <TouchableOpacity
+                            style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
+                            onPress={() => {
+                                setSearching(true);
+                                setMultiSearch('address')
+                            }}
+                        >
+                            <Text style={{ ...FONTS.body3 }}>
+                                Địa chỉ
+                            </Text>
+                            <Ionicons name="chevron-down" size={16} color="black" style={{
+                                paddingHorizontal: SIZES.base / 2
+                            }} />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
+                            onPress={() => {
+                                setSearching(true);
+                                setMultiSearch('price')
+                            }}
+                        >
+                            <Text style={{ ...FONTS.body3 }}>
+                                Giá
                         </Text>
-                        <Ionicons name="chevron-down" size={16} color="black" style={{
-                            paddingHorizontal: SIZES.base / 2
-                        }} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
-                        onPress={() => {
-                            console.log("hahaha")
-                            setSearching(true);
-                            setMultiSearch('roomType')
-                        }}
-                    >
-                        <Text style={{ ...FONTS.body3 }}>
-                            Loại phòng
+                            <Ionicons name="chevron-down" size={16} color="black" style={{
+                                paddingHorizontal: SIZES.base / 2
+                            }} />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
+                            onPress={() => {
+                                console.log("hahaha")
+                                setSearching(true);
+                                setMultiSearch('roomType')
+                            }}
+                        >
+                            <Text style={{ ...FONTS.body3 }}>
+                                Loại phòng
                         </Text>
-                        <Ionicons name="chevron-down" size={16} color="black" style={{
-                            paddingHorizontal: SIZES.base / 2
-                        }} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
-                        onPress={() => {
-                            setSearching(true);
-                            setMultiSearch('utility')
-                        }}
-                    >
-                        <Text style={{ ...FONTS.body3 }}>
-                            Tiện ích
+                            <Ionicons name="chevron-down" size={16} color="black" style={{
+                                paddingHorizontal: SIZES.base / 2
+                            }} />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
+                            onPress={() => {
+                                setSearching(true);
+                                setMultiSearch('utility')
+                            }}
+                        >
+                            <Text style={{ ...FONTS.body3 }}>
+                                Tiện ích
                         </Text>
-                        <Ionicons name="chevron-down" size={16} color="black" style={{
-                            paddingHorizontal: SIZES.base / 2
-                        }} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
-                        onPress={() => {
-                            setSearching(true);
-                            setMultiSearch('numberPeople')
-                        }}
-                    >
-                        <Text style={{ ...FONTS.body3 }}>
-                            Số người
+                            <Ionicons name="chevron-down" size={16} color="black" style={{
+                                paddingHorizontal: SIZES.base / 2
+                            }} />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
+                            onPress={() => {
+                                setSearching(true);
+                                setMultiSearch('numberPeople')
+                            }}
+                        >
+                            <Text style={{ ...FONTS.body3 }}>
+                                Số người
                         </Text>
-                        <Ionicons name="chevron-down" size={16} color="black" style={{
-                            paddingHorizontal: SIZES.base / 2
-                        }} />
-                    </TouchableOpacity>
-
+                            <Ionicons name="chevron-down" size={16} color="black" style={{
+                                paddingHorizontal: SIZES.base / 2
+                            }} />
+                        </TouchableOpacity>
+                    </ScrollView>
 
                 </View>
+
                 <View>
 
                     {
@@ -323,6 +348,7 @@ export default function SearchScreen() {
         if (multiSearch == 'roomType') return <RoomTypes />
         if (multiSearch == 'numberPeople') return <NumberPeople />
         if (multiSearch == 'utility') return <Utility />
+        if (multiSearch == 'address') return <Address />
     }, [multiSearch])
 
 
