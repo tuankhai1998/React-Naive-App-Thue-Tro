@@ -27,7 +27,6 @@ export default function QuickSearch({ districts, setModalDistrict, modalDistrict
     return (
         <View
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.1)' }}
-            onPress={() => { setModalDistrict(!modalDistrict); }}
             underlayColor="rgba(0,0,0,0)"
         >
             <View

@@ -72,6 +72,7 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
                     modalVisible={modalVisible}
                     setModalVisible={(isModalVisible) => setModalVisible(isModalVisible)}
                     bigCity={bigCity}
+                    citySelected={citySelected}
                     changeCitySelected={(id) => changeCitySelected(id)}
                 />
             </Modal>
@@ -131,7 +132,9 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
                             borderRadius: SIZES.borderRadius
                         }}
 
-                        onPress={() => navigation.push('SearchScreen')}
+                        onPress={() => navigation.push('SearchScreen', {
+                            citySelected
+                        })}
                     >
                         <Text style={{ color: COLORS.white, ...FONTS.body4, overflow: 'hidden' }}>Tìm theo địa chỉ</Text>
                     </TouchableOpacity>

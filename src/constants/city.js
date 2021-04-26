@@ -1,5 +1,6 @@
 export const city = [
     {
+        "id": 1,
         "code": "HCM",
         "name": "Hồ Chí Minh",
         "districts": [
@@ -30349,6 +30350,7 @@ export const city = [
             }
         ]
     }, {
+        "id": 2,
         "code": "HN",
         "name": "Hà Nội",
         "districts": [
@@ -42096,6 +42098,7 @@ export const city = [
             }
         ]
     }, {
+        "id" : 3,
         "code": "DDN",
         "name": "Đà Nẵng",
         "districts": [

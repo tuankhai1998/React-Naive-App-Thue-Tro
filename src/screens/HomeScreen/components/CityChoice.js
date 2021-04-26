@@ -1,8 +1,8 @@
 import React from 'react'
 import { View, Text, TouchableHighlight, TouchableOpacity } from 'react-native'
-import { COLORS, SHADOW, SIZES } from '../../../constants';
+import { COLORS, FONTS, SHADOW, SIZES } from '../../../constants';
 
-export default function CityChoice({ modalVisible, setModalVisible, bigCity, changeCitySelected }) {
+export default function CityChoice({ modalVisible, setModalVisible, bigCity, changeCitySelected, citySelected }) {
     return (
         <TouchableHighlight
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.1)' }}

@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import * as Yup from 'yup';
+import PrimaryButton from '../../components/PrimaryButton';
 import { SIZES } from '../../constants';
-import { CREATE_USER, LOGIN } from '../../graphql/user';
+import { CREATE_USER, CURRENT_USER, LOGIN } from '../../graphql/user';
 import { setStorage } from '../../helpers/storage';
-import PrimaryButton from '../../components/PrimaryButton'
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -23,28 +23,33 @@ const SignupSchema = Yup.object().shape({
 
 
 // create a component
-const LoginScreen = ({ handleLogin }) => {
+const LoginScreen = ({ handleLogin, token }) => {
     const [login, setLogin] = useState(true);
     const [loginQuery, { data, loading }] = useLazyQuery(LOGIN);
+    // const [getCurrentUser, { data: currentUser, loading: currentUserLoading }] = useLazyQuery(CURRENT_USER);
     const [createUser] = useMutation(CREATE_USER, {
         onCompleted({ createUser }) {
             setStorage('@AHome-graphql:', createUser)
         }
     })
     useEffect(() => {
-        if (data && data.login) {
-
-            console.log(data)
+        if (data) {
             let { login } = data;
             setStorage('@AHome-graphql:', login).then(() => {
                 handleLogin()
             })
-
         }
     }, [data])
 
+    // useEffect(() => {
+    //     getCurrentUser()
+    // }, [token])
 
-    console.log(loading)
+    // useEffect(() => {
+    //     if (currentUser) {
+    //         handleLogin()
+    //     }
+    // }, [currentUser])
 
     const initialValuesLogin = {
         email: '',
@@ -56,7 +61,6 @@ const LoginScreen = ({ handleLogin }) => {
         password: '',
         retypePassword: ''
     }
-
 
     const { colors } = useTheme();
 

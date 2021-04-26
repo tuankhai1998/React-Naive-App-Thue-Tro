@@ -1,13 +1,12 @@
 //import liraries
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
-import React, { useEffect, useState } from 'react';
-import { FlatList, Image, ImageBackground, Modal, ScrollView, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import HotRoom from '../../components/Home/HotRoom';
 import NewRoom from '../../components/Home/NewRoom';
 import { Images } from '../../constants';
 import { city } from '../../constants/city';
-import { COLORS, FONTS, SHADOW, SIZES } from '../../constants/theme';
+import { COLORS, FONTS, SIZES } from '../../constants/theme';
 import BlogItem from './components/BlogItem';
 import HomeHeader from './components/HomeHeader';
 import SearchTrend from './components/SearchTrend';

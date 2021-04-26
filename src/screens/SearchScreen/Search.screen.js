@@ -1,9 +1,10 @@
 import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/core';
 import React, { useState, useEffect } from 'react';
 import { useCallback } from 'react';
 import { FlatList, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { COLORS, FONTS, Images, SIZES } from '../../constants';
+import { bigCity } from '../../constants/bigCity';
 import Address from './components/Address';
 import NumberPeople from './components/NumberPeople';
 import PriceRate from './components/PriceRate';
@@ -15,6 +16,8 @@ export default function SearchScreen() {
         [data, setData] = useState([1, 2]),
         [searching, setSearching] = useState(true),
         [multiSearch, setMultiSearch] = useState('price'),
+        route = useRoute(),
+        { params } = route,
         [dataSearch, setDataSearch] = useState({
             addressName: "",
             priceRate: {
@@ -33,6 +36,8 @@ export default function SearchScreen() {
             ]
         });
 
+    let { citySelected } = params;
+
     let formatDataSearchToArray = () => {
         let { priceRate, type, utilities, numPeople } = dataSearch;
         let arrayDataSearch = []
@@ -44,6 +49,8 @@ export default function SearchScreen() {
     }
 
     const navigation = useNavigation();
+
+    console.log()
 
     const renderHeader = () => {
         return (
@@ -82,7 +89,7 @@ export default function SearchScreen() {
                         <Text style={{
                             color: COLORS.secondary,
                             ...FONTS.body4
-                        }}>Hà Nội</Text>
+                        }}>{bigCity.filter(city => city.id === citySelected)[0].acronym}</Text>
                     </TouchableOpacity>
                     {/* Input */}
                     <TextInput
@@ -348,7 +355,7 @@ export default function SearchScreen() {
         if (multiSearch == 'roomType') return <RoomTypes />
         if (multiSearch == 'numberPeople') return <NumberPeople />
         if (multiSearch == 'utility') return <Utility />
-        if (multiSearch == 'address') return <Address />
+        if (multiSearch == 'address') return <Address city={bigCity.filter(city => city.id === citySelected)[0]} />
     }, [multiSearch])
 
 

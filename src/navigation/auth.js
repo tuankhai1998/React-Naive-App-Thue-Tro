@@ -20,16 +20,12 @@ const Authentication = () => {
     useEffect(() => {
         getStorage().then(data => {
             if (data) {
-
-                console.log(data)
                 setToken(data.token)
             } else {
                 setToken(null)
             }
         })
     }, [login])
-
-
 
     return (<>
         <AuthStack.Navigator
@@ -43,7 +39,7 @@ const Authentication = () => {
                 <AuthStack.Screen name="SearchScreen" component={SearchScreen} />
                 <AuthStack.Screen name="ProductScreen" component={ProductScreen} />
                 <AuthStack.Screen name="ProductListScreen" component={ListProductSearchScreen} />
-            </>) : (<AuthStack.Screen name="LoginScreen" component={() => <LoginScreen handleLogin={() => setLogin(true)} />} />)}
+            </>) : (<AuthStack.Screen name="LoginScreen" component={() => <LoginScreen handleLogin={() => setLogin(true)} token={token} />} />)}
         </AuthStack.Navigator>
     </>
     );
