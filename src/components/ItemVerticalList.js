@@ -1,9 +1,9 @@
-import { Ionicons } from '@expo/vector-icons'
-import React from 'react'
-import { View, Text, TouchableOpacity, ImageBackground, Image } from 'react-native'
-import { COLORS, FONTS, Images, SIZES } from '../constants'
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
-import { roomType } from '../constants/variable';
+import React from 'react';
+import { ImageBackground, Text, TouchableOpacity, View } from 'react-native';
+import { COLORS, FONTS, Images, SIZES } from '../constants';
+import { roomType_FN } from '../constants/variable';
 
 
 const ItemVerticalList = ({ item, index }) => {
@@ -60,9 +60,9 @@ const ItemVerticalList = ({ item, index }) => {
                             marginLeft: SIZES.base
                         }}
                     >
-                        <Text style={{ ...FONTS.body4, textTransform: "uppercase", fontSize: 12 }}>{roomType(item.type)}</Text>
+                        <Text style={{ ...FONTS.body4, textTransform: "uppercase", fontSize: 12 }}>{roomType_FN(item.type)}</Text>
                         <Text style={{ ...FONTS.h4 }} numberOfLines={2}>
-                            {`${roomType(item.type)} ${item.address.name.city}, ${item.address.name.districts}`}
+                            {`${roomType_FN(item.type)} ${item.address.name.city}, ${item.address.name.districts}`}
                         </Text>
                         <Text
                             style={{

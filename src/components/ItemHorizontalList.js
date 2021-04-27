@@ -1,9 +1,9 @@
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/core'
 import React from 'react'
-import { View, Text, TouchableOpacity, ImageBackground } from 'react-native'
+import { ImageBackground, Text, TouchableOpacity, View } from 'react-native'
 import { COLORS, FONTS, Images, SIZES } from '../constants'
-import { roomType } from '../constants/variable'
+import { roomType_FN } from '../constants/variable'
 
 export default function ItemHorizontalList({ item, index }) {
 
@@ -58,7 +58,7 @@ export default function ItemHorizontalList({ item, index }) {
                     <View>
                         <Text style={{ ...FONTS.body4, textTransform: "uppercase", fontSize: 12 }}></Text>
                         <Text style={{ ...FONTS.h4 }} numberOfLines={2}>
-                            {`${roomType(item.type)} ${item.address.name.city}, ${item.address.name.district}`}
+                            {`${roomType_FN(item.type)} ${item.address.name.city}, ${item.address.name.district}`}
                         </Text>
                         <Text
                             style={{

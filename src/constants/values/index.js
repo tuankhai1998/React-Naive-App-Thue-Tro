@@ -5,10 +5,10 @@ export const Sex = [
 ]
 
 export const RoomType = [
-    { value: 0, label: 'Chung cư' },
-    { value: 1, label: 'Phòng trọ' },
-    { value: 2, label: 'Căn hộ' },
-    { value: 3, label: 'Ở ghép' },
+    { label: 'Phòng cho thuê', value: 1 },
+    { label: 'Căn hộ cho thuê', value: 2 },
+    { label: 'Chung cư thuê', value: 3 },
+    { label: 'Ở ghép', value: 4 },
 ]
 
 

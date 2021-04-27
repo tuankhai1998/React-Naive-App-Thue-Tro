@@ -1,18 +1,12 @@
 import React, { useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
+import { useCallback } from 'react/cjs/react.development';
 import { COLORS, FONTS, SIZES } from '../../../constants';
+import { RoomType } from '../../../constants/values';
 
-export default function RoomTypes() {
-    const [selectedOption, setSelectedOption] = useState(1);
-    const listOptions = [
-        { key: 'Phòng cho thuê', value: 1 },
-        { key: 'Căn hộ cho thuê', value: 2 },
-        { key: 'Chung cư thuê', value: 3 },
-        { key: 'Ở ghép', value: 4 },
-    ]
-
-
-    let renderOptions = (item) => {
+export default function RoomTypes({ type, setRoomType }) {
+    
+    let renderOption = (item, type) => {
         return (
             <TouchableOpacity
                 style={{
@@ -22,7 +16,7 @@ export default function RoomTypes() {
                     justifyContent: 'flex-start',
                     width: '100%'
                 }}
-                onPress={() => setSelectedOption(item.value)}
+                onPress={() => setRoomType(item.value)}
             >
                 <View
                     style={{
@@ -38,7 +32,7 @@ export default function RoomTypes() {
                     }}
                 >
                     {
-                        item.value == selectedOption && <View
+                        item.value == type && <View
                             style={{
                                 width: 15,
                                 height: 15,
@@ -54,11 +48,13 @@ export default function RoomTypes() {
                         ...FONTS.body3
                     }}
                 >
-                    {item.key}
+                    {item.label}
                 </Text>
             </TouchableOpacity>
         )
     }
+
+    let renderOptions = useCallback(() => RoomType.map(item => renderOption(item, type)), [type])
     return (
         <View
             style={{
@@ -67,7 +63,7 @@ export default function RoomTypes() {
                 paddingTop: SIZES.padding
             }}
         >
-            {listOptions.map(item => renderOptions(item))}
+            {renderOptions()}
         </View>
     )
 }

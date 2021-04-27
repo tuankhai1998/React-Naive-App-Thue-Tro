@@ -1,10 +1,10 @@
 import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/core';
-import React, { useState, useEffect } from 'react';
-import { useCallback } from 'react';
-import { FlatList, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { FlatList, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS, FONTS, Images, SIZES } from '../../constants';
 import { bigCity } from '../../constants/bigCity';
+import { roomType_FN } from '../../constants/variable';
 import Address from './components/Address';
 import NumberPeople from './components/NumberPeople';
 import PriceRate from './components/PriceRate';
@@ -24,7 +24,7 @@ export default function SearchScreen() {
                 max: "15",
                 min: "12"
             },
-            type: "",
+            type: 1,
             numPeople: {
                 num: 1,
                 sex: 0
@@ -42,15 +42,13 @@ export default function SearchScreen() {
         let { priceRate, type, utilities, numPeople } = dataSearch;
         let arrayDataSearch = []
         if (priceRate.max && priceRate.min) arrayDataSearch.push(`${priceRate.min} - ${priceRate.max} triệu`)
-        if (type) arrayDataSearch.push(`${type}`)
+        if (type) arrayDataSearch.push(`${roomType_FN(type)}`)
         if (utilities) arrayDataSearch = [...arrayDataSearch, ...utilities]
         if (numPeople.num !== 1 || numPeople.sex !== 0) arrayDataSearch.push(`${numPeople.num} người, giới tính ${sex == 0 ? 'tất cả' : sex == 1 ? 'nam' : 'nữ'}`)
         return arrayDataSearch
     }
 
     const navigation = useNavigation();
-
-    console.log()
 
     const renderHeader = () => {
         return (
@@ -92,14 +90,14 @@ export default function SearchScreen() {
                         }}>{bigCity.filter(city => city.id === citySelected)[0].acronym}</Text>
                     </TouchableOpacity>
                     {/* Input */}
-                    <TextInput
+                    <Text
                         style={{
                             flex: 1,
                             justifyContent: 'center',
                             marginHorizontal: SIZES.base,
                             borderRadius: SIZES.borderRadius
                         }}
-                    />
+                    >{dataSearch.addressName}</Text>
 
 
                 </View>
@@ -235,7 +233,6 @@ export default function SearchScreen() {
                         <TouchableOpacity
                             style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
                             onPress={() => {
-                                console.log("hahaha")
                                 setSearching(true);
                                 setMultiSearch('roomType')
                             }}
@@ -350,12 +347,17 @@ export default function SearchScreen() {
     }
 
 
+
     const renderSearch = useCallback(() => {
-        if (multiSearch == 'price') return <PriceRate />
-        if (multiSearch == 'roomType') return <RoomTypes />
+        if (multiSearch == 'price') return <PriceRate setPrice={(priceRate) => setDataSearch({ ...dataSearch, priceRate })} priceRate={dataSearch.priceRate} />
+        if (multiSearch == 'roomType') return <RoomTypes type={dataSearch.type} setRoomType={(roomType) => { setDataSearch({ ...dataSearch, type: roomType }) }} />
         if (multiSearch == 'numberPeople') return <NumberPeople />
         if (multiSearch == 'utility') return <Utility />
-        if (multiSearch == 'address') return <Address city={bigCity.filter(city => city.id === citySelected)[0]} />
+        if (multiSearch == 'address') return <Address
+            city={bigCity.filter(city => city.id === citySelected)[0]}
+            setAddress={(data) => setDataSearch({ ...dataSearch, addressName: data })
+            }
+        />
     }, [multiSearch])
 
 

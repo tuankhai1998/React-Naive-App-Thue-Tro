@@ -1,20 +1,29 @@
 import { Ionicons } from '@expo/vector-icons'
 import React, {
-    useState
+    useState, useEffect
 } from 'react'
 import { View, Text, TouchableOpacity, Modal, FlatList } from 'react-native'
 import { COLORS, FONTS, SHADOW, SIZES } from '../../../constants'
 import { city as cityList } from '../../../constants/city'
 
-export default function Address({ city }) {
+export default function Address({ city, setAddress }) {
 
-    const [districtsSelected, setDistrictSelected] = useState('');
-    const [wardsSelected, setWardsSelected] = useState('');
+    const [districtsSelected, setDistrictSelected] = useState('Tất Cả');
+    const [wardsSelected, setWardsSelected] = useState('Tất Cả');
+    const [isDistrict, setIsDistrict] = useState(true);
+
 
     let currentCity = city.id;
     let listCity = JSON.parse(JSON.stringify(cityList));
 
-    let district = listCity.filter(c => c.id == currentCity)[0].districts
+    let districts = listCity.filter(c => c.id == currentCity)[0].districts;
+    let wardsOfDistrict = districts?.filter(district => district.name == districtsSelected)[0]?.wards
+
+    useEffect(() => {
+        if (districtsSelected == "Tất Cả") setAddress('');
+        else if (wardsSelected == "Tất Cả") setAddress(districtsSelected);
+        else setAddress(`${wardsSelected}, ${districtsSelected}`)
+    }, [districtsSelected, wardsSelected])
 
     const [showModalAddress, setShowModalAddress] = useState(false);
 
@@ -23,6 +32,10 @@ export default function Address({ city }) {
         let renderItem = ({ item, index }) => {
             return (
                 <TouchableOpacity
+                    onPress={() => {
+                        setDistrictSelected(item.name)
+                        setShowModalAddress(false)
+                    }}
                     key={`${item.name}_${index}`}
                 >
                     <Text
@@ -39,6 +52,10 @@ export default function Address({ city }) {
             return (
                 <TouchableOpacity
                     key={`${item.name}_${index}`}
+                    onPress={() => {
+                        setWardsSelected(item.name)
+                        setShowModalAddress(false)
+                    }}
                 >
                     <Text
                         style={{
@@ -74,8 +91,10 @@ export default function Address({ city }) {
                     >
                         <FlatList
                             data={[{ name: "Tất Cả" }, ...data]}
-                            renderItem={renderItem}
-                            keyExtractor={item => item.id}
+                            renderItem={({ item, index }) => {
+                                if (isDistrict) return renderItem({ item, index })
+                                return renderItemWards({ item, index })
+                            }}
                         />
                     </View>
 
@@ -84,7 +103,6 @@ export default function Address({ city }) {
             </View>
         </>
     }
-
 
     return (
         <View
@@ -100,7 +118,7 @@ export default function Address({ city }) {
                     setShowModalAddress(!showModalAddress);
                 }}
             >
-                {renderSelectAddress(district)}
+                {isDistrict ? renderSelectAddress(districts) : wardsOfDistrict ? renderSelectAddress(wardsOfDistrict) : renderSelectAddress([])}
             </Modal>
             <View
                 style={{
@@ -117,7 +135,10 @@ export default function Address({ city }) {
                     }}
                 >Quận/Huyện : </Text>
                 <TouchableOpacity
-                    onPress={() => setShowModalAddress(true)}
+                    onPress={() => {
+                        setShowModalAddress(true)
+                        setIsDistrict(true)
+                    }}
                     style={{
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -135,7 +156,7 @@ export default function Address({ city }) {
                             textAlign: 'center',
                             width: (SIZES.width - SIZES.padding * 4) * 2 / 3
                         }}
-                    >Thanh Oai
+                    >{districtsSelected}
                     </Text>
                     <Ionicons name="chevron-down" size={20} color="black" />
                 </TouchableOpacity>
@@ -155,6 +176,10 @@ export default function Address({ city }) {
                     }}
                 >Phường/Xã : </Text>
                 <TouchableOpacity
+                    onPress={() => {
+                        setShowModalAddress(true)
+                        setIsDistrict(false)
+                    }}
                     style={{
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -172,7 +197,7 @@ export default function Address({ city }) {
                             textAlign: 'center',
                             width: (SIZES.width - SIZES.padding * 4) * 2 / 3
                         }}
-                    >Cao Dương
+                    >{wardsSelected}
                     </Text>
                     <Ionicons name="chevron-down" size={20} color="black" />
                 </TouchableOpacity>

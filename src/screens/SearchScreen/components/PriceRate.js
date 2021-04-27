@@ -1,5 +1,5 @@
 //import liraries
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useState } from 'react/cjs/react.development';
 import Slider from 'rn-range-slider';
@@ -11,10 +11,13 @@ import RailSelected from './RailSelected';
 import Thumb from './Thumb';
 
 // create a component
-const PriceRate = () => {
+const PriceRate = ({ setPrice, priceRate }) => {
 
-    const [low, setLow] = useState(0);
-    const [high, setHigh] = useState(100);
+
+
+    const [low, setLow] = useState(priceRate.min);
+    const [high, setHigh] = useState(priceRate.max);
+
 
     const renderThumb = useCallback(() => <Thumb />, []);
     const renderRail = useCallback(() => <Rail />, []);
@@ -25,6 +28,14 @@ const PriceRate = () => {
         setLow(low);
         setHigh(high);
     }, []);
+
+    useEffect(() => {
+        setPrice({
+            min: low,
+            max: high
+        })
+    }, [low, high])
+
 
     return (
         <View style={styles.container}>
@@ -53,8 +64,6 @@ const PriceRate = () => {
                     renderNotch={renderNotch}
                     onValueChanged={handleValueChange}
                 />
-
-
             </View>
 
         </View>

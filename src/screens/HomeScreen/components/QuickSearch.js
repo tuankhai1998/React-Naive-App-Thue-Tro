@@ -2,7 +2,8 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS, FONTS, SHADOW, SIZES } from '../../../constants';
-import { RoomType, Sex } from '../../../constants/values';
+import { Sex } from '../../../constants/values';
+import { roomType_FN } from '../../../constants/variable';
 
 export default function QuickSearch({ districts, setModalDistrict, modalDistrict, sex, roomType, handleChangeRender }) {
     const [districtsSelected, setDistrictSelected] = useState([]);
@@ -72,7 +73,7 @@ export default function QuickSearch({ districts, setModalDistrict, modalDistrict
                                     ...FONTS.body4
                                 }}
                             >
-                                {RoomType.filter(item => item.value === roomType)[0].label}
+                                {roomType_FN(roomType)}
                             </Text>
                             <Ionicons name="chevron-down" size={20} color="black" />
                         </TouchableOpacity>
