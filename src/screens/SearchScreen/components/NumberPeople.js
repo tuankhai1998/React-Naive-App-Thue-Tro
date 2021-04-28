@@ -2,11 +2,19 @@ import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react'
 import { View, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useEffect } from 'react/cjs/react.development';
 import { COLORS, FONTS, SIZES } from '../../../constants';
 
-export default function NumberPeople() {
-    const [number, setNumber] = useState(1);
-    const [sex, setSex] = useState(0)
+export default function NumberPeople({ numberPeople, setNumberPeople }) {
+    const [number, setNumber] = useState(numberPeople.num);
+    const [sex, setSex] = useState(numberPeople.sex)
+
+    useEffect(() => {
+        setNumberPeople({ num: number, sex: sex })
+    }, [number, sex])
+
+
+
     return (
         <View
             style={{

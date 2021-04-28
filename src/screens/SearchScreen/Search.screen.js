@@ -44,7 +44,7 @@ export default function SearchScreen() {
         if (priceRate.max && priceRate.min) arrayDataSearch.push(`${priceRate.min} - ${priceRate.max} triệu`)
         if (type) arrayDataSearch.push(`${roomType_FN(type)}`)
         if (utilities) arrayDataSearch = [...arrayDataSearch, ...utilities]
-        if (numPeople.num !== 1 || numPeople.sex !== 0) arrayDataSearch.push(`${numPeople.num} người, giới tính ${sex == 0 ? 'tất cả' : sex == 1 ? 'nam' : 'nữ'}`)
+        if (numPeople.num !== 1 || numPeople.sex !== 0) arrayDataSearch.push(`${numPeople.num} người, giới tính ${numPeople.sex == 0 ? 'tất cả' : numPeople.sex == 1 ? 'nam' : 'nữ'}`)
         return arrayDataSearch
     }
 
@@ -346,19 +346,25 @@ export default function SearchScreen() {
         )
     }
 
+    console.log("data search ", dataSearch.type)
+
+
 
 
     const renderSearch = useCallback(() => {
         if (multiSearch == 'price') return <PriceRate setPrice={(priceRate) => setDataSearch({ ...dataSearch, priceRate })} priceRate={dataSearch.priceRate} />
         if (multiSearch == 'roomType') return <RoomTypes type={dataSearch.type} setRoomType={(roomType) => { setDataSearch({ ...dataSearch, type: roomType }) }} />
-        if (multiSearch == 'numberPeople') return <NumberPeople />
+        if (multiSearch == 'numberPeople') return <NumberPeople
+            setNumberPeople={(data) => setDataSearch({ ...dataSearch, numPeople: data })}
+            numberPeople={dataSearch.numPeople}
+        />
         if (multiSearch == 'utility') return <Utility />
         if (multiSearch == 'address') return <Address
             city={bigCity.filter(city => city.id === citySelected)[0]}
             setAddress={(data) => setDataSearch({ ...dataSearch, addressName: data })
             }
         />
-    }, [multiSearch])
+    }, [multiSearch, dataSearch])
 
 
 

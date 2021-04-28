@@ -12,12 +12,8 @@ import Thumb from './Thumb';
 
 // create a component
 const PriceRate = ({ setPrice, priceRate }) => {
-
-
-
     const [low, setLow] = useState(priceRate.min);
     const [high, setHigh] = useState(priceRate.max);
-
 
     const renderThumb = useCallback(() => <Thumb />, []);
     const renderRail = useCallback(() => <Rail />, []);
@@ -46,7 +42,6 @@ const PriceRate = ({ setPrice, priceRate }) => {
                 <Text>
                     {low} triệu VND
                 </Text>
-
                 <Text>
                     {high} triệu VND
                 </Text>
@@ -83,9 +78,6 @@ const styles = StyleSheet.create({
         padding: 12,
         flex: 1,
         backgroundColor: '#555',
-    },
-    slider: {
-
     },
     button: {
     },

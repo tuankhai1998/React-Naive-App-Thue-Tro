@@ -5,7 +5,8 @@ import { COLORS, FONTS, SIZES } from '../../../constants';
 import { RoomType } from '../../../constants/values';
 
 export default function RoomTypes({ type, setRoomType }) {
-    
+
+
     let renderOption = (item, type) => {
         return (
             <TouchableOpacity

@@ -40,10 +40,10 @@ export const CREATE_USER = gql`
 `;
 
 
-export const LIKE_ROOM = gql`
-    mutation($idRoom : ID!){
-        likedRoom(_idRoom : $idRoom){
-            user {
+export const TOGGLE_LIKE_ROOM = gql`
+mutation($idRoom:  ID!) {
+    likedRoom(_idRoom: $idRoom) {
+        user {
                 email
                 _id
                 liked{
@@ -54,5 +54,5 @@ export const LIKE_ROOM = gql`
                 }   
             }
         }
-    }
-`;
+  }
+`

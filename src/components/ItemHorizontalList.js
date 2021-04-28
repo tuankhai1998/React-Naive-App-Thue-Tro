@@ -1,13 +1,23 @@
+import { useApolloClient, useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/core'
 import React from 'react'
 import { ImageBackground, Text, TouchableOpacity, View } from 'react-native'
 import { COLORS, FONTS, Images, SIZES } from '../constants'
 import { roomType_FN } from '../constants/variable'
+import { CURET_USER, TOGGLE_LIKE_ROOM } from '../graphql/user'
 
 export default function ItemHorizontalList({ item, index }) {
-
     const navigation = useNavigation();
+    const client = useApolloClient();
+    const { data: currentUser, loading: userLoading, error: userError } = useQuery(CURET_USER)
+
+    const [handleLikeRoom, { error: likedError, loading: likeLoading }] = useMutation(TOGGLE_LIKE_ROOM, {
+        onCompleted: (data) => {
+            console.log(data)
+        }
+    });
+
     return (
         <TouchableOpacity
             style={{
@@ -17,7 +27,9 @@ export default function ItemHorizontalList({ item, index }) {
                 marginBottom: SIZES.padding
             }}
 
-            onPress={() => navigation.push('ProductScreen')}
+            onPress={() => navigation.push('ProductScreen', {
+                _id: item._id
+            })}
         >
             <View
                 style={{
@@ -27,8 +39,6 @@ export default function ItemHorizontalList({ item, index }) {
                     overflow: 'hidden'
                 }}
             >
-
-
                 <ImageBackground
                     source={{ uri: item && item.images ? item.images[0] : Images.ImageLoading }}
                     style={{
@@ -45,6 +55,15 @@ export default function ItemHorizontalList({ item, index }) {
                             padding: 2,
                             borderRadius: 10
                         }}
+                        onPress={
+                            () => {
+                                handleLikeRoom({
+                                    variables: {
+                                        idRoom: item._id
+                                    }
+                                })
+                            }
+                        }
                     >
                         <Ionicons name="heart-outline" size={16} color={COLORS.white} />
                         {/* <Ionicons name="heart-sharp" size={24} color="black" /> */}
