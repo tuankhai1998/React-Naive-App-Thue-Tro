@@ -1,6 +1,6 @@
 //import liraries
 import { useNavigation } from '@react-navigation/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import HotRoom from '../../components/Home/HotRoom';
 import NewRoom from '../../components/Home/NewRoom';
@@ -45,12 +45,15 @@ let district = {
 
 const HomeScreen = () => {
     let [citySelect, setCitySelect] = useState(2);
+
     const navigation = useNavigation();
 
     const getCity = () => {
         return citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'
     }
 
+
+   
     return (
         <ScrollView style={{
             flex: 1,

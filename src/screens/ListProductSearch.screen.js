@@ -11,9 +11,9 @@ export default function ListProductSearchScreen() {
     const [page, setPage] = useState(0);
     const route = useRoute();
     const { params } = route;
-    const [fetchRoom, { data, error, loading }] = useLazyQuery(FETCH_ROOM);
-    console.log(data, error, loading)
+    const { query } = params;
 
+    const [fetchRoom, { data, error, loading }] = useLazyQuery(FETCH_ROOM);
 
     useEffect(() => {
         fetchRoom({
@@ -21,9 +21,7 @@ export default function ListProductSearchScreen() {
                 page,
                 per_page: 6,
                 query: {
-                    addressName: {
-                        districts: params.district
-                    }
+                    ...query
                 }
             }
         })

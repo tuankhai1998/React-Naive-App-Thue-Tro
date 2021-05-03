@@ -18,7 +18,15 @@ export default function SearchTrend({ item, index }) {
                 ...SHADOW.shadow1
             }}
 
-            onPress={() => { navigation.push('ProductListScreen', { district: item.name, city: 'Hà Nội' }) }}
+            onPress={() => {
+                navigation.push('ProductListScreen', {
+                    query: {
+                        addressName: {
+                            districts: item.name
+                        }
+                    }
+                })
+            }}
         >
             <Image source={item.image} style={{
                 resizeMode: 'cover',

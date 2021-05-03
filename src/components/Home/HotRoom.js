@@ -9,7 +9,7 @@ export default function HotRoom({ city }) {
     const [fetchRoom, { error: errorRoom, data: dataRoom, loading }] = useLazyQuery(FETCH_ROOM);
     const [hotRooms, setHotRooms] = useState([]),
         [page, setPage] = useState(0);
-    console.log(errorRoom)
+
 
     useEffect(() => {
         fetchRoom({
@@ -29,7 +29,7 @@ export default function HotRoom({ city }) {
         if (dataRoom && page > 0) {
             setHotRooms([...hotRooms, ...dataRoom.rooms]);
         } else if (dataRoom) {
-            console.log(dataRoom)
+
             setHotRooms([...dataRoom.rooms]);
         }
     }, [dataRoom])

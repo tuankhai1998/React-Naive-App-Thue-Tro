@@ -5,7 +5,6 @@ import { RoomType } from '../../../constants/values'
 
 export default function RoomChoice({ setRoomChoice, roomSelected }) {
 
-    console.log("hahaha")
     return (
         <View
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.1)' }}

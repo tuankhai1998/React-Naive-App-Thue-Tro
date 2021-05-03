@@ -11,6 +11,12 @@ const DANANG = require('../../assets/images/DaNang.jpg')
 const HCM = require('../../assets/images/HCM.jpg')
 const NEWROOM = require('../../assets/images/newRoom.jpeg')
 const ImageLoading = 'https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png';
+const CONDITIONE = require('../../assets/images/air-conditioner.png');
+const BATHROOM = require('../../assets/images/bathroom.png');
+const SECURITY = require('../../assets/images/security-camera.png');
+const TIME = require('../../assets/images/time-outline.png');
+const WHASHINGMACHINE = require('../../assets/images/washing-machine.png');
+const WIFI = require('../../assets/images/wifi-outline.png');
 
 export default {
     SplashScreenBG,
@@ -25,5 +31,11 @@ export default {
     DANANG,
     HCM,
     NEWROOM,
-    ImageLoading
+    ImageLoading,
+    CONDITIONE,
+    BATHROOM,
+    SECURITY,
+    TIME,
+    WHASHINGMACHINE,
+    WIFI
 }

@@ -8,12 +8,15 @@ import QuickSearch from './QuickSearch';
 import SexChoice from './SexChoice';
 import { useEffect } from 'react/cjs/react.development';
 import RoomChoice from './RoomChoice';
+import * as Location from 'expo-location';
+
 
 const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
     let [modalVisible, setModalVisible] = useState(false),
         [quickSearchRender, setQuickSearchRender] = useState('Main'),
         [modalDistrict, setModalDistrict] = useState(false),
         [sex, setSex] = useState(0),
+        [location, setLocation] = useState(null),
         [roomType, setRoomType] = useState(0);
 
     if (!city) return null
@@ -26,11 +29,34 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
     })[0]
 
     let { districts } = selected;
-
-
     useEffect(() => {
         console.log(sex)
     }, [sex])
+
+
+    useEffect(() => {
+        const getLocation = async () => {
+            try {
+                let { status } = await Location.requestPermissionsAsync();
+                if (status !== 'granted') {
+                    setErrorMsg('Permission to access location was denied');
+                    return;
+                }
+
+                let location = await Location.getCurrentPositionAsync({});
+
+                setLocation({
+                    latitude: location.coords.latitude,
+                    longitude: location.coords.longitude,
+                });
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getLocation()
+    }, []);
+
+    console.log({ location })
 
 
     let renderImageHeader = () => {
@@ -173,7 +199,11 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
                             width: (SIZES.width - SIZES.padding * 4) / 3 - (SIZES.base * 3),
                             alignItems: 'center',
                         }}
-                        onPress={() => console.log("hahaha")}
+                        onPress={() => {
+                            navigation.push('ProductListScreen', {
+                                query: location
+                            })
+                        }}
                     >
                         <View
                             style={{
@@ -203,8 +233,6 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
                                 backgroundColor: `#27FB6B`,
                                 ...styles.headerFindItem
                             }}
-
-
                         >
                             <MaterialCommunityIcons name="home-plus-outline" size={40} color={COLORS.white} />
                         </View>

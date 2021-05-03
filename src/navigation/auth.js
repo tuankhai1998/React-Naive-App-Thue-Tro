@@ -20,7 +20,7 @@ const Authentication = () => {
     useEffect(() => {
         getStorage().then(data => {
             if (data) {
-                setToken(data.token)
+                setToken(data)
             } else {
                 setToken(null)
             }
@@ -34,7 +34,7 @@ const Authentication = () => {
                 headerShown: false,
             }}
         >
-            {token ? (<>
+            {token && login ? (<>
                 <AuthStack.Screen name="Dashboard" component={() => <BottomTabNavigator handleLogin={(isLogin) => setLogin(isLogin)} />} />
                 <AuthStack.Screen name="SearchScreen" component={SearchScreen} />
                 <AuthStack.Screen name="ProductScreen" component={ProductScreen} />

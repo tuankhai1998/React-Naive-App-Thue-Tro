@@ -4,7 +4,7 @@ import { useLazyQuery } from '@apollo/client';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { useEffect } from 'react/cjs/react.development';
-import { CURET_USER } from '../graphql/user';
+import { CURRENT_USER } from '../graphql/user';
 import HomeStackNavigator from './stacknavigator/HomeStackNavigator';
 import LikeStackNavigator from './stacknavigator/LikeStackNavigatior';
 import MessagesStackNavigator from './stacknavigator/MessagesStackNavigatior';
@@ -14,18 +14,18 @@ const Tab = createBottomTabNavigator();
 
 // create a component
 const BottomTabNavigator = ({ handleLogin }) => {
-    const [getCurrentUser, { data, loading, error }] = useLazyQuery(CURET_USER);
-    useEffect(() => {
-        if (!error) {
-            getCurrentUser()
-        } else {
-            removeStorage().then(
-                () => {
-                    handleLogin(false)
-                }
-            ).catch(err => console.log(err))
-        }
-    }, [data])
+    // const [getCurrentUser, { data, loading, error }] = useLazyQuery(CURRENT_USER);
+    // useEffect(() => {
+    //     if (!error) {
+    //         getCurrentUser()
+    //     } else {
+    //         removeStorage().then(
+    //             () => {
+    //                 handleLogin(false)
+    //             }
+    //         ).catch(err => console.log(err))
+    //     }
+    // }, [data])
 
     const getTabBarVisible = (route) => {
         const routeName = route.state

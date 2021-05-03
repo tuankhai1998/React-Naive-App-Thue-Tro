@@ -5,18 +5,17 @@ import React from 'react'
 import { ImageBackground, Text, TouchableOpacity, View } from 'react-native'
 import { COLORS, FONTS, Images, SIZES } from '../constants'
 import { roomType_FN } from '../constants/variable'
-import { CURET_USER, TOGGLE_LIKE_ROOM } from '../graphql/user'
+import { CURRENT_USER, TOGGLE_LIKE_ROOM } from '../graphql/user'
 
 export default function ItemHorizontalList({ item, index }) {
     const navigation = useNavigation();
     const client = useApolloClient();
-    const { data: currentUser, loading: userLoading, error: userError } = useQuery(CURET_USER)
-
-    const [handleLikeRoom, { error: likedError, loading: likeLoading }] = useMutation(TOGGLE_LIKE_ROOM, {
-        onCompleted: (data) => {
-            console.log(data)
-        }
+    const { user } = client.readQuery({
+        query: CURRENT_USER
     });
+    const [handleLikeRoom, { loading }] = useMutation(TOGGLE_LIKE_ROOM);
+    const userLiked = user?.liked.map(roomLike => roomLike._id)
+
 
     return (
         <TouchableOpacity
@@ -65,8 +64,9 @@ export default function ItemHorizontalList({ item, index }) {
                             }
                         }
                     >
-                        <Ionicons name="heart-outline" size={16} color={COLORS.white} />
-                        {/* <Ionicons name="heart-sharp" size={24} color="black" /> */}
+                        {
+                            userLiked && userLiked.indexOf(item._id) !== -1 ? <Ionicons name="heart-sharp" size={16} color={COLORS.Google} /> : <Ionicons name="heart-outline" size={16} color={COLORS.white} />
+                        }
                     </TouchableOpacity>
                 </ImageBackground>
 

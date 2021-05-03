@@ -1,13 +1,24 @@
+import { useApolloClient, useMutation } from '@apollo/client';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 import { ImageBackground, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS, FONTS, Images, SIZES } from '../constants';
 import { roomType_FN } from '../constants/variable';
+import { CURRENT_USER, TOGGLE_LIKE_ROOM } from '../graphql/user';
 
 
 const ItemVerticalList = ({ item, index }) => {
     const navigation = useNavigation();
+
+    const client = useApolloClient();
+    const { user } = client.readQuery({
+        query: CURRENT_USER
+    });
+    const [handleLikeRoom, { loading }] = useMutation(TOGGLE_LIKE_ROOM);
+    const userLiked = user?.liked.map(roomLike => roomLike._id)
+
+
     return (
         <TouchableOpacity
             style={{
@@ -43,9 +54,19 @@ const ItemVerticalList = ({ item, index }) => {
                             padding: 2,
                             borderRadius: 10
                         }}
+                        onPress={
+                            () => {
+                                handleLikeRoom({
+                                    variables: {
+                                        idRoom: item._id
+                                    }
+                                })
+                            }
+                        }
                     >
-                        <Ionicons name="heart-outline" size={16} color={COLORS.white} />
-                        {/* <Ionicons name="heart-sharp" size={24} color="black" /> */}
+                        {
+                            userLiked && userLiked.indexOf(item._id) !== -1 ? <Ionicons name="heart-sharp" size={16} color={COLORS.Google} /> : <Ionicons name="heart-outline" size={16} color={COLORS.white} />
+                        }
                     </TouchableOpacity>
                 </ImageBackground>
             </View>

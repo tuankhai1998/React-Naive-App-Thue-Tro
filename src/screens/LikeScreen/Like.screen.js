@@ -1,14 +1,43 @@
 //import liraries
+import { useApolloClient, useQuery } from '@apollo/client';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
 import Header from '../../components/Header';
-import { COLORS } from '../../constants';
+import ItemVerticalList from '../../components/ItemVerticalList';
+import { COLORS, SIZES } from '../../constants';
+import { GET_LIST_ROOM_LIKED } from '../../graphql/user';
 
 // create a component
 const LikeScreen = () => {
+
+    const { loading } = useQuery(GET_LIST_ROOM_LIKED);
+    const client = useApolloClient();
+    const { user } = client.readQuery({
+        query: GET_LIST_ROOM_LIKED
+    })
+
+
     return (
         <View style={styles.container}>
             <Header title="Like" />
+            <View
+                style={{
+                    alignItems: 'center'
+                }}
+            >
+                {loading && <ActivityIndicator size="large" color={COLORS.primary} />}
+                <FlatList
+                    contentContainerStyle={{ alignSelf: 'flex-start' }}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                    data={user?.liked.length > 0 ? user?.liked : []}
+                    renderItem={({ item, index }) => <ItemVerticalList index={index} item={item} />}
+                    style={{
+                        marginTop: SIZES.base,
+
+                    }}
+                />
+            </View>
         </View>
     );
 };

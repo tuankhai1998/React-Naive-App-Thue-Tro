@@ -346,10 +346,6 @@ export default function SearchScreen() {
         )
     }
 
-    console.log("data search ", dataSearch.type)
-
-
-
 
     const renderSearch = useCallback(() => {
         if (multiSearch == 'price') return <PriceRate setPrice={(priceRate) => setDataSearch({ ...dataSearch, priceRate })} priceRate={dataSearch.priceRate} />

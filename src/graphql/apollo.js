@@ -1,28 +1,34 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from '@apollo/client/link/context';
+import { getStorage } from "../helpers/storage";
 
-const makeApolloClient = (token) => {
-    const link = createHttpLink({
-        uri: "http://192.168.1.58:8000/graphql",
-    })
+const httpLink = new HttpLink({
+    uri: "http://192.168.2.14:8000/graphql",
+})
 
-    const authLink = setContext((_, { headers }) => {
-        return {
-            headers: {
-                ...headers,
-                authorization: token ? `Bearer ${token}` : "",
-            }
+
+const authLink = setContext(async (req, { headers }) => {
+    let token = "";
+    try {
+        token = await getStorage();
+    } catch (error) {
+        console.log(error)
+    }
+
+    console.log("token", token)
+    return {
+        headers: {
+            ...headers,
+            authorization: token ? `Bearer ${token}` : "",
         }
-    });
-    const cache = new InMemoryCache();
+    }
+});
 
-    const client = new ApolloClient({
-        link: authLink.concat(link),
-        cache
-    })
+const cache = new InMemoryCache();
 
-    return client
-}
+const client = new ApolloClient({
+    link: authLink.concat(httpLink),
+    cache
+})
 
-
-export default makeApolloClient;
+export default client

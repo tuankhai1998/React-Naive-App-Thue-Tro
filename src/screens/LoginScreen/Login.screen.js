@@ -1,3 +1,4 @@
+import { useQuery } from '@apollo/client';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
@@ -7,7 +8,7 @@ import * as Yup from 'yup';
 import PrimaryButton from '../../components/PrimaryButton';
 import { SIZES } from '../../constants';
 import { CREATE_USER, CURRENT_USER, LOGIN } from '../../graphql/user';
-import { setStorage } from '../../helpers/storage';
+import { removeStorage, setStorage } from '../../helpers/storage';
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -18,19 +19,20 @@ const SignupSchema = Yup.object().shape({
 //     email: Yup.string().email('Invalid email').required('Required'),
 //     password: Yup.string().min(6).max(50).required('Password is required!'),
 // });
-
-
-
-
 // create a component
 const LoginScreen = ({ handleLogin, token }) => {
     const [login, setLogin] = useState(true);
-    const [loginQuery, { data, loading }] = useLazyQuery(LOGIN);
-    // const [getCurrentUser, { data: currentUser, loading: currentUserLoading }] = useLazyQuery(CURRENT_USER);
+    const [loginQuery, { data, loading, error }] = useLazyQuery(LOGIN);
+    const [getCurrentUser, { data: currentUser, loading: currentUserLoading, error: currentUserError }] = useLazyQuery(CURRENT_USER);;
     const [createUser] = useMutation(CREATE_USER, {
         onCompleted({ createUser }) {
             setStorage('@AHome-graphql:', createUser)
         }
+    })
+
+    console.log({
+        loading, error
+        , currentUserError
     })
     useEffect(() => {
         if (data) {
@@ -41,15 +43,20 @@ const LoginScreen = ({ handleLogin, token }) => {
         }
     }, [data])
 
-    // useEffect(() => {
-    //     getCurrentUser()
-    // }, [token])
+    useEffect(() => {
+        if (token) {
+            getCurrentUser()
+        }
+    }, [token])
 
-    // useEffect(() => {
-    //     if (currentUser) {
-    //         handleLogin()
-    //     }
-    // }, [currentUser])
+    useEffect(() => {
+        if (currentUser) {
+            handleLogin()
+        }
+        if (currentUserError) {
+            removeStorage().then(() => console.log("hahah")).catch(err => console.log(err))
+        }
+    }, [currentUser])
 
     const initialValuesLogin = {
         email: '',
@@ -88,7 +95,6 @@ const LoginScreen = ({ handleLogin, token }) => {
                         <Formik
                             initialValues={login ? initialValuesLogin : initialValues}
                             onSubmit={values => {
-
                                 if (!login) {
                                     createUser({
                                         variables: { ...values }
