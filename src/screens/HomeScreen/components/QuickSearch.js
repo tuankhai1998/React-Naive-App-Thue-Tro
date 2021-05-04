@@ -1,12 +1,18 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS, FONTS, SHADOW, SIZES } from '../../../constants';
-import { Sex } from '../../../constants/values';
+import { RoomType as RoomTypes, Sex } from '../../../constants/values';
 import { roomType_FN } from '../../../constants/variable';
+import { useNavigation } from '@react-navigation/core'
 
-export default function QuickSearch({ districts, setModalDistrict, modalDistrict, sex, roomType, handleChangeRender }) {
+export default function QuickSearch({ districts, setModalDistrict, modalDistrict, sex, roomType, handleChangeRender, city }) {
     const [districtsSelected, setDistrictSelected] = useState([]);
+    const navigation = useNavigation();
+    const sexValue = Sex.filter(s => s.label == sex)[0].value;
+    const roomTypeValue = RoomTypes.filter(rt => rt.label == roomType)[0].value;
+
+    console.log(sexValue)
 
 
     const handleSelected = (name) => {
@@ -19,8 +25,8 @@ export default function QuickSearch({ districts, setModalDistrict, modalDistrict
             newData.splice(index, 1);
             setDistrictSelected([...newData])
         }
-
     }
+
 
     return (
         <View
@@ -42,7 +48,6 @@ export default function QuickSearch({ districts, setModalDistrict, modalDistrict
                     style={{
                         maxHeight: SIZES.height / 3,
                     }}
-
 
                 >
                     <View>
@@ -162,6 +167,13 @@ export default function QuickSearch({ districts, setModalDistrict, modalDistrict
                             marginBottom: SIZES.base
                         }}
                         onPress={() => {
+                            navigation.push('ProductListScreen', {
+                                query: {
+                                    sex: sexValue,
+                                    type: roomTypeValue,
+                                    multiDistricts: districtsSelected
+                                }
+                            })
                             setModalDistrict(!modalDistrict);
                         }}
                     >

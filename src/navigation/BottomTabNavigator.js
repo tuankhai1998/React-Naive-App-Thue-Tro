@@ -14,18 +14,18 @@ const Tab = createBottomTabNavigator();
 
 // create a component
 const BottomTabNavigator = ({ handleLogin }) => {
-    // const [getCurrentUser, { data, loading, error }] = useLazyQuery(CURRENT_USER);
-    // useEffect(() => {
-    //     if (!error) {
-    //         getCurrentUser()
-    //     } else {
-    //         removeStorage().then(
-    //             () => {
-    //                 handleLogin(false)
-    //             }
-    //         ).catch(err => console.log(err))
-    //     }
-    // }, [data])
+    const [getCurrentUser, { data, loading, error }] = useLazyQuery(CURRENT_USER);
+    useEffect(() => {
+        if (!error) {
+            getCurrentUser()
+        } else {
+            removeStorage().then(
+                () => {
+                    handleLogin(false)
+                }
+            ).catch(err => console.log(err))
+        }
+    }, [data])
 
     const getTabBarVisible = (route) => {
         const routeName = route.state

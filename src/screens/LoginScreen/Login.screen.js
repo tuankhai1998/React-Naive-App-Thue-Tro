@@ -54,6 +54,8 @@ const LoginScreen = ({ handleLogin, token }) => {
             handleLogin()
         }
         if (currentUserError) {
+
+        
             removeStorage().then(() => console.log("hahah")).catch(err => console.log(err))
         }
     }, [currentUser])

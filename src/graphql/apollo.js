@@ -3,7 +3,7 @@ import { setContext } from '@apollo/client/link/context';
 import { getStorage } from "../helpers/storage";
 
 const httpLink = new HttpLink({
-    uri: "http://192.168.2.14:8000/graphql",
+    uri: "http://192.168.1.58:8000/graphql",
 })
 
 
@@ -14,8 +14,6 @@ const authLink = setContext(async (req, { headers }) => {
     } catch (error) {
         console.log(error)
     }
-
-    console.log("token", token)
     return {
         headers: {
             ...headers,

@@ -56,9 +56,6 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
         getLocation()
     }, []);
 
-    console.log({ location })
-
-
     let renderImageHeader = () => {
         let image = Images.HANOI;
         if (citySelected == 3) image = Images.DANANG
@@ -78,9 +75,22 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
     }
 
     const renderQuickSearch = useCallback(() => {
-        if (quickSearchRender == 'Main') return <QuickSearch setModalDistrict={(isShow) => setModalDistrict(isShow)} modalDistrict={modalDistrict} districts={districts} handleChangeRender={(item) => setQuickSearchRender(item)} sex={sex} roomType={roomType} />
-        if (quickSearchRender == 'sexChoice') return <SexChoice setSexChoice={(value) => { setSex(value); setQuickSearchRender('Main') }} sexSelected={sex} />
-        if (quickSearchRender == 'typeChoice') return <RoomChoice setRoomChoice={(value) => { setRoomType(value); setQuickSearchRender('Main') }} roomSelected={roomType} />
+        if (quickSearchRender == 'Main') return <QuickSearch
+            setModalDistrict={(isShow) => setModalDistrict(isShow)} modalDistrict={modalDistrict}
+            districts={districts}
+            handleChangeRender={(item) => setQuickSearchRender(item)}
+            sex={sex}
+            roomType={roomType}
+            city={city}
+        />
+        if (quickSearchRender == 'sexChoice') return <SexChoice
+            setSexChoice={(value) => { setSex(value); setQuickSearchRender('Main') }}
+            sexSelected={sex}
+        />
+        if (quickSearchRender == 'typeChoice') return <RoomChoice
+            setRoomChoice={(value) => { setRoomType(value); setQuickSearchRender('Main') }}
+            roomSelected={roomType}
+        />
     }, [quickSearchRender])
 
 
