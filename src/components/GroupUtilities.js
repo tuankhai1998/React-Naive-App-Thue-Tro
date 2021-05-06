@@ -8,7 +8,6 @@ const GroupUtilities = ({ utilities, updateState }) => {
 
     useEffect(() => {
         setUnti([...utilities])
-        console.log('gadget', unti)
     }, []);
 
     let handleSelected = (index, selected) => {

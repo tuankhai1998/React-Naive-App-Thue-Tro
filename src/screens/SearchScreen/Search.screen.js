@@ -30,9 +30,11 @@ export default function SearchScreen() {
                 sex: 0
             },
             utilities: [
-                'Thú cưng',
-                'Ban công',
-                'WC riêng'
+                {
+                    text: 'Thú cưng',
+                    value: 4,
+                },
+
             ]
         });
 
@@ -43,7 +45,7 @@ export default function SearchScreen() {
         let arrayDataSearch = []
         if (priceRate.max && priceRate.min) arrayDataSearch.push(`${priceRate.min} - ${priceRate.max} triệu`)
         if (type) arrayDataSearch.push(`${roomType_FN(type)}`)
-        if (utilities) arrayDataSearch = [...arrayDataSearch, ...utilities]
+        if (utilities) arrayDataSearch = [...arrayDataSearch, ...utilities.map(item => item.text)]
         if (numPeople.num !== 1 || numPeople.sex !== 0) arrayDataSearch.push(`${numPeople.num} người, giới tính ${numPeople.sex == 0 ? 'tất cả' : numPeople.sex == 1 ? 'nam' : 'nữ'}`)
         return arrayDataSearch
     }
@@ -354,7 +356,12 @@ export default function SearchScreen() {
             setNumberPeople={(data) => setDataSearch({ ...dataSearch, numPeople: data })}
             numberPeople={dataSearch.numPeople}
         />
-        if (multiSearch == 'utility') return <Utility />
+        if (multiSearch == 'utility') return <Utility
+            utilitiesSelected={dataSearch.utilities}
+            handleUtilitiesSelect={(values) => {
+                setDataSearch({ ...dataSearch, utilities: values })
+            }}
+        />
         if (multiSearch == 'address') return <Address
             city={bigCity.filter(city => city.id === citySelected)[0]}
             setAddress={(data) => setDataSearch({ ...dataSearch, addressName: data })
