@@ -35,13 +35,13 @@ export const Utilities = [
         selected: false
 
     },
-    // {
-    //     text: 'Giường',
-    //     image: bed,
-    //     value: 4,
-    //     selected: false
+    {
+        text: 'Thứ cưng',
+        image: Images.PET,
+        value: 4,
+        selected: false
 
-    // },
+    },
     {
         text: 'Tự do',
         image: Images.TIME,
@@ -60,6 +60,20 @@ export const Utilities = [
         text: 'Internet',
         image: Images.WIFI,
         value: 7,
+        selected: false
+
+    },
+    {
+        text: 'Cửa sổ',
+        image: Images.WINDOW,
+        value: 8,
+        selected: false
+
+    },
+    {
+        text: 'Ban công',
+        image: Images.BALCONY,
+        value: 9,
         selected: false
 
     },

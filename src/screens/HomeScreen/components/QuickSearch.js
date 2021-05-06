@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS, FONTS, SHADOW, SIZES } from '../../../constants';
 import { RoomType as RoomTypes, Sex } from '../../../constants/values';
@@ -9,10 +9,11 @@ import { useNavigation } from '@react-navigation/core'
 export default function QuickSearch({ districts, setModalDistrict, modalDistrict, sex, roomType, handleChangeRender, city }) {
     const [districtsSelected, setDistrictSelected] = useState([]);
     const navigation = useNavigation();
-    const sexValue = Sex.filter(s => s.label == sex)[0].value;
-    const roomTypeValue = RoomTypes.filter(rt => rt.label == roomType)[0].value;
 
-    console.log(sexValue)
+    useEffect(() => {
+        console.log(sex, roomType)
+    }, [])
+
 
 
     const handleSelected = (name) => {
@@ -124,7 +125,6 @@ export default function QuickSearch({ districts, setModalDistrict, modalDistrict
                                 flexDirection: 'row',
                                 width: "100%",
                             }}
-
                             data={districts}
                             renderItem={({ item }) => (
                                 <TouchableOpacity
@@ -169,8 +169,8 @@ export default function QuickSearch({ districts, setModalDistrict, modalDistrict
                         onPress={() => {
                             navigation.push('ProductListScreen', {
                                 query: {
-                                    sex: sexValue,
-                                    type: roomTypeValue,
+                                    sex: sex,
+                                    type: roomType,
                                     multiDistricts: districtsSelected
                                 }
                             })

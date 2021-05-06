@@ -15,7 +15,7 @@ export default function ListProductSearchScreen() {
 
     const [fetchRoom, { data, error, loading }] = useLazyQuery(FETCH_ROOM);
 
-    console.log(error)
+
 
     useEffect(() => {
         fetchRoom({
@@ -28,6 +28,8 @@ export default function ListProductSearchScreen() {
             }
         })
     }, [params])
+
+    console.log({ loading, error })
 
     return (
         <>

@@ -17,6 +17,9 @@ const SECURITY = require('../../assets/images/security-camera.png');
 const TIME = require('../../assets/images/time-outline.png');
 const WHASHINGMACHINE = require('../../assets/images/washing-machine.png');
 const WIFI = require('../../assets/images/wifi-outline.png');
+const PET = require('../../assets/images/dog.png');
+const BALCONY = require('../../assets/images/balcony.png');
+const WINDOW = require('../../assets/images/window.png');
 
 export default {
     SplashScreenBG,
@@ -37,5 +40,8 @@ export default {
     SECURITY,
     TIME,
     WHASHINGMACHINE,
-    WIFI
+    WIFI,
+    PET,
+    BALCONY,
+    WINDOW
 }

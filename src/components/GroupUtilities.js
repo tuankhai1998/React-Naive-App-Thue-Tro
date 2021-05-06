@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { SIZES } from '../constants';
 import IconButton from './IconButton';
 
 const GroupUtilities = ({ utilities, updateState }) => {
@@ -21,7 +22,7 @@ const GroupUtilities = ({ utilities, updateState }) => {
     }, [unti]);
 
     return (
-        <View style={[styles.sectionContent, { justifyContent: "flex-start" }]}>
+        <View style={[styles.sectionContent, { padding: SIZES.padding }]}>
             {
                 unti.map(
                     (item, index) => <IconButton
@@ -36,7 +37,7 @@ const GroupUtilities = ({ utilities, updateState }) => {
                 )
             }
 
-        </View>
+        </View >
     )
 }
 
@@ -46,6 +47,5 @@ const styles = StyleSheet.create({
     sectionContent: {
         flexDirection: "row",
         flexWrap: 'wrap',
-        justifyContent: 'space-between'
     },
 })
