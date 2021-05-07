@@ -19,23 +19,20 @@ export default function SearchScreen() {
         route = useRoute(),
         { params } = route,
         [dataSearch, setDataSearch] = useState({
-            addressName: "",
+            addressName: {
+                districts: "Thanh Oai",
+                wardsAndStreet: "Cao Dương"
+            },
             priceRate: {
-                max: "15",
-                min: "12"
+                max: "12",
+                min: "10"
             },
             type: 1,
             numPeople: {
                 num: 1,
                 sex: 0
             },
-            utilities: [
-                {
-                    text: 'Thú cưng',
-                    value: 4,
-                },
-
-            ]
+            utilities: []
         });
 
     let { citySelected } = params;
@@ -43,9 +40,14 @@ export default function SearchScreen() {
     let formatDataSearchToArray = () => {
         let { priceRate, type, utilities, numPeople } = dataSearch;
         let arrayDataSearch = []
-        if (priceRate.max && priceRate.min) arrayDataSearch.push(`${priceRate.min} - ${priceRate.max} triệu`)
         if (type) arrayDataSearch.push(`${roomType_FN(type)}`)
-        if (utilities) arrayDataSearch = [...arrayDataSearch, ...utilities.map(item => item.text)]
+        if (priceRate?.max && priceRate?.min) {
+            arrayDataSearch.push(`${priceRate.min} - ${priceRate.max} triệu`)
+        }
+        if (utilities) {
+            let newArr = utilities.filter(item => item.selected)
+            arrayDataSearch = [...arrayDataSearch, ...newArr.map(item => item.text)]
+        }
         if (numPeople.num !== 1 || numPeople.sex !== 0) arrayDataSearch.push(`${numPeople.num} người, giới tính ${numPeople.sex == 0 ? 'tất cả' : numPeople.sex == 1 ? 'nam' : 'nữ'}`)
         return arrayDataSearch
     }
@@ -72,7 +74,8 @@ export default function SearchScreen() {
                         overflow: "hidden",
                         flex: 1,
                         borderColor: COLORS.primary,
-                        borderWidth: 2
+                        borderWidth: 2,
+                        alignItems: 'center'
                     }}
                 >
                     <TouchableOpacity
@@ -83,7 +86,6 @@ export default function SearchScreen() {
                             padding: SIZES.base,
                             alignItems: 'center'
                         }}
-                        onPress={() => setModalVisible(!modalVisible)}
                     >
                         <MaterialCommunityIcons name="map-marker" size={17} color={COLORS.secondary} />
                         <Text style={{
@@ -91,17 +93,15 @@ export default function SearchScreen() {
                             ...FONTS.body4
                         }}>{bigCity.filter(city => city.id === citySelected)[0].acronym}</Text>
                     </TouchableOpacity>
-                    {/* Input */}
                     <Text
                         style={{
                             flex: 1,
                             justifyContent: 'center',
                             marginHorizontal: SIZES.base,
-                            borderRadius: SIZES.borderRadius
+                            borderRadius: SIZES.borderRadius,
+                            color: COLORS.primaryTextColor,
                         }}
-                    >{dataSearch.addressName}</Text>
-
-
+                    >{dataSearch?.addressName?.districts && `${dataSearch.addressName.districts}, ${dataSearch.addressName.wardsAndStreet}`}</Text>
                 </View>
                 <TouchableOpacity
                     onPress={() => navigation.goBack()}
@@ -279,7 +279,6 @@ export default function SearchScreen() {
                 </View>
 
                 <View>
-
                     {
                         formatDataSearchToArray().length > 0 ? (
                             <ScrollView
@@ -311,7 +310,7 @@ export default function SearchScreen() {
                                                 }}
                                             >
                                                 <Text style={{ ...FONTS.body4, fontSize: 12 }}>{item}</Text>
-                                                <Ionicons name="close-circle" size={15} color="black" style={{ marginLeft: SIZES.base }} />
+                                                {/* <Ionicons name="close-circle" size={15} color="black" style={{ marginLeft: SIZES.base }} /> */}
                                             </TouchableOpacity>
                                         </View>
                                     ))
@@ -350,7 +349,7 @@ export default function SearchScreen() {
 
 
     const renderSearch = useCallback(() => {
-        if (multiSearch == 'price') return <PriceRate setPrice={(priceRate) => setDataSearch({ ...dataSearch, priceRate })} priceRate={dataSearch.priceRate} />
+        if (multiSearch == 'price') return <PriceRate setPrice={(priceRate) => setDataSearch({ ...dataSearch, priceRate: { ...priceRate } })} priceRate={dataSearch.priceRate} />
         if (multiSearch == 'roomType') return <RoomTypes type={dataSearch.type} setRoomType={(roomType) => { setDataSearch({ ...dataSearch, type: roomType }) }} />
         if (multiSearch == 'numberPeople') return <NumberPeople
             setNumberPeople={(data) => setDataSearch({ ...dataSearch, numPeople: data })}

@@ -12,8 +12,8 @@ import Thumb from './Thumb';
 
 // create a component
 const PriceRate = ({ setPrice, priceRate }) => {
-    const [low, setLow] = useState(priceRate.min);
-    const [high, setHigh] = useState(priceRate.max);
+    const [low, setLow] = useState();
+    const [high, setHigh] = useState();
 
     const renderThumb = useCallback(() => <Thumb />, []);
     const renderRail = useCallback(() => <Rail />, []);
@@ -51,6 +51,8 @@ const PriceRate = ({ setPrice, priceRate }) => {
                     style={styles.slider}
                     min={0}
                     max={15}
+                    low={priceRate.min}
+                    high={priceRate.max}
                     step={0.5}
                     renderThumb={renderThumb}
                     renderRail={renderRail}

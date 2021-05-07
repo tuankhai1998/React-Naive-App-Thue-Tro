@@ -20,10 +20,14 @@ export default function Address({ city, setAddress }) {
     let wardsOfDistrict = districts?.filter(district => district.name == districtsSelected)[0]?.wards
 
     useEffect(() => {
-        if (districtsSelected == "Tất Cả") setAddress('');
-        else if (wardsSelected == "Tất Cả") setAddress(districtsSelected);
-        else setAddress(`${wardsSelected}, ${districtsSelected}`)
+        if (districtsSelected == "Tất Cả") setAddress({ districts: '', wardsAndStreet: '' });
+        else if (wardsSelected == "Tất Cả") setAddress({ districts: districtsSelected, wardsAndStreet: '' });
+        else setAddress({ districts: districtsSelected, wardsAndStreet: wardsSelected });
     }, [districtsSelected, wardsSelected])
+
+    useEffect(() => {
+        setWardsSelected('Tất Cả')
+    }, [districtsSelected])
 
     const [showModalAddress, setShowModalAddress] = useState(false);
 

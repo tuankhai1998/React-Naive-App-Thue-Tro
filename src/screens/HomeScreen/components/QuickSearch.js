@@ -11,7 +11,6 @@ export default function QuickSearch({ districts, setModalDistrict, modalDistrict
     const navigation = useNavigation();
 
     useEffect(() => {
-        console.log(sex, roomType)
     }, [])
 
 

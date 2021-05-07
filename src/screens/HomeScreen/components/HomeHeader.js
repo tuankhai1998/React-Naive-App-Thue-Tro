@@ -30,7 +30,6 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
 
     let { districts } = selected;
     useEffect(() => {
-        console.log(sex)
     }, [sex])
 
 
@@ -42,9 +41,7 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
                     setErrorMsg('Permission to access location was denied');
                     return;
                 }
-
                 let location = await Location.getCurrentPositionAsync({});
-
                 setLocation({
                     latitude: location.coords.latitude,
                     longitude: location.coords.longitude,
@@ -76,7 +73,9 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
 
     const renderQuickSearch = useCallback(() => {
         if (quickSearchRender == 'Main') return <QuickSearch
-            setModalDistrict={(isShow) => setModalDistrict(isShow)} modalDistrict={modalDistrict}
+            setModalDistrict={(isShow) => {
+                setModalDistrict(isShow)
+            }} modalDistrict={modalDistrict}
             districts={districts}
             handleChangeRender={(item) => setQuickSearchRender(item)}
             sex={sex}

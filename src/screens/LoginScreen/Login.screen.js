@@ -30,10 +30,6 @@ const LoginScreen = ({ handleLogin, token }) => {
         }
     })
 
-    console.log({
-        loading, error
-        , currentUserError
-    })
     useEffect(() => {
         if (data) {
             let { login } = data;
