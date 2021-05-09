@@ -236,7 +236,7 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
                             alignItems: 'center',
 
                         }}
-                        onPress={() => console.log("hahaha")}
+                        onPress={() => navigation.push('CreateProduct')}
                     >
                         <View
                             style={{

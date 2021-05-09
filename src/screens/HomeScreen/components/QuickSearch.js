@@ -191,7 +191,7 @@ export default function QuickSearch({ districts, setModalDistrict, modalDistrict
                             padding: SIZES.base
                         }}
                         onPress={() => {
-                            setModalDistrict(!modalDistrict);
+                            setModalDistrict(false);
                         }}
                     >
                         <Text
