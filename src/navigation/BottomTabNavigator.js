@@ -10,6 +10,7 @@ import LikeStackNavigator from './stacknavigator/LikeStackNavigatior';
 import MessagesStackNavigator from './stacknavigator/MessagesStackNavigatior';
 import SettingStackNavigator from './stacknavigator/SettingStackNavigator';
 import { removeStorage } from '../helpers/storage'
+import SplashScreen from '../screens/Splash.screen';
 const Tab = createBottomTabNavigator();
 
 // create a component
@@ -41,7 +42,7 @@ const BottomTabNavigator = ({ handleLogin }) => {
 
     return (
         <>
-            <Tab.Navigator>
+            {loading ? <SplashScreen /> : <Tab.Navigator>
                 <Tab.Screen name="Home" component={HomeStackNavigator} />
                 <Tab.Screen name="Like" component={LikeStackNavigator} />
                 <Tab.Screen name="Messages" component={MessagesStackNavigator}
@@ -49,7 +50,7 @@ const BottomTabNavigator = ({ handleLogin }) => {
                         tabBarVisible: getTabBarVisible(route)
                     })} />
                 <Tab.Screen name="Settings" component={SettingStackNavigator} />
-            </Tab.Navigator>
+            </Tab.Navigator>}
         </>
     );
 };

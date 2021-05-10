@@ -2,6 +2,7 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 import HomeScreen from '../../screens/HomeScreen/Home.screen';
+import CreateProduct from '../../screens/CreateProduct/CreateProduct.screen';
 
 const HomeStack = createStackNavigator();
 
@@ -20,6 +21,7 @@ const HomeStackNavigator = () => {
             }}
         >
             <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Home' }} />
+            <HomeStack.Screen name="CreateProduct" component={CreateProduct} />
         </HomeStack.Navigator >
     );
 };

@@ -49,8 +49,8 @@ export default function CityChoice({ modalVisible, setModalVisible, bigCity, cha
                         >
                             <View
                                 style={{
-                                    width: 30,
-                                    height: 30,
+                                    width: 15,
+                                    height: 15,
                                     borderRadius: 15,
                                     borderColor: COLORS.black,
                                     borderWidth: 2,
@@ -61,8 +61,8 @@ export default function CityChoice({ modalVisible, setModalVisible, bigCity, cha
                                 {
                                     city.id == citySelected && <View
                                         style={{
-                                            width: 20,
-                                            height: 20,
+                                            width: 10,
+                                            height: 10,
                                             borderRadius: 16,
                                             backgroundColor: COLORS.primary
                                         }}
@@ -72,7 +72,8 @@ export default function CityChoice({ modalVisible, setModalVisible, bigCity, cha
                             <Text
                                 style={{
                                     marginLeft: SIZES.padding,
-                                    fontSize: SIZES.body2
+                                    fontSize: SIZES.body2,
+                                    ...FONTS.body2
                                 }}
                             >{city.name}</Text>
                         </TouchableOpacity>

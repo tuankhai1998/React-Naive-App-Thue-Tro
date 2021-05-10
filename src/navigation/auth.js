@@ -1,7 +1,7 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { getStorage } from '../helpers/storage';
-import CreateProduct from '../screens/CreateProduct/CreateProduct.screen';
+
 import ListProductSearchScreen from '../screens/ListProductSearch.screen';
 import LoginScreen from '../screens/LoginScreen/Login.screen';
 import ProductScreen from '../screens/ProductScreen/Product.screen';
@@ -39,7 +39,7 @@ const Authentication = () => {
                 <AuthStack.Screen name="Dashboard" component={() => <BottomTabNavigator handleLogin={(isLogin) => setLogin(isLogin)} />} />
                 <AuthStack.Screen name="SearchScreen" component={SearchScreen} />
                 <AuthStack.Screen name="ProductScreen" component={ProductScreen} />
-                <AuthStack.Screen name="CreateProduct" component={CreateProduct} />
+               
                 <AuthStack.Screen name="ProductListScreen" component={ListProductSearchScreen} />
             </>) : (<AuthStack.Screen name="LoginScreen" component={() => <LoginScreen handleLogin={() => setLogin(true)} token={token} />} />)}
         </AuthStack.Navigator>

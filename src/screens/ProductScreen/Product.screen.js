@@ -6,6 +6,7 @@ import { Animated, FlatList, Image, Text, TouchableOpacity, View } from 'react-n
 import Swiper from 'react-native-swiper'
 import { useEffect } from 'react/cjs/react.development'
 import ItemHorizontalList from '../../components/ItemHorizontalList'
+import SubText from '../../components/SubTexxt'
 import { COLORS, FONTS, SIZES } from '../../constants'
 import { FETCH_ROOM } from '../../graphql/room'
 import { ProductHeader } from './components/ProductHeader'
@@ -77,18 +78,6 @@ export default function ProductScreen() {
             </Swiper>
         )
     }
-
-    const sub = (base, exponent, color) => {
-        return <View style={{ flexDirection: 'row' }}>
-            <View style={{ alignItems: 'flex-end' }}>
-                <Text style={{ fontSize: 13, color: `${color}` }}>{base}</Text>
-            </View>
-            <View style={{ alignItems: 'flex-start' }}>
-                <Text style={{ fontSize: 10, color: `${color}` }}>{exponent}</Text>
-            </View>
-        </View>
-    }
-
 
     return (
         <View
@@ -183,7 +172,7 @@ export default function ProductScreen() {
                                         color: COLORS.primary,
                                         ...FONTS.body3
                                     }}
-                                >30 {sub('m', '2', COLORS.primary)}</Text>
+                                >30 <SubText base="m" exponent="2" color={COLORS.primary} /></Text>
                             </View>
                             <View
                                 style={{
