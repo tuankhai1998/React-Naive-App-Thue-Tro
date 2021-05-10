@@ -1,4 +1,5 @@
 import Images from "../Images"
+import { COLORS } from "../theme"
 
 export const Sex = [
     { value: 0, label: 'Tất cả' },
@@ -81,10 +82,33 @@ export const Utilities = [
 ]
 
 
+export const CreateStep = [
+    {
+        text: 'Thông tin phòng',
+        color: COLORS.Google,
+        
+    },
+    {
+        text: 'Địa chỉ',
+        color: COLORS.secondary
+    },
+    {
+        text: 'Tiện ích',
+        color: COLORS.Facebook
+    },
+    {
+        text: 'Xác nhận',
+        color: COLORS.primary
+    }
+
+]
+
+
 
 export default {
     Sex,
     RoomType,
-    Utilities
+    Utilities,
+    CreateStep
 }
 

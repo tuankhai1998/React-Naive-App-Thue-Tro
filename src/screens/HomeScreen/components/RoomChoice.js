@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
+import RadioButton from '../../../components/RadioButton'
 import { COLORS, FONTS, SHADOW, SIZES } from '../../../constants'
 import { RoomType } from '../../../constants/values'
 
@@ -21,52 +22,7 @@ export default function RoomChoice({ setRoomChoice, roomSelected }) {
                 }}
             >
                 <Text style={{ ...FONTS.h3 }}>Chọn loại phòng </Text>
-                {
-                    RoomType.map(({ value, label }, index) => {
-                        return (
-                            <TouchableOpacity
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    paddingVertical: SIZES.padding / 2,
-                                    borderBottomColor: COLORS.black,
-                                    borderBottomWidth: index + 1 == RoomType.length ? 0 : 1,
-                                }}
-
-                                onPress={() => setRoomChoice(value)}
-                            >
-                                <View
-                                    style={{
-                                        width: 30,
-                                        height: 30,
-                                        borderRadius: 15,
-                                        borderColor: COLORS.black,
-                                        borderWidth: 2,
-                                        justifyContent: 'center',
-                                        alignItems: 'center'
-                                    }}
-                                >
-                                    {
-                                        value == roomSelected && <View
-                                            style={{
-                                                width: 20,
-                                                height: 20,
-                                                borderRadius: 16,
-                                                backgroundColor: COLORS.primary
-                                            }}
-                                        ></View>
-                                    }
-                                </View>
-                                <Text
-                                    style={{
-                                        marginLeft: SIZES.padding,
-                                        fontSize: SIZES.body2
-                                    }}
-                                >{label}</Text>
-                            </TouchableOpacity>
-                        )
-                    })
-                }
+                <RadioButton data={RoomType} setSelected={(value) => { setRoomChoice(value) }} selected={roomSelected} />
             </View>
         </View>
     )

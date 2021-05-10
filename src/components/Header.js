@@ -6,8 +6,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { COLORS, FONTS, SHADOW, SIZES } from '../constants/theme'
 
 export default function Header(props) {
-    let { title, left, right } = props
+    let { title, left, right, handleLeft, handleRigth } = props
     const navigate = useNavigation()
+
+
     return (
         <View style={{
             height: SIZES.width * 2 > SIZES.height ? (SIZES.height / 10) : (SIZES.height / 9),
@@ -26,7 +28,14 @@ export default function Header(props) {
                 <View style={!left ? { width: SIZES.padding * 2 + 19, height: SIZES.padding * 2 + 19, ...styles.iconSpace } : null}>
                     {left &&
                         <TouchableOpacity
-                            onPress={() => navigate.goBack()}
+                            onPress={() => {
+                                if (handleLeft) {
+                                    handleLeft()
+                                }
+                                else {
+                                    navigate.goBack()
+                                }
+                            }}
                             style={{ ...styles.iconSpace }}
                         >
                             <AntDesign name="arrowleft" size={24} color={COLORS.primaryTextColor} />
