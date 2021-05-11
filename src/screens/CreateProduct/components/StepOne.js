@@ -292,22 +292,71 @@ const StepOne = () => {
                     }}
                 />
             </View>
-
-            <Checkbox.Item
-                label="Chỗ để xe"
-                status={electricFree ? 'checked' : 'unchecked'}
-                onPress={() => setElectricFree(!electricFree)}
-                labelStyle={{
-                    ...FONTS.body3,
-                    color: COLORS.black,
-                    paddingLeft: 0
-                }}
-                color={COLORS.primary}
+            <View
                 style={{
-                    flexDirection: 'row-reverse',
-                    justifyContent: 'flex-end'
+                    justifyContent: 'flex-end',
+                    marginHorizontal: -SIZES.padding
                 }}
-            />
+            >
+
+                <Checkbox.Item
+                    label="Chỗ để xe"
+                    status={electricFree ? 'checked' : 'unchecked'}
+                    onPress={() => setElectricFree(!electricFree)}
+                    labelStyle={{
+                        ...FONTS.body3,
+                        color: COLORS.black,
+                    }}
+                    color={COLORS.primary}
+                    style={{
+                        flexDirection: 'row-reverse',
+                        justifyContent: 'flex-end',
+
+                    }}
+                />
+            </View>
+
+            <Text
+                style={{
+                    ...FONTS.body3,
+                }}
+            >
+                Để xe
+            </Text>
+            <View
+                style={{
+                    flexDirection: 'row',
+                    alignItems: 'baseline'
+                }}
+            >
+                <TextInput
+                    style={{
+                        backgroundColor: COLORS.white,
+                        paddingHorizontal: SIZES.base,
+                        flex: 1,
+                        marginRight: SIZES.padding,
+                        marginVertical: SIZES.base,
+                        borderRadius: SIZES.radius / 2,
+                        paddingVertical: SIZES.base,
+                        maxWidth: SIZES.width * 2 / 3 - 2 * SIZES.padding
+                    }}
+                    keyboardType="number-pad"
+                />
+                <Text>VND</Text>
+                <Checkbox.Item
+                    label="Miễn phi"
+                    status={electricFree ? 'checked' : 'unchecked'}
+                    onPress={() => setElectricFree(!electricFree)}
+                    labelStyle={{
+                        ...FONTS.body3,
+                        color: COLORS.black,
+                    }}
+                    color={COLORS.primary}
+                    style={{
+                        flexDirection: 'row-reverse'
+                    }}
+                />
+            </View>
 
         </View>
     );

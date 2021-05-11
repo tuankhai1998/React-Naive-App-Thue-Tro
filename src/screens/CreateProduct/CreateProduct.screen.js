@@ -7,13 +7,22 @@ import { CreateStep } from '../../constants/values';
 import { useNavigation } from '@react-navigation/core'
 import { Formik } from 'formik';
 import StepOne from './components/StepOne';
+import StepTwo from './components/StepTwo';
 
 const CreateProduct = () => {
 
     const navigation = useNavigation();
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(2);
 
     const stepRender = useCallback(() => {
+        switch (step) {
+            case 1: return <StepOne />;
+            case 2: return <StepTwo />;
+            case 3: return <StepOne />;
+            case 4: return <StepOne />;
+            default:
+                return <StepOne />
+        }
 
     }, [step])
 
@@ -85,8 +94,7 @@ const CreateProduct = () => {
                             {
                                 ({ handleChange, handleBlur, handleSubmit, values }) => (
                                     <>
-                                        <StepOne />
-
+                                        {stepRender()}
                                     </>
                                 )
                             }
