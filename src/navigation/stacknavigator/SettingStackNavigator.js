@@ -1,7 +1,7 @@
 //import liraries
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
-import { Text, View } from 'react-native';
+import ProfileScreen from '../../screens/ProfileScreen/Profile.screen';
 import SettingScreen from '../../screens/SettingScreen/Setting.screen';
 
 const SettingStack = createStackNavigator();
@@ -19,6 +19,7 @@ const SettingStackNavigator = () => {
             }}
         >
             <SettingStack.Screen name="SettingScreen" component={SettingScreen} />
+            <SettingStack.Screen name="ProfileScreen" component={ProfileScreen} />
         </SettingStack.Navigator>
     );
 };

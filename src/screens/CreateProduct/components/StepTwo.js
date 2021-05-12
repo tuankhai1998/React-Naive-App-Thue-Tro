@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useState } from 'react';
 import { Modal, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useEffect } from 'react/cjs/react.development';
 import { COLORS, FONTS, SHADOW, SIZES } from '../../../constants';
 import { city } from '../../../constants/city'
 
@@ -8,27 +9,43 @@ import { city } from '../../../constants/city'
 
 export default function StepTwo() {
     const [modalVisible, setModalVisible] = useState(false);
-    const [datas, setDatas] = useState([...city]);
-    const [citySelected, setCitySelected] = useState('Hà Nội')
+    const [citySelected, setCitySelected] = useState('');
+    const [districtSelected, setDistrictSelected] = useState('');
+    const [wardsSelected, setWardsSelected] = useState('');
+    const [modalRender, setModalRender] = useState(1);
+    const [dataRender, setDataRender] = useState([])
+
+
+
+    useEffect(() => {
+        if (!citySelected) {
+            setDistrictSelected('')
+            setWardsSelected('')
+        }
+
+        if (districtSelected) {
+            setWardsSelected('')
+        }
+    }, [citySelected, districtSelected, wardsSelected])
 
 
 
 
-    const renderModal = useCallback(
-        () => {
-            return (
-                <View
-                    style={{
-                        width: SIZES.width - SIZES.padding * 2,
-                        borderRadius: SIZES.radius,
-                        maxHeight: SIZES.height * 3 / 4,
-                        ...SHADOW.shadow1,
-                        padding: SIZES.padding,
-                        backgroundColor: COLORS.white
-                    }}
-                >
-                    <View>
-                        {datas.map(data => (
+    const renderModal = (datas, selected, setSelected) => {
+        return (
+            <View
+                style={{
+                    width: SIZES.width - SIZES.padding * 2,
+                    borderRadius: SIZES.radius,
+                    maxHeight: SIZES.height * 3 / 4,
+                    ...SHADOW.shadow1,
+                    padding: SIZES.padding,
+                    backgroundColor: COLORS.white
+                }}
+            >
+                <View>
+                    {datas.map(data => {
+                        return (
                             <TouchableOpacity
                                 style={{
                                     flexDirection: "row",
@@ -39,7 +56,7 @@ export default function StepTwo() {
                                 }}
 
                                 onPress={() => {
-                                    setCitySelected(data.name)
+                                    setSelected(data.name)
                                     setModalVisible(false);
                                 }}
                             >
@@ -55,7 +72,7 @@ export default function StepTwo() {
                                     }}
                                 >
                                     {
-                                        data.name == citySelected && <View
+                                        data.name === selected && <View
                                             style={{
                                                 width: 10,
                                                 height: 10,
@@ -73,14 +90,12 @@ export default function StepTwo() {
                                     }}
                                 >{data.name}</Text>
                             </TouchableOpacity>
-                        ))}
-                    </View>
-
+                        )
+                    })}
                 </View>
-            )
-        },
-        [datas],
-    )
+            </View>
+        )
+    }
 
 
     return (
@@ -107,7 +122,9 @@ export default function StepTwo() {
                         alignItems: 'center'
                     }}
                 >
-                    {renderModal()}
+                    {modalRender == 1 ? renderModal(datas(), citySelected, (value) => setCitySelected(value))
+                        : modalRender == 2 ? renderModal(datas(), districtSelected, (value) => setDistrictSelected(value))
+                            : renderModal(datas(), wardsSelected, (value) => setWardsSelected(value))}
                 </View>
             </Modal>
             <Text
@@ -141,13 +158,16 @@ export default function StepTwo() {
                         justifyContent: 'space-between'
 
                     }}
-                    onPress={() => setModalVisible(true)}
+                    onPress={() => {
+                        setModalVisible(true)
+                        setModalRender(1)
+                    }}
                 >
                     <Text
                         style={{
                             ...FONTS.body3
                         }}
-                    >Thành phố</Text>
+                    >{citySelected ? citySelected : 'Thành phố'}</Text>
 
                     <Ionicons name="chevron-down" size={20} color="black" />
                 </TouchableOpacity>
@@ -174,6 +194,10 @@ export default function StepTwo() {
                         flexDirection: 'row',
                         justifyContent: 'space-between'
 
+                    }}
+                    onPress={() => {
+                        setModalRender(2)
+                        setModalVisible(true)
                     }}
                 >
                     <Text
@@ -207,6 +231,10 @@ export default function StepTwo() {
                         flexDirection: 'row',
                         justifyContent: 'space-between'
 
+                    }}
+                    onPress={() => {
+                        setModalVisible(true)
+                        setModalRender(3)
                     }}
                 >
                     <Text
