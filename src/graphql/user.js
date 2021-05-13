@@ -87,3 +87,14 @@ export const TOGGLE_LIKE_ROOM = gql`
             }
   }
 `
+
+export const UPDATE_USER = gql`
+    mutation($avatar: Update, $password: String, $phone: String, $name: String) {
+        updateUser(avatar: $avatar, password: $password, phone: $phone, name: $name) {
+                _id
+                avatar
+                name
+                email
+            }
+  }
+`

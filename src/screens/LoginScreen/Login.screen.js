@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
@@ -29,6 +28,7 @@ const LoginScreen = ({ handleLogin, token }) => {
             setStorage('@AHome-graphql:', createUser)
         }
     })
+
 
     useEffect(() => {
         if (data) {

@@ -6,14 +6,15 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Avatar } from 'react-native-paper';
 import Header from '../../components/Header';
 import { COLORS, FONTS, SIZES } from '../../constants';
+import { removeStorage } from '../../helpers/storage'
 
 // create a component
 const SettingScreen = () => {
     const navigation = useNavigation();
 
-    const handleLogout = () => {
-        removeStorage()
-        navigation.push("LoginScreen")
+    const handleLogout = async () => {
+        await removeStorage()
+        navigation.push("Dashboard")
     }
     return (
         <View style={styles.container}>

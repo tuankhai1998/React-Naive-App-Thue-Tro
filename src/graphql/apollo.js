@@ -1,8 +1,9 @@
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from '@apollo/client/link/context';
 import { getStorage } from "../helpers/storage";
+import { createUploadLink } from 'apollo-upload-client'
 
-const httpLink = new HttpLink({
+const httpLink = createUploadLink({
     uri: "http://192.168.1.58:8000/graphql",
 })
 
@@ -11,7 +12,6 @@ const authLink = setContext(async (req, { headers }) => {
     let token = "";
     try {
         token = await getStorage();
-
         console.log("get token on storage :", token)
         return {
             headers: {

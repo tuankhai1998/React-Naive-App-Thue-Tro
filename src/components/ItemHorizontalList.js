@@ -14,8 +14,7 @@ export default function ItemHorizontalList({ item, index }) {
         query: CURRENT_USER
     });
     const [handleLikeRoom, { loading }] = useMutation(TOGGLE_LIKE_ROOM);
-    const userLiked = user?.liked.map(roomLike => roomLike._id)
-
+    const userLiked = user && user?.liked?.map(roomLike => roomLike._id)
 
     return (
         <TouchableOpacity

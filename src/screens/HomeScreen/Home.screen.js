@@ -46,8 +46,6 @@ let district = {
 const HomeScreen = () => {
     let [citySelect, setCitySelect] = useState(2);
 
-    const navigation = useNavigation();
-
     const getCity = () => {
         return citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'
     }
