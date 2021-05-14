@@ -5,6 +5,9 @@ export const CURRENT_USER = gql`
         user {
             email
             _id
+            name
+            avatar
+            phone
             liked{
                 _id
             }
@@ -50,12 +53,20 @@ query {
 export const LOGIN = gql`
    query($email: String!, $password: String!){
         login(email: $email password: $password){
-            token 
             _id
-            refreshToken
-            expiresIn
-        }
-    }
+            token
+            avatar
+        name
+            phone 
+            email
+            created{
+            _id
+            }
+            liked{
+            _id
+            }
+                }
+            }
 `;
 
 
@@ -89,12 +100,12 @@ export const TOGGLE_LIKE_ROOM = gql`
 `
 
 export const UPDATE_USER = gql`
-    mutation($avatar: Update, $password: String, $phone: String, $name: String) {
-        updateUser(avatar: $avatar, password: $password, phone: $phone, name: $name) {
-                _id
-                avatar
-                name
-                email
-            }
-  }
+    mutation($profile: userInput) {
+        updateUser(profile: $profile) {
+            _id
+            avatar
+            name
+            email
+        }
+    }
 `

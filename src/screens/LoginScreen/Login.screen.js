@@ -29,6 +29,8 @@ const LoginScreen = ({ handleLogin, token }) => {
         }
     })
 
+    console.log({ data, loading, error })
+
 
     useEffect(() => {
         if (data) {

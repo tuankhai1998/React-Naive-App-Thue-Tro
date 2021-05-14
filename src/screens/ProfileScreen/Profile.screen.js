@@ -77,7 +77,9 @@ export default function ProfileScreen() {
             if (!result.cancelled) {
                 updateUser({
                     variables: {
-                        avatar: createImageData(result)
+                        profile: {
+                            avatar: createImageData(result)
+                        }
                     }
                 })
             }
@@ -88,7 +90,8 @@ export default function ProfileScreen() {
 
     console.log({
         user,
-
+        loading,
+        error,
         data
     })
 
