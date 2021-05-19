@@ -30,5 +30,39 @@ export const FETCH_ROOM = gql`
 
 
 
+export const CURRENT_ROOM = gql`
+query($idRoom: ID!)
+{room(_id:$idRoom){
+    _id
+    type
+    images
+    roomNum
+    address{
+        name{
+            city
+            wardsAndStreet
+            districts
+        }
+        loc{
+            coordinates
+        }
+    }
+    price {
+        room{
+            free
+            price
+        }
+    }
+    createdAt
+    createdBy {
+        name
+        phone
+        avatar
+        _id
+    }
+        
+}}
+`
+
 
 

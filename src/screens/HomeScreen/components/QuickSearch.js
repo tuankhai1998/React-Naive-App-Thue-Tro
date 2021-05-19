@@ -166,6 +166,7 @@ export default function QuickSearch({ districts, setModalDistrict, modalDistrict
                             marginBottom: SIZES.base
                         }}
                         onPress={() => {
+                            setModalDistrict(false);
                             navigation.push('ProductListScreen', {
                                 query: {
                                     sex: sex,
@@ -173,7 +174,7 @@ export default function QuickSearch({ districts, setModalDistrict, modalDistrict
                                     multiDistricts: districtsSelected
                                 }
                             })
-                            setModalDistrict(!modalDistrict);
+
                         }}
                     >
 

@@ -26,7 +26,7 @@ export default function ItemHorizontalList({ item, index }) {
             }}
 
             onPress={() => navigation.push('ProductScreen', {
-                _id: item._id
+                idRoom: item._id
             })}
         >
             <View
@@ -76,7 +76,7 @@ export default function ItemHorizontalList({ item, index }) {
                     <View>
                         <Text style={{ ...FONTS.body4, textTransform: "uppercase", fontSize: 12 }}></Text>
                         <Text style={{ ...FONTS.h4 }} numberOfLines={2}>
-                            {`${roomType_FN(item.type)} ${item.address.name.city}, ${item.address.name.district}`}
+                            {`${roomType_FN(item.type)} ${item.address.name.city}, ${item?.address?.name?.districts}`}
                         </Text>
                         <Text
                             style={{
@@ -85,9 +85,9 @@ export default function ItemHorizontalList({ item, index }) {
                                 color: COLORS.secondary
                             }}
                         >
-                            {`${item.price.room.price} triệu/phòng`}
+                            {`${item.price.room.price / 1000000} triệu/tháng`}
                         </Text>
-                        <Text numberOfLines={2} ellipsizeMode='middle'>{`${item.address.name.city}, ${item.address.name.districts}, ${item.address.name.wardsAndStreet}`}</Text>
+                        <Text numberOfLines={2} ellipsizeMode='middle'>{`${item.address.name.city}, ${item?.address?.name?.districts ? item?.address?.name?.districts : ''}, ${item?.address?.name?.wardsAndStreet ? item?.address?.name?.wardsAndStreet : ''}`}</Text>
                     </View>
                 ) : (<View>
                     <View style={{ backgroundColor: COLORS.gray, width: '80%', height: 10, marginTop: SIZES.base / 2 }}></View>

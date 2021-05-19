@@ -1,9 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useState } from 'react';
-import { Modal, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useEffect } from 'react/cjs/react.development';
 import { COLORS, FONTS, SHADOW, SIZES } from '../../../constants';
-import { city } from '../../../constants/city'
+import { city } from '../../../constants/city';
+import * as Location from 'expo-location';
 
 
 
@@ -13,8 +14,8 @@ export default function StepTwo() {
     const [districtSelected, setDistrictSelected] = useState('');
     const [wardsSelected, setWardsSelected] = useState('');
     const [modalRender, setModalRender] = useState(1);
-    const [dataRender, setDataRender] = useState([])
-
+    const [any, setAny] = useState('');
+    const [location, setLocation] = useState("");
 
 
     useEffect(() => {
@@ -22,11 +23,53 @@ export default function StepTwo() {
             setDistrictSelected('')
             setWardsSelected('')
         }
-
-        if (districtSelected) {
+        if (!districtSelected) {
             setWardsSelected('')
         }
     }, [citySelected, districtSelected, wardsSelected])
+
+    useEffect(() => {
+        const geocode = async () => {
+            await Location.setGoogleApiKey("AIzaSyDAtJK7wLInUeBcKvbDjoFhkoDrZFpJwhs")
+            try {
+                let res = await Location.geocodeAsync(`${citySelected}, ${districtSelected}, ${wardsSelected}, ${any}`, { useGoogleMaps: false });
+
+                let { latitude, longitude } = res[0]
+
+                setLocation(`${latitude},${longitude}`)
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        geocode()
+    }, [citySelected, districtSelected, wardsSelected, any])
+
+
+
+
+
+    const datas = useCallback(() => {
+        if (modalRender == 1) {
+            return city
+        }
+        if (modalRender == 2) {
+            if (citySelected) {
+                let districts = city.filter(thisCity => thisCity.name == citySelected)[0].districts
+                return districts
+            }
+            return []
+        }
+        if (modalRender !== 1 || modalRender !== 2) {
+            if (districtSelected) {
+                let wards = city.filter(thisCity => thisCity.name == citySelected)[0].districts.filter(thisDistricts => thisDistricts.name == districtSelected)[0].wards
+                return wards
+            }
+
+            return []
+        }
+
+    }, [modalRender])
 
 
 
@@ -43,7 +86,8 @@ export default function StepTwo() {
                     backgroundColor: COLORS.white
                 }}
             >
-                <View>
+
+                <ScrollView>
                     {datas.map(data => {
                         return (
                             <TouchableOpacity
@@ -92,7 +136,7 @@ export default function StepTwo() {
                             </TouchableOpacity>
                         )
                     })}
-                </View>
+                </ScrollView>
             </View>
         )
     }
@@ -105,6 +149,9 @@ export default function StepTwo() {
                 padding: SIZES.padding
             }}
         >
+            <TextInput
+                value={location}
+            />
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -113,7 +160,7 @@ export default function StepTwo() {
                     setModalVisible(!modalVisible);
                 }}
             >
-                <View
+                <TouchableOpacity
                     style={{
                         backgroundColor: "rgba(0,0,0,0.1)",
                         width: SIZES.width,
@@ -121,11 +168,15 @@ export default function StepTwo() {
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}
+                    onPress={() => {
+                        setModalVisible(false);
+                    }}
+                    activeOpacity={1}
                 >
                     {modalRender == 1 ? renderModal(datas(), citySelected, (value) => setCitySelected(value))
                         : modalRender == 2 ? renderModal(datas(), districtSelected, (value) => setDistrictSelected(value))
                             : renderModal(datas(), wardsSelected, (value) => setWardsSelected(value))}
-                </View>
+                </TouchableOpacity>
             </Modal>
             <Text
                 style={{
@@ -204,7 +255,7 @@ export default function StepTwo() {
                         style={{
                             ...FONTS.body3
                         }}
-                    >Quận/ Huyện</Text>
+                    >{districtSelected ? districtSelected : 'Quận/ Huyện'}</Text>
 
                     <Ionicons name="chevron-down" size={20} color="black" />
                 </TouchableOpacity>
@@ -241,7 +292,7 @@ export default function StepTwo() {
                         style={{
                             ...FONTS.body3
                         }}
-                    > Xã/ Phường</Text>
+                    > {wardsSelected ? wardsSelected : 'Xã/ Phường'}</Text>
 
                     <Ionicons name="chevron-down" size={20} color="black" />
                 </TouchableOpacity>
@@ -268,11 +319,10 @@ export default function StepTwo() {
                         borderRadius: SIZES.radius / 2,
                         paddingVertical: SIZES.base,
                     }}
+                    onChangeText={(text) => setAny(text)}
+                    value={any}
                 />
             </View>
-
-
-
         </View>
     )
 }

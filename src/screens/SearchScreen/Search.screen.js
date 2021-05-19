@@ -20,8 +20,8 @@ export default function SearchScreen() {
         { params } = route,
         [dataSearch, setDataSearch] = useState({
             addressName: {
-                districts: "Thanh Oai",
-                wardsAndStreet: "Cao Dương"
+                districts: "",
+                wardsAndStreet: ""
             },
             priceRate: {
                 max: "12",
@@ -31,9 +31,9 @@ export default function SearchScreen() {
             numPeople: {
                 num: 1,
                 sex: 0
-            },
-            utilities: []
+            }
         });
+
 
     let { citySelected } = params;
 
@@ -44,10 +44,10 @@ export default function SearchScreen() {
         if (priceRate?.max && priceRate?.min) {
             arrayDataSearch.push(`${priceRate.min} - ${priceRate.max} triệu`)
         }
-        if (utilities) {
-            let newArr = utilities.filter(item => item.selected)
-            arrayDataSearch = [...arrayDataSearch, ...newArr.map(item => item.text)]
-        }
+        // if (utilities) {
+        //     let newArr = utilities.filter(item => item.selected)
+        //     arrayDataSearch = [...arrayDataSearch, ...newArr.map(item => item.text)]
+        // }
         if (numPeople.num !== 1 || numPeople.sex !== 0) arrayDataSearch.push(`${numPeople.num} người, giới tính ${numPeople.sex == 0 ? 'tất cả' : numPeople.sex == 1 ? 'nam' : 'nữ'}`)
         return arrayDataSearch
     }
@@ -246,7 +246,7 @@ export default function SearchScreen() {
                                 paddingHorizontal: SIZES.base / 2
                             }} />
                         </TouchableOpacity>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
                             onPress={() => {
                                 setSearching(true);
@@ -259,7 +259,7 @@ export default function SearchScreen() {
                             <Ionicons name="chevron-down" size={16} color="black" style={{
                                 paddingHorizontal: SIZES.base / 2
                             }} />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <TouchableOpacity
                             style={{ flexDirection: 'row', alignItems: 'center', marginRight: SIZES.base }}
                             onPress={() => {
@@ -334,6 +334,19 @@ export default function SearchScreen() {
                                     backgroundColor: COLORS.primary,
                                     alignItems: 'center',
                                     borderRadius: SIZES.radius
+                                }}
+                                onPress={() => {
+                                    let { priceRate, type, numPeople, addressName } = dataSearch;
+                                    navigation.push("ProductListScreen", {
+                                        query: {
+                                            sex: numPeople.sex,
+                                            maxPrice: priceRate.max,
+                                            minPrice: priceRate.min,
+                                            roomNum: numPeople.num,
+                                            type,
+                                            addressName
+                                        }
+                                    })
                                 }}
                             >
                                 <Text style={{ ...FONTS.body4 }}>Tìm kiếm</Text>

@@ -16,9 +16,21 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    },
+  	"ios": {
+			"supportsTablet": true,
+			"bundleIdentifier": "com.company",
+			"config": {
+				"googleMapsApiKey": "AIzaSyDAtJK7wLInUeBcKvbDjoFhkoDrZFpJwhs"
+			}
+		},
+		"android": {
+			"package": "com.company",
+			"config": {
+				"googleMaps": {
+					"apiKey": "AIzaSyDAtJK7wLInUeBcKvbDjoFhkoDrZFpJwhs"
+				}
+			}
+		},
     "web": {
       "favicon": "./assets/favicon.png"
     }

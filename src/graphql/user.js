@@ -102,10 +102,29 @@ export const TOGGLE_LIKE_ROOM = gql`
 export const UPDATE_USER = gql`
     mutation($profile: userInput) {
         updateUser(profile: $profile) {
-            _id
             avatar
             name
-            email
+            phone
+        }
+    }
+`
+
+
+
+export const USER_INFO = gql`
+    query {
+        user {
+            name
+            avatar
+            phone
+        }
+    }
+`
+
+export const UPLOAD_FILE = gql`
+    mutation ($file:Upload!) {
+        singleImageUpload (file:$file){
+            url
         }
     }
 `

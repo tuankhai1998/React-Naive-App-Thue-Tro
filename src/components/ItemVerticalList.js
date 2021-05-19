@@ -28,7 +28,9 @@ const ItemVerticalList = ({ item, index }) => {
                 flexDirection: "row"
             }}
 
-            onPress={() => navigation.push('ProductScreen')}
+            onPress={() => navigation.push('ProductScreen', {
+                idRoom: item._id
+            })}
         >
             <View
                 style={{
@@ -92,7 +94,7 @@ const ItemVerticalList = ({ item, index }) => {
                                 color: COLORS.secondary
                             }}
                         >
-                            {`${item.price.room.price} triệu/phòng`}
+                            {`${item.price.room.price / 1000000} triệu/phòng`}
                         </Text>
                         <Text numberOfLines={2} ellipsizeMode='middle'>{`${item.address.name.city}, ${item.address.name.districts}, ${item.address.name.wardsAndStreet}`}</Text>
                     </View>

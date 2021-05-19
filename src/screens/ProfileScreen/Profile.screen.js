@@ -7,30 +7,37 @@ import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { Avatar, TextInput } from 'react-native-paper'
 import Header from '../../components/Header'
 import { COLORS, FONTS, SHADOW, SIZES } from '../../constants'
-import { CURRENT_USER, UPDATE_USER } from '../../graphql/user'
+import { UPLOAD_FILE, UPDATE_USER, USER_INFO } from '../../graphql/user'
+import { ReactNativeFile } from 'apollo-upload-client';
+import { gql } from "@apollo/client";
 
 export default function ProfileScreen() {
     const [text, setText] = React.useState('');
     const [phone, setPhone] = React.useState('');
     const client = useApolloClient();
     const { user } = client.readQuery({
-        query: CURRENT_USER
+        query: USER_INFO
     })
 
-    const [updateUser, { loading, error, data }] = useMutation(UPDATE_USER, {
-        update(cache, { data: { updateUser } }) {
-            cache.modify({
-                fields: {
-                    user() {
-                        const userUpdated = cache.writeFragment({
-                            data: updateUser
-                        })
-                        return {
-                            ...userUpdated
+    const [uploadImg] = useMutation(UPLOAD_FILE)
+
+    const [updateUser] = useMutation(UPDATE_USER, {
+        update: (store, { data: { updateUser } }) => {
+            try {
+                store.writeQuery({
+                    query: USER_INFO,
+                    data: {
+                        user: {
+                            ...updateUser
                         }
                     }
-                }
-            })
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        onError: (error) => {
+            console.log(error)
         }
     })
 
@@ -59,41 +66,46 @@ export default function ProfileScreen() {
 
         // Infer the type of the image
         let match = /\.(\w+)$/.exec(filename);
-        let type = match ? `image/${match[1]}` : `image`;
+        let type = match ? `image/ ${match[1]}` : `image`;
 
         return { uri: Platform.OS === "android" ? localUri : localUri.replace("file://", ""), name: filename, type };
 
     }
 
-
     const pickImage = async () => {
+        let result;
         try {
-            let result = await ImagePicker.launchImageLibraryAsync({
+            result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
                 aspect: [3, 3],
                 quality: 1,
             });
             if (!result.cancelled) {
-                updateUser({
+                let imageData = await createImageData(result);
+                let avatar = await new ReactNativeFile(imageData);
+                uploadImg({
                     variables: {
-                        profile: {
-                            avatar: createImageData(result)
-                        }
+                        file: avatar
                     }
                 })
+
             }
         } catch (E) {
-            console.log(E);
+            console.log("error", E);
         }
     };
 
-    console.log({
-        user,
-        loading,
-        error,
-        data
-    })
+    const handleSubmit = () => {
+        updateUser({
+            variables: {
+                profile: {
+                    name: text,
+                    phone: phone
+                }
+            }
+        })
+    }
 
     return (
         <View>
@@ -151,8 +163,6 @@ export default function ProfileScreen() {
                                 background: COLORS.secondary
                             }
                         }}
-                        defaultValue=""
-
                     />
 
                     <TextInput
@@ -181,6 +191,7 @@ export default function ProfileScreen() {
                             backgroundColor: COLORS.primary,
                             borderRadius: SIZES.radius / 2
                         }}
+                        onPress={handleSubmit}
                     >
                         <Text
                             style={{
@@ -196,3 +207,58 @@ export default function ProfileScreen() {
         </View>
     )
 }
+
+
+// update: (store, { data: { updateUser } }) => {
+//     try {
+//         const { user } = store.readQuery({
+//             query: CURRENT_USER
+//         });
+
+//         console.log({
+//             ...user, ...updateUser
+//         })
+
+//         store.writeQuery({
+//             query: CURRENT_USER,
+//             data: {
+//                 user: {
+//                     ...user,
+//                     ...updateUser
+//                 }
+//             }
+//         })
+//     } catch (error) {
+//         console.log(error)
+//     }
+
+// }
+
+
+// , {
+//     update(cache, { data: { updateUser } }) {
+//         cache.modify({
+//             fields: {
+//                 user(currentUser = {}) {
+//                     const userRef = cache.writeFragment({
+//                         data: updateUser,
+//                         fragment: gql`
+//                         fragment userUpdate on User {
+//                             name
+//                             phone
+//                         }`
+//                     })
+
+//                     console.log({
+//                         ...user, ...userRef
+//                     })
+
+//                     return {
+//                         ...user,
+//                         ...userRef
+//                     }
+//                 }
+//             }
+//         })
+//     }
+// }

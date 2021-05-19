@@ -29,6 +29,7 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
     })[0]
 
     let { districts } = selected;
+
     useEffect(() => {
     }, [sex])
 
@@ -90,7 +91,7 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
             setRoomChoice={(value) => { setRoomType(value); setQuickSearchRender('Main') }}
             roomSelected={roomType}
         />
-    }, [quickSearchRender])
+    }, [quickSearchRender, districts])
 
 
     return (

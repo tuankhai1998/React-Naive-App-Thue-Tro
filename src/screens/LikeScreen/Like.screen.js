@@ -17,6 +17,9 @@ const LikeScreen = () => {
     })
 
 
+
+
+
     return (
         <View style={styles.container}>
             <Header title="Like" />

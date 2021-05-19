@@ -1,6 +1,7 @@
+import { useQuery } from '@apollo/client'
 import { useLazyQuery } from '@apollo/client'
 import { Feather, Fontisto, Ionicons } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/core'
+import { useNavigation, useRoute } from '@react-navigation/core'
 import React, { useState } from 'react'
 import { Animated, FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import Swiper from 'react-native-swiper'
@@ -8,7 +9,7 @@ import { useEffect } from 'react/cjs/react.development'
 import ItemHorizontalList from '../../components/ItemHorizontalList'
 import SubText from '../../components/SubTexxt'
 import { COLORS, FONTS, SIZES } from '../../constants'
-import { FETCH_ROOM } from '../../graphql/room'
+import { CURRENT_ROOM, FETCH_ROOM } from '../../graphql/room'
 import { ProductHeader } from './components/ProductHeader'
 
 
@@ -23,7 +24,16 @@ export default function ProductScreen() {
     let sex;
     const navigation = useNavigation();
     const scrollY = new Animated.Value(0);
+    const route = useRoute();
+    const { params } = route;
+    const { idRoom } = params;
+
     const [fetchSameRoom, { error: errorRoom, data: dataRoom, loading }] = useLazyQuery(FETCH_ROOM);
+    const { data: currentRoom, loading: roomLoading, error: currentRoomError } = useQuery(CURRENT_ROOM, {
+        variables: {
+            idRoom
+        }
+    })
     const [sameRooms, setSameRooms] = useState([]);
 
     useEffect(() => {
@@ -45,6 +55,9 @@ export default function ProductScreen() {
             setSameRooms([...dataRoom.rooms]);
         }
     }, [dataRoom])
+
+    console.log(currentRoom)
+
 
     const renderSlideProduct = (itemList) => {
 
@@ -261,7 +274,7 @@ export default function ProductScreen() {
                     </View>
                 </View>
                 {/* --------------- ----- */}
-                <View
+                {/* <View
                     style={{
                         backgroundColor: COLORS.white,
                         padding: SIZES.padding,
@@ -281,7 +294,7 @@ export default function ProductScreen() {
                     >
                         Phòng đã xác thực là phòng được FindHome đảm bảo chất lượng và giá cả. Nơi bạn có thể yên thâm đặt đọc giữ chỗ ngay trên FindHome. Bạn không phải lo lắng mỗi khi đặt cọc giữu chỗ với chủ nhà xa lạ nưa.
                 </Text>
-                </View>
+                </View> */}
                 {/* ---------------Utilities----------- */}
                 <View
                     style={{
