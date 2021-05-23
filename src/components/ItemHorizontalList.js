@@ -1,20 +1,16 @@
-import { useApolloClient, useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
+import { useApolloClient, useMutation } from '@apollo/client'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/core'
 import React from 'react'
 import { ImageBackground, Text, TouchableOpacity, View } from 'react-native'
 import { COLORS, FONTS, Images, SIZES } from '../constants'
 import { roomType_FN } from '../constants/variable'
-import { CURRENT_USER, TOGGLE_LIKE_ROOM } from '../graphql/user'
+import { GET_LIST_ROOM_LIKED, TOGGLE_LIKE_ROOM } from '../graphql/user'
 
-export default function ItemHorizontalList({ item, index }) {
+export default function ItemHorizontalList({ item, index, userLiked }) {
     const navigation = useNavigation();
-    const client = useApolloClient();
-    const { user } = client.readQuery({
-        query: CURRENT_USER
-    });
     const [handleLikeRoom, { loading }] = useMutation(TOGGLE_LIKE_ROOM);
-    const userLiked = user && user?.liked?.map(roomLike => roomLike._id)
 
     return (
         <TouchableOpacity

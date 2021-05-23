@@ -10,6 +10,8 @@ import { COLORS, FONTS, SHADOW, SIZES } from '../../constants'
 import { UPLOAD_FILE, UPDATE_USER, USER_INFO } from '../../graphql/user'
 import { ReactNativeFile } from 'apollo-upload-client';
 import { gql } from "@apollo/client";
+import { createImageData } from '../../helpers/fomatImageUpload'
+import { URI } from '../../graphql/apollo'
 
 export default function ProfileScreen() {
     const [text, setText] = React.useState('');
@@ -19,15 +21,14 @@ export default function ProfileScreen() {
         query: USER_INFO
     })
 
-    const [uploadImg] = useMutation(UPLOAD_FILE)
-
-    const [updateUser] = useMutation(UPDATE_USER, {
+    const [updateUser, { loading }] = useMutation(UPDATE_USER, {
         update: (store, { data: { updateUser } }) => {
             try {
                 store.writeQuery({
                     query: USER_INFO,
                     data: {
                         user: {
+                            ...user,
                             ...updateUser
                         }
                     }
@@ -49,28 +50,13 @@ export default function ProfileScreen() {
     useEffect(() => {
         const getPermissionAsync = async () => {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-
             if (status !== 'granted') {
                 setErrorMsg('Permission to access location was denied');
             }
-
         }
         getPermissionAsync()
     }, [])
 
-
-    const createImageData = (result) => {
-        // ImagePicker saves the taken photo to disk and returns a local URI to it
-        let localUri = result.uri;
-        let filename = localUri.split('/').pop();
-
-        // Infer the type of the image
-        let match = /\.(\w+)$/.exec(filename);
-        let type = match ? `image/ ${match[1]}` : `image`;
-
-        return { uri: Platform.OS === "android" ? localUri : localUri.replace("file://", ""), name: filename, type };
-
-    }
 
     const pickImage = async () => {
         let result;
@@ -84,9 +70,9 @@ export default function ProfileScreen() {
             if (!result.cancelled) {
                 let imageData = await createImageData(result);
                 let avatar = await new ReactNativeFile(imageData);
-                uploadImg({
+                updateUser({
                     variables: {
-                        file: avatar
+                        avatar
                     }
                 })
 
@@ -99,13 +85,12 @@ export default function ProfileScreen() {
     const handleSubmit = () => {
         updateUser({
             variables: {
-                profile: {
-                    name: text,
-                    phone: phone
-                }
+                name: text,
+                phone: phone
             }
         })
     }
+    // 'https://uploads-ssl.webflow.com/5f5f2b58b1af780151375838/6068a513bd18465d0aed85a3_Emxinh2k__anh-gai-dep-hot-girl-sexy-goi-cam%252B%2525287%252529.jpeg'
 
     return (
         <View>
@@ -122,21 +107,24 @@ export default function ProfileScreen() {
                     }}
                 >
                     <View>
-                        <Avatar.Image size={150} source={{ uri: user?.avatar ? user?.avatar : 'https://images.daznservices.com/di/library/GOAL/e8/d1/mason-mount-chelsea_1u2vf25gf8pl31mk1yhvfwoxv9.jpg?t=64552568&amp;quality=60&amp;w=800' }} />
-                        <TouchableOpacity
-                            style={{
-                                position: 'absolute',
-                                bottom: 10,
-                                right: 10,
-                                backgroundColor: COLORS.white,
-                                padding: SIZES.base / 2,
-                                borderRadius: SIZES.base,
-                                ...SHADOW.shadow1
-                            }}
-                            onPress={pickImage}
-                        >
-                            <AntDesign name="retweet" size={24} color="black" />
-                        </TouchableOpacity>
+                        {loading ? <Text>Loading</Text> : <>
+                            <Avatar.Image size={150} source={{ uri: user?.avatar ? `${URI}/images/${user.avatar}` : 'https://images.daznservices.com/di/library/GOAL/e8/d1/mason-mount-chelsea_1u2vf25gf8pl31mk1yhvfwoxv9.jpg?t=64552568&amp;quality=60&amp;w=800' }} />
+                            <TouchableOpacity
+                                style={{
+                                    position: 'absolute',
+                                    bottom: 10,
+                                    right: 10,
+                                    backgroundColor: COLORS.white,
+                                    padding: SIZES.base / 2,
+                                    borderRadius: SIZES.base,
+                                    ...SHADOW.shadow1
+                                }}
+                                onPress={pickImage}
+                            >
+                                <AntDesign name="retweet" size={24} color="black" />
+                            </TouchableOpacity>
+                        </>}
+
                     </View>
 
                 </View>

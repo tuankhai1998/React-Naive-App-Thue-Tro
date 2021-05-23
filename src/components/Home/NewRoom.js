@@ -1,8 +1,10 @@
+import { useApolloClient } from '@apollo/client';
 import { useLazyQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react'
 import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native'
 import { COLORS, FONTS, Images, SIZES } from '../../constants';
 import { FETCH_ROOM } from '../../graphql/room';
+import { GET_LIST_ROOM_LIKED } from '../../graphql/user';
 import ItemVerticalList from '../ItemVerticalList';
 
 let district = {
@@ -38,6 +40,11 @@ const NewRoom = ({ city }) => {
     let [page, setPage] = useState(0);
     let [fetchNewRoom, { data, loading, error }] = useLazyQuery(FETCH_ROOM);
     let [newRoom, setNewRoom] = useState([]);
+    const client = useApolloClient();
+    const { user } = client.readQuery({
+        query: GET_LIST_ROOM_LIKED
+    });
+    const userLiked = user && user?.liked?.map(roomLike => roomLike._id)
 
 
 
@@ -115,7 +122,7 @@ const NewRoom = ({ city }) => {
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
                     data={newRoom.length > 0 ? newRoom : district['1']}
-                    renderItem={({ item, index }) => <ItemVerticalList item={item} index={index} />}
+                    renderItem={({ item, index }) => <ItemVerticalList item={item} index={index} userLiked={userLiked} />}
                     style={{
                         marginTop: SIZES.base,
                     }}

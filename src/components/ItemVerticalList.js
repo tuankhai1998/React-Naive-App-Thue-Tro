@@ -5,18 +5,13 @@ import React from 'react';
 import { ImageBackground, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS, FONTS, Images, SIZES } from '../constants';
 import { roomType_FN } from '../constants/variable';
-import { CURRENT_USER, TOGGLE_LIKE_ROOM } from '../graphql/user';
+import { GET_LIST_ROOM_LIKED, TOGGLE_LIKE_ROOM } from '../graphql/user';
 
 
-const ItemVerticalList = ({ item, index }) => {
+const ItemVerticalList = ({ item, index, userLiked }) => {
     const navigation = useNavigation();
 
-    const client = useApolloClient();
-    const { user } = client.readQuery({
-        query: CURRENT_USER
-    });
     const [handleLikeRoom, { loading }] = useMutation(TOGGLE_LIKE_ROOM);
-    const userLiked = user?.liked.map(roomLike => roomLike._id)
 
 
     return (

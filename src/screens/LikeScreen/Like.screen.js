@@ -15,10 +15,7 @@ const LikeScreen = () => {
     const { user } = client.readQuery({
         query: GET_LIST_ROOM_LIKED
     })
-
-
-
-
+    const userLiked = user && user?.liked?.map(roomLike => roomLike._id)
 
     return (
         <View style={styles.container}>
@@ -34,7 +31,7 @@ const LikeScreen = () => {
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
                     data={user?.liked.length > 0 ? user?.liked : []}
-                    renderItem={({ item, index }) => <ItemVerticalList index={index} item={item} />}
+                    renderItem={({ item, index }) => <ItemVerticalList index={index} item={item} userLiked={userLiked} />}
                     style={{
                         marginTop: SIZES.base,
 

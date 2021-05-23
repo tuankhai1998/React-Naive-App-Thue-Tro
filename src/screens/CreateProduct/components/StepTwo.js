@@ -8,7 +8,7 @@ import * as Location from 'expo-location';
 
 
 
-export default function StepTwo() {
+export default function StepTwo({ data }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [citySelected, setCitySelected] = useState('');
     const [districtSelected, setDistrictSelected] = useState('');
@@ -16,6 +16,9 @@ export default function StepTwo() {
     const [modalRender, setModalRender] = useState(1);
     const [any, setAny] = useState('');
     const [location, setLocation] = useState("");
+
+    console.log({ data })
+
 
 
     useEffect(() => {
@@ -30,7 +33,7 @@ export default function StepTwo() {
 
     useEffect(() => {
         const geocode = async () => {
-            await Location.setGoogleApiKey("AIzaSyDAtJK7wLInUeBcKvbDjoFhkoDrZFpJwhs")
+            // await Location.setGoogleApiKey("AIzaSyDAtJK7wLInUeBcKvbDjoFhkoDrZFpJwhs")
             try {
                 let res = await Location.geocodeAsync(`${citySelected}, ${districtSelected}, ${wardsSelected}, ${any}`, { useGoogleMaps: false });
 

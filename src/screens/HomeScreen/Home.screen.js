@@ -1,12 +1,13 @@
 //import liraries
-import { useNavigation } from '@react-navigation/core';
-import React, { useEffect, useState } from 'react';
+import { useQuery } from '@apollo/client';
+import React, { useState } from 'react';
 import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import HotRoom from '../../components/Home/HotRoom';
 import NewRoom from '../../components/Home/NewRoom';
 import { Images } from '../../constants';
 import { city } from '../../constants/city';
 import { COLORS, FONTS, SIZES } from '../../constants/theme';
+import { GET_LIST_ROOM_LIKED } from '../../graphql/user';
 import BlogItem from './components/BlogItem';
 import HomeHeader from './components/HomeHeader';
 import SearchTrend from './components/SearchTrend';
@@ -45,16 +46,19 @@ let district = {
 
 const HomeScreen = () => {
     let [citySelect, setCitySelect] = useState(2);
+    const { loading } = useQuery(GET_LIST_ROOM_LIKED);
+
 
     const getCity = () => {
         return citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'
     }
-   
+
     return (
         <ScrollView style={{
             flex: 1,
             backgroundColor: 'rgba(0,0,0,0.1)'
         }}>
+
             <HomeHeader citySelected={citySelect} changeCitySelected={(id) => setCitySelect(id)} city={city} />
             <View
                 style={{
@@ -83,7 +87,7 @@ const HomeScreen = () => {
                     renderItem={({ item, index }) => <SearchTrend item={item} index={index} />}
                 />
             </View>
-            <HotRoom city={citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'} />
+            {!loading && <HotRoom city={citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'} />}
 
 
             <View
@@ -130,7 +134,10 @@ const HomeScreen = () => {
                 />
             </View>
 
-            <NewRoom city={getCity()} />
+            {!loading && <NewRoom city={getCity()} />}
+
+
+
 
 
 

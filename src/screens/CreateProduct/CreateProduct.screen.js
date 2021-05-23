@@ -1,30 +1,41 @@
-import React, { useState } from 'react';
-import { useCallback } from 'react';
-import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Header from '../../components/Header';
 import { COLORS, FONTS, SIZES } from '../../constants';
 import { CreateStep } from '../../constants/values';
-import { useNavigation } from '@react-navigation/core'
-import { Formik } from 'formik';
 import StepOne from './components/StepOne';
+import StepThree from './components/StepThree';
 import StepTwo from './components/StepTwo';
 
 const CreateProduct = () => {
 
     const navigation = useNavigation();
     const [step, setStep] = useState(2);
+    const [data, setData] = useState({
+        price: {}
+    });
 
     const stepRender = useCallback(() => {
         switch (step) {
-            case 1: return <StepOne />;
-            case 2: return <StepTwo />;
-            case 3: return <StepOne />;
-            case 4: return <StepOne />;
+            case 1: return <StepOne data={data} setData={(values) => setData(values)} />;
+            case 2: return <StepTwo data={data} setData={(values) => setData(values)} />;
+            case 3: return <StepThree data={data} setData={(values) => setData(values)} />;
+            case 4: return <StepOne data={data} setData={(values) => setData(values)} />;
             default:
-                return <StepOne />
+                return <StepOne data={data} setData={(values) => setData(values)} />
         }
 
-    }, [step])
+    }, [step, data])
+
+    useEffect(() => {
+
+        return () => {
+            setData({
+                price: {}
+            })
+        };
+    }, []);
 
 
     return (
@@ -82,25 +93,7 @@ const CreateProduct = () => {
 
                         }}
                     >
-                        <Formik
-                            initialValues={
-                                {
-                                    roomTitle: ''
-                                }
-                            }
-                            onSubmit={values => { console.log(values) }}
-                        >
-
-                            {
-                                ({ handleChange, handleBlur, handleSubmit, values }) => (
-                                    <>
-                                        {stepRender()}
-                                    </>
-                                )
-                            }
-                        </Formik>
-
-
+                        {stepRender()}
                     </View>
                     <View>
                         <TouchableOpacity
