@@ -12,8 +12,7 @@ import Thumb from './Thumb';
 
 // create a component
 const PriceRate = ({ setPrice, priceRate }) => {
-    const [low, setLow] = useState();
-    const [high, setHigh] = useState();
+    const { min, max } = priceRate;
 
     const renderThumb = useCallback(() => <Thumb />, []);
     const renderRail = useCallback(() => <Rail />, []);
@@ -21,17 +20,11 @@ const PriceRate = ({ setPrice, priceRate }) => {
     const renderLabel = useCallback(value => <Label text={value} />, []);
     const renderNotch = useCallback(() => <Notch />, []);
     const handleValueChange = useCallback((low, high) => {
-        setLow(low);
-        setHigh(high);
-    }, []);
-
-    useEffect(() => {
         setPrice({
             min: low,
             max: high
         })
-    }, [low, high])
-
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -40,10 +33,10 @@ const PriceRate = ({ setPrice, priceRate }) => {
                 justifyContent: 'space-between'
             }}>
                 <Text>
-                    {low} triệu VND
+                    {min} triệu VND
                 </Text>
                 <Text>
-                    {high} triệu VND
+                    {max} triệu VND
                 </Text>
             </View>
             <View>
@@ -51,8 +44,8 @@ const PriceRate = ({ setPrice, priceRate }) => {
                     style={styles.slider}
                     min={0}
                     max={15}
-                    low={priceRate.min}
-                    high={priceRate.max}
+                    low={min}
+                    high={max}
                     step={0.5}
                     renderThumb={renderThumb}
                     renderRail={renderRail}
@@ -62,7 +55,6 @@ const PriceRate = ({ setPrice, priceRate }) => {
                     onValueChanged={handleValueChange}
                 />
             </View>
-
         </View>
     );
 };

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text } from 'react-native'
-import GroupUtilities from '../../../components/GroupUtilities'
-import { Utilities } from '../../../constants/values'
+import GroupUtilities from './GroupUtilities'
+import { Utilities } from '../constants/values'
 
-let listUtilities = Object.assign([], Utilities)
+let listUtilities = Utilities.map(item => Object.assign({}, item))
 
 export default function Utility({ utilitiesSelected, handleUtilitiesSelect }) {
     const [utilitiessChoose, setUtilitiesChoose] = useState([...listUtilities]);

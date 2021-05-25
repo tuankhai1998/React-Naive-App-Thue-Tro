@@ -11,22 +11,13 @@ import MessagesStackNavigator from './stacknavigator/MessagesStackNavigatior';
 import SettingStackNavigator from './stacknavigator/SettingStackNavigator';
 import { removeStorage } from '../helpers/storage'
 import SplashScreen from '../screens/Splash.screen';
+import { useFocusEffect } from '@react-navigation/core';
 const Tab = createBottomTabNavigator();
 
 // create a component
-const BottomTabNavigator = ({ handleLogin }) => {
-    const [getCurrentUser, { data, loading, error }] = useLazyQuery(CURRENT_USER);
-    useEffect(() => {
-        if (!error) {
-            getCurrentUser()
-        } else {
-            removeStorage().then(
-                () => {
-                    handleLogin(false)
-                }
-            ).catch(err => console.log(err))
-        }
-    }, [data])
+const BottomTabNavigator = () => {
+
+
 
     const getTabBarVisible = (route) => {
         const routeName = route.state
@@ -39,10 +30,9 @@ const BottomTabNavigator = ({ handleLogin }) => {
         return true;
     }
 
-
     return (
         <>
-            {loading ? <SplashScreen /> : <Tab.Navigator>
+            { <Tab.Navigator>
                 <Tab.Screen name="Home" component={HomeStackNavigator} />
                 <Tab.Screen name="Like" component={LikeStackNavigator} />
                 <Tab.Screen name="Messages" component={MessagesStackNavigator}

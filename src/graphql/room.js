@@ -64,5 +64,62 @@ query($idRoom: ID!)
 }}
 `
 
+export const CREATE_ROOM = gql`
+
+mutation (
+         $sex: Int, 
+        $type: Int, 
+        $address: addressInput,  
+        $images: [Upload], 
+        $roomNum: Int, 
+        $peoples: Int,  
+        $acreage: Int, 
+        $utilities: [Int],
+        $price: priceInput
+){
+  createRoom(room: {
+        sex: $sex, 
+        type: $type, 
+        address:  $address,
+        images: $images,
+        roomNum: $roomNum, 
+        peoples: $peoples, 
+        acreage: $acreage, 
+        utilities: $utilities, 
+        price:  $price}){
+            _id
+            type
+            images
+            roomNum
+            address{
+                name{
+                    city
+                    wardsAndStreet
+                    districts
+                }
+                loc{
+                    coordinates
+                }
+            }
+            price {
+                room{
+                    free
+                    price
+                }
+            }
+            createdAt
+            createdBy {
+                name
+                phone
+                avatar
+                _id
+            }
+        }
+}
+
+    
+
+`
+
 
 

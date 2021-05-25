@@ -1,5 +1,5 @@
 //import liraries
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { Checkbox } from 'react-native-paper';
 import RadioButton from '../../../components/RadioButton';
@@ -8,63 +8,82 @@ import { COLORS, FONTS, SIZES } from '../../../constants';
 import { RoomType, Sex } from '../../../constants/values';
 
 // create a component
-const StepOne = ({ data, setData }) => {
-
-    const [electricFree, setElectricFree] = useState(false);
+const StepOne = ({ data, setData, setValidate }) => {
     const { sex, type, roomNum, acreage, peoples, price } = data;
 
-    const { room, electricity, internet, water } = price
+    const { room, electricity, internet, water } = price;
+    let checkPrice = () => {
+        let number = 0;
+        for (const key in price) {
+            if (Object.hasOwnProperty.call(price, key)) {
+                const element = price[key];
+                if (element.price || element.free) {
+                    number++;
+                }
+            }
+        }
+        return number == 4;
+    };
+
+    useEffect(() => {
+        if (typeof sex == 'number' && typeof type == 'number' && roomNum && acreage && peoples && checkPrice()) {
+            setValidate(true);
+        } else {
+            setValidate(false);
+        }
+    }, [sex, type, roomNum, acreage, peoples, price]);
 
     return (
         <>
-            <View style={{
-                flex: 1,
-                padding: SIZES.padding
-            }}>
+            <View
+                style={{
+                    flex: 1,
+                    padding: SIZES.padding,
+                }}
+            >
                 <Text
                     style={{
                         ...FONTS.body2,
                         marginTop: SIZES.base,
-                        marginBottom: SIZES.base
+                        marginBottom: SIZES.base,
                     }}
                 >
                     Thông tin
-            </Text>
+				</Text>
                 <Text
                     style={{
                         ...FONTS.body3,
                     }}
                 >
                     Loại phòng
-            </Text>
-                <RadioButton data={RoomType} selected={type} setSelected={(values => setData({ ...data, type: values }))} />
+				</Text>
+                <RadioButton
+                    data={RoomType}
+                    selected={type}
+                    setSelected={(values) => setData({ ...data, type: values })}
+                />
                 <Text
                     style={{
                         ...FONTS.body3,
                     }}
                 >
                     Diện Tích
-            </Text>
+				</Text>
                 <View
                     style={{
                         flexDirection: 'row',
-                        alignItems: 'baseline'
+                        alignItems: 'baseline',
                     }}
                 >
                     <TextInput
                         style={{
                             backgroundColor: COLORS.white,
-                            paddingHorizontal: SIZES.base,
-                            flex: 1,
-                            marginRight: SIZES.padding,
-                            marginVertical: SIZES.base,
-                            borderRadius: SIZES.radius / 2,
-                            paddingVertical: SIZES.base,
-                            maxWidth: SIZES.width * 2 / 3 - 2 * SIZES.padding
+                            ...styles.inputStyle,
+                            maxWidth: (SIZES.width * 2) / 3 - 2 * SIZES.padding,
                         }}
                         keyboardType="number-pad"
                         value={acreage ? acreage : ''}
-                        onChangeText={text => setData({ ...data, acreage: text })}
+                        onChangeText={(text) => setData({ ...data, acreage: parseInt(text) })}
                     />
                     <SubText base="m" exponent="2" />
                 </View>
@@ -75,26 +94,21 @@ const StepOne = ({ data, setData }) => {
                     }}
                 >
                     Số phòng
-            </Text>
+				</Text>
                 <View
                     style={{
                         flexDirection: 'row',
-                        alignItems: 'baseline'
+                        alignItems: 'baseline',
                     }}
                 >
                     <TextInput
                         style={{
                             backgroundColor: COLORS.white,
-                            paddingHorizontal: SIZES.base,
-                            flex: 1,
-                            marginRight: SIZES.padding,
-                            marginVertical: SIZES.base,
-                            borderRadius: SIZES.radius / 2,
-                            paddingVertical: SIZES.base,
-                            maxWidth: SIZES.width * 2 / 3 - 2 * SIZES.padding
+                            ...styles.inputStyle,
+                            maxWidth: (SIZES.width * 2) / 3 - 2 * SIZES.padding,
                         }}
                         value={roomNum ? roomNum : ''}
-                        onChangeText={text => setData({ ...data, roomNum: text })}
+                        onChangeText={(text) => setData({ ...data, roomNum: parseInt(text) })}
                         keyboardType="number-pad"
                     />
                     <Text>phòng</Text>
@@ -106,28 +120,23 @@ const StepOne = ({ data, setData }) => {
                     }}
                 >
                     Số người
-            </Text>
+				</Text>
 
                 <View
                     style={{
                         flexDirection: 'row',
-                        alignItems: 'baseline'
+                        alignItems: 'baseline',
                     }}
                 >
                     <TextInput
                         style={{
                             backgroundColor: COLORS.white,
-                            paddingHorizontal: SIZES.base,
-                            flex: 1,
-                            marginRight: SIZES.padding,
-                            marginVertical: SIZES.base,
-                            borderRadius: SIZES.radius / 2,
-                            paddingVertical: SIZES.base,
-                            maxWidth: SIZES.width * 2 / 3 - 2 * SIZES.padding
+                            ...styles.inputStyle,
+                            maxWidth: (SIZES.width * 2) / 3 - 2 * SIZES.padding,
                         }}
                         keyboardType="number-pad"
                         value={peoples ? peoples : ''}
-                        onChangeText={text => setData({ ...data, peoples: text })}
+                        onChangeText={(text) => setData({ ...data, peoples: parseInt(text) })}
                     />
                     <Text>người</Text>
                 </View>
@@ -138,18 +147,18 @@ const StepOne = ({ data, setData }) => {
                     }}
                 >
                     Gới tính
-            </Text>
-                <RadioButton data={Sex} selected={sex} setSelected={(values => setData({ ...data, sex: values }))} />
+				</Text>
+                <RadioButton data={Sex} selected={sex} setSelected={(values) => setData({ ...data, sex: values })} />
 
                 <Text
                     style={{
                         ...FONTS.body2,
                         marginTop: SIZES.padding,
-                        marginBottom: SIZES.base
+                        marginBottom: SIZES.base,
                     }}
                 >
                     Chi phí
-            </Text>
+				</Text>
 
                 <Text
                     style={{
@@ -157,34 +166,31 @@ const StepOne = ({ data, setData }) => {
                     }}
                 >
                     Giá phòng
-            </Text>
+				</Text>
                 <View
                     style={{
                         flexDirection: 'row',
-                        alignItems: 'baseline'
+                        alignItems: 'baseline',
                     }}
                 >
                     <TextInput
                         style={{
                             backgroundColor: COLORS.white,
-                            paddingHorizontal: SIZES.base,
-                            flex: 1,
-                            marginRight: SIZES.padding,
-                            marginVertical: SIZES.base,
-                            borderRadius: SIZES.radius / 2,
-                            paddingVertical: SIZES.base,
-                            maxWidth: SIZES.width * 2 / 3 - 2 * SIZES.padding
+                            ...styles.inputStyle,
                         }}
                         value={price && room && room?.price ? room?.price : ''}
-                        onChangeText={text => setData({
-                            ...data, price: {
-                                ...price,
-                                room: {
-                                    ...room,
-                                    price: text
-                                }
-                            }
-                        })}
+                        onChangeText={(text) =>
+                            setData({
+                                ...data,
+                                price: {
+                                    ...price,
+                                    room: {
+                                        ...room,
+                                        price: parseInt(text),
+                                    },
+                                },
+                            })
+                        }
                         keyboardType="number-pad"
                     />
                     <Text>VND/phòng</Text>
@@ -195,57 +201,66 @@ const StepOne = ({ data, setData }) => {
                     }}
                 >
                     Giá điện
-            </Text>
+				</Text>
                 <View
                     style={{
                         flexDirection: 'row',
-                        alignItems: 'baseline'
+                        alignItems: 'baseline',
                     }}
                 >
-                    <TextInput
-                        style={{
-                            backgroundColor: COLORS.white,
-                            paddingHorizontal: SIZES.base,
-                            flex: 1,
-                            marginRight: SIZES.padding,
-                            marginVertical: SIZES.base,
-                            borderRadius: SIZES.radius / 2,
-                            paddingVertical: SIZES.base,
-                            maxWidth: SIZES.width * 2 / 3 - 2 * SIZES.padding
-                        }}
-                        value={price && electricity && electricity?.price ? electricity?.price : ''}
-                        onChangeText={text => setData({
-                            ...data, price: {
-                                ...price,
-                                electricity: {
-                                    ...electricity,
-                                    price: text
-                                }
-                            }
-                        })}
-                        keyboardType="number-pad"
-                    />
+                    {electricity?.free ? (
+                        <View
+                            style={{
+                                backgroundColor: electricity?.free ? COLORS.lightGray : COLORS.white,
+                                ...styles.inputStyle,
+                                height: 43,
+                            }}
+                        />
+                    ) : (
+                        <TextInput
+                            style={{
+                                backgroundColor: electricity?.free ? COLORS.lightGray : COLORS.white,
+                                ...styles.inputStyle,
+                            }}
+                            value={price && electricity && electricity?.price ? electricity?.price : ''}
+                            onChangeText={(text) => {
+                                setData({
+                                    ...data,
+                                    price: {
+                                        ...price,
+                                        electricity: {
+                                            ...electricity,
+                                            price: parseInt(text),
+                                        },
+                                    },
+                                });
+                            }}
+                            keyboardType="number-pad"
+                        />
+                    )}
                     <Text>VND</Text>
                     <Checkbox.Item
                         label="Miễn phi"
                         status={price && electricity && electricity?.free ? 'checked' : 'unchecked'}
-                        onPress={() => setData({
-                            ...data, price: {
-                                ...price,
-                                electricity: {
-                                    ...electricity,
-                                    free: !electricity?.free
-                                }
-                            }
-
-                        })}
+                        onPress={() =>
+                            setData({
+                                ...data,
+                                price: {
+                                    ...price,
+                                    electricity: {
+                                        ...electricity,
+                                        free: !electricity?.free,
+                                    },
+                                },
+                            })
+                        }
                         labelStyle={{
                             ...FONTS.body3,
                             color: COLORS.black,
                         }}
                         color={COLORS.primary}
                         style={{
-                            flexDirection: 'row-reverse'
+                            flexDirection: 'row-reverse',
                         }}
                     />
                 </View>
@@ -255,57 +270,67 @@ const StepOne = ({ data, setData }) => {
                     }}
                 >
                     Giá nước
-            </Text>
+				</Text>
                 <View
                     style={{
                         flexDirection: 'row',
-                        alignItems: 'baseline'
+                        alignItems: 'baseline',
                     }}
                 >
-                    <TextInput
-                        style={{
-                            backgroundColor: COLORS.white,
-                            paddingHorizontal: SIZES.base,
-                            flex: 1,
-                            marginRight: SIZES.padding,
-                            marginVertical: SIZES.base,
-                            borderRadius: SIZES.radius / 2,
-                            paddingVertical: SIZES.base,
-                            maxWidth: SIZES.width * 2 / 3 - 2 * SIZES.padding
-                        }}
-                        value={price && water && water?.price ? water?.price : ''}
-                        onChangeText={text => setData({
-                            ...data, price: {
-                                ...price,
-                                water: {
-                                    ...water,
-                                    price: text
-                                }
+                    {water?.free ? (
+                        <View
+                            style={{
+                                backgroundColor: water?.free ? COLORS.lightGray : COLORS.white,
+                                ...styles.inputStyle,
+                                height: 43,
+                            }}
+                        />
+                    ) : (
+                        <TextInput
+                            style={{
+                                backgroundColor: COLORS.white,
+                                ...styles.inputStyle,
+                            }}
+                            value={price && water && water?.price ? water?.price : ''}
+                            onChangeText={(text) =>
+                                setData({
+                                    ...data,
+                                    price: {
+                                        ...price,
+                                        water: {
+                                            ...water,
+                                            price: parseInt(text),
+                                        },
+                                    },
+                                })
                             }
-                        })}
-                        keyboardType="number-pad"
-                    />
+                            keyboardType="number-pad"
+                        />
+                    )}
+
                     <Text>VND</Text>
                     <Checkbox.Item
                         label="Miễn phi"
                         status={price && water && water?.free ? 'checked' : 'unchecked'}
-                        onPress={() => setData({
-                            ...data, price: {
-                                ...price,
-                                water: {
-                                    ...water,
-                                    free: !water?.free
-                                }
-                            }
-
-                        })}
+                        onPress={() =>
+                            setData({
+                                ...data,
+                                price: {
+                                    ...price,
+                                    water: {
+                                        ...water,
+                                        free: !water?.free,
+                                    },
+                                },
+                            })
+                        }
                         labelStyle={{
                             ...FONTS.body3,
                             color: COLORS.black,
                         }}
                         color={COLORS.primary}
                         style={{
-                            flexDirection: 'row-reverse'
+                            flexDirection: 'row-reverse',
                         }}
                     />
                 </View>
@@ -315,57 +340,66 @@ const StepOne = ({ data, setData }) => {
                     }}
                 >
                     Internet
-            </Text>
+				</Text>
                 <View
                     style={{
                         flexDirection: 'row',
-                        alignItems: 'baseline'
+                        alignItems: 'baseline',
                     }}
                 >
-                    <TextInput
-                        style={{
-                            backgroundColor: COLORS.white,
-                            paddingHorizontal: SIZES.base,
-                            flex: 1,
-                            marginRight: SIZES.padding,
-                            marginVertical: SIZES.base,
-                            borderRadius: SIZES.radius / 2,
-                            paddingVertical: SIZES.base,
-                            maxWidth: SIZES.width * 2 / 3 - 2 * SIZES.padding
-                        }}
-                        value={price && internet && internet?.price ? internet?.price : ''}
-                        onChangeText={text => setData({
-                            ...data, price: {
-                                ...price,
-                                internet: {
-                                    ...internet,
-                                    price: text
-                                }
+                    {internet?.free ? (
+                        <View
+                            style={{
+                                backgroundColor: COLORS.lightGray,
+                                ...styles.inputStyle,
+                                height: 43,
+                            }}
+                        />
+                    ) : (
+                        <TextInput
+                            style={{
+                                backgroundColor: COLORS.white,
+                                ...styles.inputStyle,
+                            }}
+                            value={price && internet && internet?.price ? internet?.price : ''}
+                            onChangeText={(text) =>
+                                setData({
+                                    ...data,
+                                    price: {
+                                        ...price,
+                                        internet: {
+                                            ...internet,
+                                            price: parseInt(text),
+                                        },
+                                    },
+                                })
                             }
-                        })}
-                        keyboardType="number-pad"
-                    />
+                            keyboardType="number-pad"
+                        />
+                    )}
                     <Text>VND</Text>
                     <Checkbox.Item
                         label="Miễn phi"
                         status={price && internet && internet?.free ? 'checked' : 'unchecked'}
-                        onPress={() => setData({
-                            ...data, price: {
-                                ...price,
-                                internet: {
-                                    ...internet,
-                                    free: !internet?.free
-                                }
-                            }
-
-                        })}
+                        onPress={() =>
+                            setData({
+                                ...data,
+                                price: {
+                                    ...price,
+                                    internet: {
+                                        ...internet,
+                                        free: !internet?.free,
+                                    },
+                                },
+                            })
+                        }
                         labelStyle={{
                             ...FONTS.body3,
                             color: COLORS.black,
                         }}
                         color={COLORS.primary}
                         style={{
-                            flexDirection: 'row-reverse'
+                            flexDirection: 'row-reverse',
                         }}
                     />
                 </View>
@@ -434,12 +468,22 @@ const StepOne = ({ data, setData }) => {
                         }}
                     />
                 </View> */}
-
             </View>
         </>
     );
 };
 
-
 //make this component available to the app
 export default StepOne;
+
+const styles = StyleSheet.create({
+    inputStyle: {
+        paddingHorizontal: SIZES.base,
+        flex: 1,
+        marginRight: SIZES.padding,
+        marginVertical: SIZES.base,
+        borderRadius: SIZES.radius / 2,
+        paddingVertical: SIZES.base,
+        maxWidth: (SIZES.width * 2) / 3 - 2 * SIZES.padding,
+    },
+});

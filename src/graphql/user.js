@@ -56,7 +56,7 @@ export const LOGIN = gql`
             _id
             token
             avatar
-        name
+            name
             phone 
             email
             created{

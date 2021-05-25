@@ -4,7 +4,7 @@ import React, {
 } from 'react'
 import { View, Text, TouchableOpacity, Modal, FlatList } from 'react-native'
 import { COLORS, FONTS, SHADOW, SIZES } from '../../../constants'
-import { city as cityList } from '../../../constants/city'
+import { CITY as cityList } from '../../../constants/city'
 
 export default function Address({ city, setAddress }) {
 

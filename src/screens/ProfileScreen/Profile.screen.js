@@ -12,6 +12,8 @@ import { ReactNativeFile } from 'apollo-upload-client';
 import { gql } from "@apollo/client";
 import { createImageData } from '../../helpers/fomatImageUpload'
 import { URI } from '../../graphql/apollo'
+import { useFocusEffect } from '@react-navigation/core'
+import { useLazyQuery } from '@apollo/client'
 
 export default function ProfileScreen() {
     const [text, setText] = React.useState('');

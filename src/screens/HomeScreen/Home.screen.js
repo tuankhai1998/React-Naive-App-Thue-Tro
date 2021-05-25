@@ -1,13 +1,17 @@
 //import liraries
+import { useLazyQuery } from '@apollo/client';
 import { useQuery } from '@apollo/client';
+import { useFocusEffect } from '@react-navigation/core';
 import React, { useState } from 'react';
 import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { AuthContext } from '../../components/AuthContext';
 import HotRoom from '../../components/Home/HotRoom';
 import NewRoom from '../../components/Home/NewRoom';
 import { Images } from '../../constants';
-import { city } from '../../constants/city';
+import { CITY } from '../../constants/city';
 import { COLORS, FONTS, SIZES } from '../../constants/theme';
-import { GET_LIST_ROOM_LIKED } from '../../graphql/user';
+import { CURRENT_USER, GET_LIST_ROOM_LIKED, USER_INFO } from '../../graphql/user';
+import { removeStorage } from '../../helpers/storage';
 import BlogItem from './components/BlogItem';
 import HomeHeader from './components/HomeHeader';
 import SearchTrend from './components/SearchTrend';
@@ -47,7 +51,21 @@ let district = {
 const HomeScreen = () => {
     let [citySelect, setCitySelect] = useState(2);
     const { loading } = useQuery(GET_LIST_ROOM_LIKED);
+    const [getCurrentUser, { data, loading: currentUserLoading, error }] = useLazyQuery(CURRENT_USER);
 
+    const { logOut } = React.useContext(AuthContext);
+    useFocusEffect(
+        React.useCallback(() => {
+            getCurrentUser()
+            if (error) {
+                removeStorage().then(
+                    () => {
+                        logOut()
+                    }
+                ).catch(err => console.log(err))
+            }
+        }, [data])
+    )
 
     const getCity = () => {
         return citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'
@@ -59,7 +77,7 @@ const HomeScreen = () => {
             backgroundColor: 'rgba(0,0,0,0.1)'
         }}>
 
-            <HomeHeader citySelected={citySelect} changeCitySelected={(id) => setCitySelect(id)} city={city} />
+            <HomeHeader citySelected={citySelect} changeCitySelected={(id) => setCitySelect(id)} city={CITY} />
             <View
                 style={{
                     marginVertical: SIZES.padding,
@@ -135,12 +153,6 @@ const HomeScreen = () => {
             </View>
 
             {!loading && <NewRoom city={getCity()} />}
-
-
-
-
-
-
         </ScrollView>
     );
 };

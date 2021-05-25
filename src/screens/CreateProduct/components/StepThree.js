@@ -5,16 +5,19 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS, FONTS, SIZES } from '../../../constants';
 import { createImageData } from '../../../helpers/fomatImageUpload';
-import Utility from '../../SearchScreen/components/Utility';
 import { MaterialIcons } from '@expo/vector-icons'
+import Utility from '../../../components/Utility';
 
-export default function StepThree() {
-    const [listUtility, setListUtility] = useState([]);
-
+export default function StepThree({ data, setData }) {
+    const { images, utilities } = data
     const [imgResult, setImgResult] = useState([]);
-    const [images, setImages] = useState([])
+    const [imageList, setImageList] = useState([])
+
 
     useEffect(() => {
+        if (images) {
+            setImageList(images)
+        }
         const getPermissionAsync = async () => {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
@@ -25,6 +28,13 @@ export default function StepThree() {
         }
         getPermissionAsync()
     }, [])
+
+    useEffect(() => {
+        setData({
+            ...data,
+            images: imgResult
+        })
+    }, [imgResult])
 
     const imagesItem = ({ item, index }) => {
         return (
@@ -50,12 +60,12 @@ export default function StepThree() {
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
                 aspect: [4, 3],
-                quality: 1,
+                quality: 10,
             });
             if (!result.cancelled) {
-                let imgData = await createImageData(result)
+                let imgData = await result.map(img => createImageData(img))
                 setImgResult([...imgResult, new ReactNativeFile(imgData)])
-                setImages([...images, result.uri]);
+                setImageList([...imageList, ...imgData]);
             }
         } catch (E) {
             console.log(E);
@@ -64,8 +74,8 @@ export default function StepThree() {
     return (
         <View>
             <Utility
-                handleUtilitiesSelect={(values) => setListUtility(values)}
-                utilitiesSelected={listUtility}
+                handleUtilitiesSelect={(values) => setData({ ...data, utilities: values })}
+                utilitiesSelected={utilities ? utilities : []}
             />
 
             <View style={{ flex: 1, paddingHorizontal: SIZES.padding }}>
@@ -96,7 +106,7 @@ export default function StepThree() {
                             numColumns={3}
                             showsVerticalScrollIndicator={false}
                             showsHorizontalScrollIndicator={false}
-                            data={images}
+                            data={imageList}
                             renderItem={imagesItem}
                         />
                     </ScrollView>

@@ -2,6 +2,7 @@ import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { useNavigation, useRoute } from '@react-navigation/core';
 import React, { useCallback, useState } from 'react';
 import { FlatList, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import Utility from '../../components/Utility';
 import { COLORS, FONTS, Images, SIZES } from '../../constants';
 import { bigCity } from '../../constants/bigCity';
 import { roomType_FN } from '../../constants/variable';
@@ -9,7 +10,6 @@ import Address from './components/Address';
 import NumberPeople from './components/NumberPeople';
 import PriceRate from './components/PriceRate';
 import RoomTypes from './components/RoomTypes';
-import Utility from './components/Utility';
 
 export default function SearchScreen() {
     let [modalVisible, setModalVisible] = useState(false),
@@ -368,12 +368,12 @@ export default function SearchScreen() {
             setNumberPeople={(data) => setDataSearch({ ...dataSearch, numPeople: data })}
             numberPeople={dataSearch.numPeople}
         />
-        if (multiSearch == 'utility') return <Utility
-            utilitiesSelected={dataSearch.utilities}
-            handleUtilitiesSelect={(values) => {
-                setDataSearch({ ...dataSearch, utilities: values })
-            }}
-        />
+        // if (multiSearch == 'utility') return <Utility
+        //     utilitiesSelected={dataSearch.utilities}
+        //     handleUtilitiesSelect={(values) => {
+        //         setDataSearch({ ...dataSearch, utilities: values })
+        //     }}
+        // />
         if (multiSearch == 'address') return <Address
             city={bigCity.filter(city => city.id === citySelected)[0]}
             setAddress={(data) => setDataSearch({ ...dataSearch, addressName: data })

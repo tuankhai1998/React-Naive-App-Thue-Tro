@@ -1,5 +1,7 @@
+import { useApolloClient } from '@apollo/client';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
+import { AuthContext } from '../components/AuthContext';
 import { getStorage } from '../helpers/storage';
 
 import ListProductSearchScreen from '../screens/ListProductSearch.screen';
@@ -18,6 +20,8 @@ const Authentication = () => {
     const [login, setLogin] = useState(false),
         [token, setToken] = useState(null);
 
+    const client = useApolloClient()
+
     useEffect(() => {
         getStorage().then(data => {
             if (data) {
@@ -28,7 +32,17 @@ const Authentication = () => {
         })
     }, [login])
 
-    return (<>
+    const authContext = React.useMemo(() => (
+        {
+            logOut: () => {
+                setToken(null)
+                setLogin(false)
+
+            }
+        }
+    ))
+
+    return (<AuthContext.Provider value={authContext}>
         <AuthStack.Navigator
             screenOptions={{
                 ...TransitionPresets.ModalSlideFromBottomIOS,
@@ -36,14 +50,14 @@ const Authentication = () => {
             }}
         >
             {token && login ? (<>
-                <AuthStack.Screen name="Dashboard" component={() => <BottomTabNavigator handleLogin={(isLogin) => setLogin(isLogin)} />} />
+                <AuthStack.Screen name="Dashboard" component={() => <BottomTabNavigator />} />
                 <AuthStack.Screen name="SearchScreen" component={SearchScreen} />
                 <AuthStack.Screen name="ProductScreen" component={ProductScreen} />
-               
+
                 <AuthStack.Screen name="ProductListScreen" component={ListProductSearchScreen} />
             </>) : (<AuthStack.Screen name="LoginScreen" component={() => <LoginScreen handleLogin={() => setLogin(true)} token={token} />} />)}
         </AuthStack.Navigator>
-    </>
+    </AuthContext.Provider>
     );
 };
 

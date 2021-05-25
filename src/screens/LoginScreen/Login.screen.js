@@ -21,7 +21,7 @@ const SignupSchema = Yup.object().shape({
 // create a component
 const LoginScreen = ({ handleLogin, token }) => {
     const [login, setLogin] = useState(true);
-    const [loginQuery, { data, loading, error }] = useLazyQuery(LOGIN);
+    const [loginQuery, {data}] = useLazyQuery(LOGIN);
     const [getCurrentUser, { data: currentUser, loading: currentUserLoading, error: currentUserError }] = useLazyQuery(CURRENT_USER);;
     const [createUser] = useMutation(CREATE_USER, {
         onCompleted({ createUser }) {
@@ -29,7 +29,6 @@ const LoginScreen = ({ handleLogin, token }) => {
         }
     })
 
-    console.log({ data, loading, error })
 
 
     useEffect(() => {

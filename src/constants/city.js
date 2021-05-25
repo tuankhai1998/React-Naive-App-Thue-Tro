@@ -1,4 +1,4 @@
-export const city = [
+export const CITY = [
     {
         "id": 1,
         "code": "HCM",

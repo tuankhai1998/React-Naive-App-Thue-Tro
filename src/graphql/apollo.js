@@ -7,27 +7,27 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 
 export const URI = "http://192.168.2.11:8000"
-// const wsLink = new WebSocketLink({
-//     uri: 'ws://192.168.2.11:8000/',
-//     options: {
-//         reconnect: true,
-//     }
-// });
+const wsLink = new WebSocketLink({
+    uri: 'ws://192.168.2.11:8000/',
+    options: {
+        reconnect: true,
+    }
+});
 
 
 let httpLink = createUploadLink({ uri: `${URI}/graphql` })
 
-// const splitLink = split(
-//     ({ query }) => {
-//         const definition = getMainDefinition(query);
-//         return (
-//             definition.kind === 'OperationDefinition' &&
-//             definition.operation === 'subscription'
-//         );
-//     },
-//     wsLink,
-//     httpLink,
-// );
+const splitLink = split(
+    ({ query }) => {
+        const definition = getMainDefinition(query);
+        return (
+            definition.kind === 'OperationDefinition' &&
+            definition.operation === 'subscription'
+        );
+    },
+    wsLink,
+    httpLink,
+);
 
 
 const authLink = setContext(async (req, { headers }) => {
@@ -49,7 +49,7 @@ const authLink = setContext(async (req, { headers }) => {
 const cache = new InMemoryCache();
 
 const client = new ApolloClient({
-    link: authLink.concat(httpLink),
+    link: authLink.concat(splitLink),
     cache
 })
 

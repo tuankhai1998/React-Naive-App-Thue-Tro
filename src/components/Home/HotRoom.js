@@ -1,5 +1,6 @@
 import { useApolloClient } from '@apollo/client';
 import { useLazyQuery } from '@apollo/client';
+import { useFocusEffect } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react'
 import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { COLORS, FONTS, SIZES } from '../../constants'
@@ -18,19 +19,22 @@ export default function HotRoom({ city }) {
         [page, setPage] = useState(0);
 
 
-    useEffect(() => {
-        fetchRoom({
-            variables: {
-                page,
-                per_page: 6,
-                query: {
-                    addressName: {
-                        city
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchRoom({
+                variables: {
+                    page,
+                    per_page: 6,
+                    query: {
+                        addressName: {
+                            city
+                        }
                     }
                 }
-            }
-        })
-    }, [page, city])
+            })
+        }, [page, city])
+    )
+
 
     useEffect(() => {
         if (dataRoom && page > 0) {
