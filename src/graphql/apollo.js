@@ -6,7 +6,7 @@ import { createUploadLink } from 'apollo-upload-client';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 
-export const URI = "http://192.168.2.11:8000"
+export const URI = "http://192.168.2.11:8686"
 const wsLink = new WebSocketLink({
     uri: 'ws://192.168.2.11:8000/',
     options: {

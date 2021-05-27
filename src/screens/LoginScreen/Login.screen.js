@@ -1,18 +1,17 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import * as Yup from 'yup';
 import PrimaryButton from '../../components/PrimaryButton';
-import { SIZES } from '../../constants';
+import { FONTS, SIZES } from '../../constants';
 import { CREATE_USER, CURRENT_USER, LOGIN } from '../../graphql/user';
 import { removeStorage, setStorage } from '../../helpers/storage';
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string().min(6).max(50).required('Password is required!'),
-    retypePassword: Yup.string().min(6).max(50).required('Password is required!')
+    password: Yup.string().min(6).max(50).required('Password is required!')
 });
 // const null = Yup.object().shape({
 //     email: Yup.string().email('Invalid email').required('Required'),
@@ -21,14 +20,16 @@ const SignupSchema = Yup.object().shape({
 // create a component
 const LoginScreen = ({ handleLogin, token }) => {
     const [login, setLogin] = useState(true);
-    const [loginQuery, {data}] = useLazyQuery(LOGIN);
+    const [loginQuery, { data, error }] = useLazyQuery(LOGIN);
     const [getCurrentUser, { data: currentUser, loading: currentUserLoading, error: currentUserError }] = useLazyQuery(CURRENT_USER);;
     const [createUser] = useMutation(CREATE_USER, {
         onCompleted({ createUser }) {
-            setStorage('@AHome-graphql:', createUser)
+
+            console.log(createUser)
+            setLogin(true)
+            Alert.alert("Password đã được gửi vào mail của bạn")
         }
     })
-
 
 
     useEffect(() => {
@@ -61,15 +62,15 @@ const LoginScreen = ({ handleLogin, token }) => {
     }
 
     const initialValues = {
-        email: '',
-        password: '',
-        retypePassword: ''
+        email: ''
     }
 
     const { colors } = useTheme();
 
     return (
         <View style={styles.container}>
+            {error && Alert.alert(`${error}`)}
+            {currentUserError && Alert.alert(`${currentUserError}`)}
             <ImageBackground source={{ uri: 'https://divui.com/blog/wp-content/uploads/2016/11/nha-hang-bangkok-view-dep.jpg' }} style={styles.background} >
                 <View style={{ position: 'absolute', top: '30%', left: '10%' }}>
                     <Text style={{ fontSize: 40, color: '#fff', fontFamily: "Roboto-Bold" }}>Welcome</Text>
@@ -96,15 +97,15 @@ const LoginScreen = ({ handleLogin, token }) => {
                                     createUser({
                                         variables: { ...values }
                                     })
+                                } else {
+                                    loginQuery({
+                                        variables: {
+                                            email: values.email,
+                                            password: values.password
+                                        }
+                                    })
+
                                 }
-
-                                loginQuery({
-                                    variables: {
-                                        email: values.email,
-                                        password: values.password
-                                    }
-                                })
-
 
                             }}
                         >
@@ -113,17 +114,30 @@ const LoginScreen = ({ handleLogin, token }) => {
                                 ({ handleChange, handleBlur, handleSubmit, values }) => (
                                     <>
                                         <TextInput placeholder="Username" style={styles.textInput} onChangeText={handleChange('email')} onBlur={handleBlur('email')} value={values.email} keyboardType={"email-address"} />
-                                        <TextInput placeholder="Password" style={styles.textInput} onChangeText={handleChange('password')} onBlur={handleBlur('password')} secureTextEntry={true} value={values.password} />
-                                        {login ? (<TouchableOpacity><Text style={{ color: '#ccc', fontSize: 14, marginVertical: 20 }}>Quên mật khẩu</Text></TouchableOpacity>)
-                                            : (<TextInput
-                                                placeholder="Retype password"
-                                                style={styles.textInput}
-                                                secureTextEntry={true}
-                                                onChangeText={handleChange('retypePassword')}
-                                                onBlur={handleBlur('retypePassword')}
-                                                value={values.retypePassword}
-                                            />)}
-                                        {login ? <PrimaryButton text='Login' buttonWidth={"90%"} onclick={() => handleSubmit()} /> : <PrimaryButton text='Sign up' buttonWidth={"90%"} onclick={() => handleSubmit()} />}
+
+                                        {login ? (
+                                            <>
+                                                <TextInput placeholder="Password" style={styles.textInput} onChangeText={handleChange('password')} onBlur={handleBlur('password')} secureTextEntry={true} value={values.password} />
+                                                <TouchableOpacity><Text style={{ color: '#ccc', fontSize: 14, marginVertical: 20 }}>Quên mật khẩu</Text></TouchableOpacity>
+                                            </>
+                                        )
+                                            : (<View
+                                                style={{
+                                                    paddingHorizontal: SIZES.base
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{ ...FONTS.body3, textAlign: 'center' }}
+                                                >
+                                                    Vui lòng nhập email của bạn
+                                                </Text>
+                                                <Text
+                                                    style={{ ...FONTS.body3, textAlign: 'center' }}
+                                                >
+                                                    Password sẽ được gửi vào mail của bạn
+                                                </Text>
+                                            </View>)}
+                                        {login ? <PrimaryButton text='Login' buttonWidth={"90%"} onclick={() => handleSubmit()} /> : <PrimaryButton buttonStyle={{ marginTop: 20 }} text='Sign up' buttonWidth={"90%"} onclick={() => handleSubmit()} />}
                                     </>
                                 )
                             }
