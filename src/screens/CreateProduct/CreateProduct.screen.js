@@ -14,7 +14,7 @@ import StepTwo from './components/StepTwo';
 const CreateProduct = () => {
 
     const navigation = useNavigation();
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(3);
     const [data, setData] = useState({
         price: {},
         address: {
@@ -53,7 +53,7 @@ const CreateProduct = () => {
 
     return (
         <>
-            < Header title="Tạo phòng đăng" left handleLeft={() => step > 1 ? setStep(step - 1) : navigation.goBack()} />
+            <Header title="Tạo phòng đăng" left handleLeft={() => step > 1 ? setStep(step - 1) : navigation.goBack()} />
             <View style={{
                 flex: 1,
                 justifyContent: 'flex-start',

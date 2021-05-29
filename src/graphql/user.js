@@ -78,6 +78,15 @@ export const CREATE_USER = gql`
     }
 `;
 
+export const RESET_PASSWORD = gql`
+    query($email: String!){
+        resetPassword(email: $email ){
+            _id
+        }
+    }
+`;
+
+
 
 export const TOGGLE_LIKE_ROOM = gql`
     mutation($idRoom:  ID!) {
@@ -97,11 +106,13 @@ export const TOGGLE_LIKE_ROOM = gql`
 `
 
 export const UPDATE_USER = gql`
-    mutation UPDATE_USER($avatar: Upload, $name: String, $phone: String) {
+    mutation UPDATE_USER($avatar: Upload, $name: String, $phone: String, $password: String, $newPassword: String) {
         updateUser(profile: {
             avatar: $avatar,
             phone: $phone,
-            name:$name
+            name:$name,
+            password:$password,
+            newPassword: $newPassword
         }) {
             avatar
             name

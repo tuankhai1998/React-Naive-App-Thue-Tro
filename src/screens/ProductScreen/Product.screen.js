@@ -56,9 +56,6 @@ export default function ProductScreen() {
         }
     }, [dataRoom])
 
-    console.log(currentRoom)
-
-
     const renderSlideProduct = (itemList) => {
 
         return (

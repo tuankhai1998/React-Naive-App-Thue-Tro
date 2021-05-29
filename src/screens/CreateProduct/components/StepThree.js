@@ -60,15 +60,19 @@ export default function StepThree({ data, setData }) {
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
                 aspect: [4, 3],
-                quality: 10,
+                quality: 1,
             });
             if (!result.cancelled) {
-                let imgData = await result.map(img => createImageData(img))
-                setImgResult([...imgResult, new ReactNativeFile(imgData)])
-                setImageList([...imageList, ...imgData]);
+
+                let imgData = await createImageData(result)
+                setImageList([...imageList, imgData]);
+                console.log(imageList)
+                let dataImage = await ReactNativeFile.list(imageList)
+                setImgResult(dataImage)
+
             }
         } catch (E) {
-            console.log(E);
+            console.log("error", E);
         }
     };
     return (

@@ -1,24 +1,23 @@
 import { useApolloClient, useMutation } from '@apollo/client'
 import { AntDesign } from '@expo/vector-icons'
+import { ReactNativeFile } from 'apollo-upload-client'
 import * as ImagePicker from 'expo-image-picker'
 import * as Permissions from 'expo-permissions'
-import React, { useEffect } from 'react'
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { Avatar, TextInput } from 'react-native-paper'
 import Header from '../../components/Header'
 import { COLORS, FONTS, SHADOW, SIZES } from '../../constants'
-import { UPLOAD_FILE, UPDATE_USER, USER_INFO } from '../../graphql/user'
-import { ReactNativeFile } from 'apollo-upload-client';
-import { gql } from "@apollo/client";
-import { createImageData } from '../../helpers/fomatImageUpload'
 import { URI } from '../../graphql/apollo'
-import { useFocusEffect } from '@react-navigation/core'
-import { useLazyQuery } from '@apollo/client'
+import { UPDATE_USER, USER_INFO } from '../../graphql/user'
+import { createImageData } from '../../helpers/fomatImageUpload'
+import ChangePassword from './components/ChangePassword';
 
 export default function ProfileScreen() {
     const [text, setText] = React.useState('');
     const [phone, setPhone] = React.useState('');
     const client = useApolloClient();
+    const [changePassword, setChangePassword] = useState(false);
     const { user } = client.readQuery({
         query: USER_INFO
     })
@@ -96,6 +95,19 @@ export default function ProfileScreen() {
 
     return (
         <View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={changePassword}
+                onRequestClose={() => {
+                    setChangePassword(!changePassword);
+                }}
+            >
+                <ChangePassword
+                    modalVisible={changePassword}
+                    setModalVisible={() => setChangePassword(false)}
+                />
+            </Modal>
             <Header title="Thông tin tài khoản" left />
             <ScrollView
                 style={{
@@ -166,11 +178,24 @@ export default function ProfileScreen() {
                         }}
                         keyboardType='number-pad'
                     />
+                    <TouchableOpacity
+                        style={{ marginVertical: SIZES.padding }}
+                        onPress={() => setChangePassword(true)}
+                    >
+                        <Text
+                            style={{
+                                ...FONTS.body3,
+                                textAlign: 'center'
+                            }}
+                        >
+                            Thay đổi mật khẩu
+                        </Text>
+                    </TouchableOpacity>
                 </View>
 
                 <View
                     style={{
-                        padding: SIZES.padding
+                        paddingHorizontal: SIZES.padding
                     }}
                 >
                     <TouchableOpacity
