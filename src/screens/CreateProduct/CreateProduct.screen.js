@@ -17,7 +17,7 @@ import StepTwo from './components/StepTwo';
 const CreateProduct = () => {
 
     const navigation = useNavigation();
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(2);
     const [dataStep1, setDataStep1] = useState({
         price: {}
     })

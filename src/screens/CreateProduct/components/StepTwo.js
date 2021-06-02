@@ -16,7 +16,7 @@ export default function StepTwo({ data, setData, setValidate }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalRender, setModalRender] = useState(1);
 
-    console.log(loc)
+
 
     useEffect(() => {
         if (!city) {
@@ -56,11 +56,13 @@ export default function StepTwo({ data, setData, setValidate }) {
             setValidate(false)
             // await Location.setGoogleApiKey("AIzaSyDAtJK7wLInUeBcKvbDjoFhkoDrZFpJwhs")
             if (any && wardsAndStreet && districts && city) {
+                console.log(`${any}, ${wardsAndStreet}, ${districts},${city}`)
                 setValidate(true)
                 try {
-                    let res = await Location.geocodeAsync(` ${any}, ${wardsAndStreet}, ${districts},${city}`, { useGoogleMaps: false });
+                    let res = await Location.geocodeAsync(` ${any}, ${wardsAndStreet}, ${districts},${city}`);
 
                     let { latitude, longitude } = res[0]
+
                     setData(
                         {
                             address: {
