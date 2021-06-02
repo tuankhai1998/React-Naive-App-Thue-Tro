@@ -16,6 +16,8 @@ export default function StepTwo({ data, setData, setValidate }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalRender, setModalRender] = useState(1);
 
+    console.log(loc)
+
     useEffect(() => {
         if (!city) {
             setData(
@@ -57,10 +59,10 @@ export default function StepTwo({ data, setData, setValidate }) {
                 setValidate(true)
                 try {
                     let res = await Location.geocodeAsync(` ${any}, ${wardsAndStreet}, ${districts},${city}`, { useGoogleMaps: false });
+
                     let { latitude, longitude } = res[0]
                     setData(
                         {
-                            ...data,
                             address: {
                                 name: {
                                     city: city,
@@ -71,11 +73,14 @@ export default function StepTwo({ data, setData, setValidate }) {
                                 loc: {
                                     coordinates: [longitude, latitude]
                                 }
+
                             }
                         }
                     )
+
+
                 } catch (error) {
-                    console.log(error)
+                    console.log('error', error)
                 }
             }
         }

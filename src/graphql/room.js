@@ -7,6 +7,9 @@ export const FETCH_ROOM = gql`
             type
             images
             roomNum
+            phone 
+            roomName
+            description
             address{
                 name{
                     city
@@ -37,6 +40,9 @@ query($idRoom: ID!)
     type
     images
     roomNum
+    phone 
+            roomName
+            description
     address{
         name{
             city
@@ -65,9 +71,8 @@ query($idRoom: ID!)
 `
 
 export const CREATE_ROOM = gql`
-
 mutation (
-         $sex: Int, 
+        $sex: Int, 
         $type: Int, 
         $address: addressInput,  
         $images: [Upload], 
@@ -75,9 +80,14 @@ mutation (
         $peoples: Int,  
         $acreage: Int, 
         $utilities: [Int],
-        $price: priceInput
-){
-  createRoom(room: {
+        $price: priceInput,
+        $phone: String,
+        $roomName: String,
+        $description: String
+)
+{
+  createRoom(
+      room: {
         sex: $sex, 
         type: $type, 
         address:  $address,
@@ -86,11 +96,19 @@ mutation (
         peoples: $peoples, 
         acreage: $acreage, 
         utilities: $utilities, 
-        price:  $price}){
-            _id
+        price:  $price
+        phone: $phone
+        roomName: $roomName
+        description : $description
+        }
+    ){
+        _id
             type
             images
             roomNum
+            phone 
+            roomName
+            description
             address{
                 name{
                     city
@@ -114,12 +132,56 @@ mutation (
                 avatar
                 _id
             }
+    }
+}`
+
+export const ROOM_USER_CREATED = gql`
+    query {
+        user {
+            created{
+                _id
+                type
+                images
+                roomNum
+                phone 
+                roomName
+                description
+                address{
+                    name{
+                        city
+                        wardsAndStreet
+                        districts
+                    }
+                    loc{
+                        coordinates
+                    }
+                }
+                price {
+                    room{
+                        free
+                        price
+                    }
+                }
+                createdAt
+                createdBy {
+                    name
+                    phone
+                    avatar
+                    _id
+                }
+            }   
         }
-}
+    }
+`;
 
-    
-
+export const DELETE_ROOM = gql`
+    query($idRoom: ID! ) {
+        deleteRoom(_id: $idRoom) {
+            _id
+        }
+    }
 `
+
 
 
 

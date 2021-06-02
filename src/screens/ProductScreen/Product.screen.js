@@ -3,7 +3,7 @@ import { useLazyQuery } from '@apollo/client'
 import { Feather, Fontisto, Ionicons } from '@expo/vector-icons'
 import { useNavigation, useRoute } from '@react-navigation/core'
 import React, { useState } from 'react'
-import { Animated, FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
+import { Animated, FlatList, Image, Text, TouchableOpacity, View, Linking, Alert, Platform } from 'react-native'
 import Swiper from 'react-native-swiper'
 import { useEffect } from 'react/cjs/react.development'
 import ItemHorizontalList from '../../components/ItemHorizontalList'
@@ -88,6 +88,26 @@ export default function ProductScreen() {
             </Swiper>
         )
     }
+
+
+    const callNumber = phone => {
+        let phoneNumber = phone;
+        if (Platform.OS !== 'android') {
+            phoneNumber = `telprompt:${phone}`;
+        }
+        else {
+            phoneNumber = `tel:${phone}`;
+        }
+        Linking.canOpenURL(phoneNumber)
+            .then(supported => {
+                if (!supported) {
+                    Alert.alert('Phone number is not available');
+                } else {
+                    return Linking.openURL(phoneNumber);
+                }
+            })
+            .catch(err => console.log(err));
+    };
 
     return (
         <View
@@ -502,6 +522,7 @@ export default function ProductScreen() {
                             flexWrap: 'wrap',
                             marginBottom: SIZES.base
                         }}
+                        onPress={() => callNumber('035 706 0055')}
                     >
                         <Text>
                             <Feather name="phone" size={SIZES.body3} color="black" />

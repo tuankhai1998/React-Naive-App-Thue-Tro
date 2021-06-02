@@ -33,8 +33,6 @@ export default function ResetPassword({ modalVisible, setModalVisible }) {
             setError("Invalid email.")
             return
         }
-
-        console.log("hahah")
         resetPassword({
             variables: {
                 email

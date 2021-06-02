@@ -20,6 +20,10 @@ const WIFI = require('../../assets/images/wifi-outline.png');
 const PET = require('../../assets/images/dog.png');
 const BALCONY = require('../../assets/images/balcony.png');
 const WINDOW = require('../../assets/images/window.png');
+const HOME = require('../../assets/images/home.png');
+const RENT = require('../../assets/images/rent.png');
+const SETTING = require('../../assets/images/settings.png');
+const HEART = require('../../assets/images/heart.png');
 
 export default {
     SplashScreenBG,
@@ -43,5 +47,9 @@ export default {
     WIFI,
     PET,
     BALCONY,
-    WINDOW
+    WINDOW,
+    HOME,
+    RENT,
+    SETTING,
+    HEART
 }

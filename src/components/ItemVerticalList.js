@@ -1,19 +1,22 @@
-import { useApolloClient, useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
 import React from 'react';
-import { ImageBackground, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS, FONTS, Images, SIZES } from '../constants';
 import { roomType_FN } from '../constants/variable';
-import { GET_LIST_ROOM_LIKED, TOGGLE_LIKE_ROOM } from '../graphql/user';
+import { DELETE_ROOM } from '../graphql/room';
+import { TOGGLE_LIKE_ROOM } from '../graphql/user';
 
 
-const ItemVerticalList = ({ item, index, userLiked }) => {
+const ItemVerticalList = ({ item, index, userLiked, rent }) => {
     const navigation = useNavigation();
-
     const [handleLikeRoom, { loading }] = useMutation(TOGGLE_LIKE_ROOM);
+    const [handleDeleteRoom, { loading: deleteRoomLoading, error }] = useLazyQuery(DELETE_ROOM);
 
 
+
+    console.log({ deleteRoomLoading, error })
     return (
         <TouchableOpacity
             style={{
@@ -24,7 +27,8 @@ const ItemVerticalList = ({ item, index, userLiked }) => {
             }}
 
             onPress={() => navigation.push('ProductScreen', {
-                idRoom: item._id
+                idRoom: item._id,
+                rent
             })}
         >
             <View
@@ -53,16 +57,37 @@ const ItemVerticalList = ({ item, index, userLiked }) => {
                         }}
                         onPress={
                             () => {
-                                handleLikeRoom({
-                                    variables: {
-                                        idRoom: item._id
-                                    }
-                                })
+                                if (rent) {
+                                    Alert.alert(
+                                        "Cảnh báo", "Bạn có chắc chắn muốn xóa phòng này?", [
+                                        {
+                                            text: "Cancel",
+                                            onPress: () => console.log("Cancel Pressed"),
+                                        },
+                                        {
+                                            text: "OK", onPress: () => handleDeleteRoom({
+                                                variables: {
+                                                    idRoom: item._id
+                                                }
+                                            })
+                                        }
+                                    ])
+                                }
+                                else {
+                                    handleLikeRoom({
+                                        variables: {
+                                            idRoom: item._id
+                                        }
+                                    })
+                                }
                             }
                         }
                     >
-                        {
-                            userLiked && userLiked.indexOf(item._id) !== -1 ? <Ionicons name="heart-sharp" size={16} color={COLORS.Google} /> : <Ionicons name="heart-outline" size={16} color={COLORS.white} />
+                        {rent
+                            ? <Ionicons name="trash-bin-outline" size={24} color={COLORS.Google} />
+                            : userLiked && userLiked.indexOf(item._id) !== -1
+                                ? <Ionicons name="heart-sharp" size={16} color={COLORS.Google} />
+                                : <Ionicons name="heart-outline" size={16} color={COLORS.white} />
                         }
                     </TouchableOpacity>
                 </ImageBackground>

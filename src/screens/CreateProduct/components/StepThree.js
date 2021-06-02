@@ -8,11 +8,10 @@ import { createImageData } from '../../../helpers/fomatImageUpload';
 import { MaterialIcons } from '@expo/vector-icons'
 import Utility from '../../../components/Utility';
 
-export default function StepThree({ data, setData }) {
+export default function StepThree({ data, setData, setValidate }) {
     const { images, utilities } = data
     const [imgResult, setImgResult] = useState([]);
-    const [imageList, setImageList] = useState([])
-
+    const [imageList, setImageList] = useState(['https://vcdn-thethao.vnecdn.net/2021/05/30/chelsea-jpeg-3619-1622324611.jpg'])
 
     useEffect(() => {
         if (images) {
@@ -20,14 +19,24 @@ export default function StepThree({ data, setData }) {
         }
         const getPermissionAsync = async () => {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-
             if (status !== 'granted') {
                 setErrorMsg('Permission to access location was denied');
             }
-
         }
         getPermissionAsync()
     }, [])
+
+    useEffect(() => {
+        let dataImage = imageList.map((image) => {
+            if (typeof (image) === 'object') {
+                return new ReactNativeFile(image)
+            }
+            return
+        }).filter(item => item !== undefined)
+        if (imageList.length > 4) setValidate(true)
+        if (imageList.length < 4) setValidate(false)
+        setImgResult(dataImage)
+    }, [imageList])
 
     useEffect(() => {
         setData({
@@ -48,7 +57,7 @@ export default function StepThree({ data, setData }) {
                     zIndex: 10
                 }}
             >
-                < Image style={{ width: '100%', height: '100%', }} source={{ uri: item }} />
+                < Image style={{ width: '100%', height: '100%', }} source={{ uri: item.uri || item }} />
             </View>
         )
     }
@@ -63,13 +72,8 @@ export default function StepThree({ data, setData }) {
                 quality: 1,
             });
             if (!result.cancelled) {
-
                 let imgData = await createImageData(result)
                 setImageList([...imageList, imgData]);
-                console.log(imageList)
-                let dataImage = await ReactNativeFile.list(imageList)
-                setImgResult(dataImage)
-
             }
         } catch (E) {
             console.log("error", E);
@@ -104,7 +108,6 @@ export default function StepThree({ data, setData }) {
                             height: '100%',
                         }}
                     >
-
                         <FlatList
                             contentContainerStyle={{ alignSelf: 'flex-start' }}
                             numColumns={3}
@@ -114,8 +117,6 @@ export default function StepThree({ data, setData }) {
                             renderItem={imagesItem}
                         />
                     </ScrollView>
-
-
                     <MaterialIcons name="add-photo-alternate" size={100} color="black" style={{
                         position: 'absolute',
                         top: SIZES.height / 8 - 50,
@@ -123,14 +124,11 @@ export default function StepThree({ data, setData }) {
                         zIndex: -1
                     }} />
 
-
-
                 </View>
                 <TouchableOpacity
                     activeOpacity={1}
                     onPress={() => pickImage()}
                 >
-
                     <Text
                         style={{
                             textAlign: 'center',

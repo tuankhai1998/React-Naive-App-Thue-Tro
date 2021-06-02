@@ -1,44 +1,68 @@
 
 //import liraries
-import { useLazyQuery } from '@apollo/client';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useRoute } from '@react-navigation/core';
 import React from 'react';
-import { useEffect } from 'react/cjs/react.development';
-import { CURRENT_USER } from '../graphql/user';
+import { Image } from 'react-native';
+import { COLORS, Images, SIZES } from '../constants';
+import RentScreen from '../screens/RentScreen/Rent.screen';
 import HomeStackNavigator from './stacknavigator/HomeStackNavigator';
 import LikeStackNavigator from './stacknavigator/LikeStackNavigatior';
 import MessagesStackNavigator from './stacknavigator/MessagesStackNavigatior';
 import SettingStackNavigator from './stacknavigator/SettingStackNavigator';
-import { removeStorage } from '../helpers/storage'
-import SplashScreen from '../screens/Splash.screen';
-import { useFocusEffect } from '@react-navigation/core';
 const Tab = createBottomTabNavigator();
 
 // create a component
 const BottomTabNavigator = () => {
 
-
-
-    const getTabBarVisible = (route) => {
-        const routeName = route.state
-            ? route.state.routes[route.state.index].name
-            : route.params?.screen || 'ListMessage';
-
-        if (routeName !== 'ListMessage') {
-            return false;
-        }
-        return true;
-    }
-
     return (
         <>
-            { <Tab.Navigator>
+            { <Tab.Navigator
+                tabBarOptions={{
+                    activeTintColor: COLORS.primary,
+                    inactiveTintColor: COLORS.primaryTextColor,
+                    keyboardHidesTabBar: true,
+                    style: {
+                        paddingVertical: SIZES.base,
+                        paddingBottom: SIZES.padding,
+                        height: SIZES.height / 12
+                    }
+                }}
+
+                screenOptions={({ route }) => ({
+                    tabBarIcon: ({ focused, color, size }) => {
+                        if (route.name === 'Home') {
+                            return <Image source={Images.HOME} style={{
+                                tintColor: color,
+                                width: 25,
+                                height: 25
+                            }} />;
+                        }
+                        if (route.name === 'Settings') {
+                            return <Image source={Images.SETTING} style={{
+                                tintColor: color,
+                                width: 25,
+                                height: 25
+                            }} />;
+                        }
+                        if (route.name === 'Like') {
+                            return <Image source={Images.HEART} style={{
+                                tintColor: color,
+                                width: 25,
+                                height: 25
+                            }} />;
+                        }
+                        return <Image source={Images.RENT} style={{
+                            tintColor: color,
+                            width: 25,
+                            height: 25
+                        }} />;
+                    },
+                })}
+            >
                 <Tab.Screen name="Home" component={HomeStackNavigator} />
                 <Tab.Screen name="Like" component={LikeStackNavigator} />
-                <Tab.Screen name="Messages" component={MessagesStackNavigator}
-                    options={({ route }) => ({
-                        tabBarVisible: getTabBarVisible(route)
-                    })} />
+                <Tab.Screen name="Rent" component={RentScreen} />
                 <Tab.Screen name="Settings" component={SettingStackNavigator} />
             </Tab.Navigator>}
         </>

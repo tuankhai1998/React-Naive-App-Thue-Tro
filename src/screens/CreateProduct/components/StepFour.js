@@ -1,15 +1,24 @@
 //import liraries
-import React, { Component, useState } from 'react';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
-import { Checkbox } from 'react-native-paper';
-import RadioButton from '../../../components/RadioButton';
-import SubText from '../../../components/SubTexxt';
+import { useApolloClient } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
+import { Text, TextInput, View } from 'react-native';
 import { COLORS, FONTS, SIZES } from '../../../constants';
-import { RoomType, Sex } from '../../../constants/values';
+import { RoomType } from '../../../constants/values';
+import { USER_INFO } from '../../../graphql/user';
 
 // create a component
-const StepFour = ({ data, setData }) => {
+const StepFour = ({ data, setData, address }) => {
 
+    console.log(address)
+
+    const { type, phone, description } = data;
+    const { city, districts, wardsAndStreet } = address.name;
+
+    const [roomName, setRoomName] = useState(`${RoomType.filter(typeRoom => typeRoom.value == type)[0].label} ${wardsAndStreet}, ${districts}, ${city}`);
+
+    useEffect(() => {
+        setData({ ...data, roomName })
+    }, [roomName])
 
 
     return (
@@ -37,15 +46,44 @@ const StepFour = ({ data, setData }) => {
                             backgroundColor: COLORS.white,
                             paddingHorizontal: SIZES.base,
                             flex: 1,
-                            marginRight: SIZES.padding,
                             marginVertical: SIZES.base,
                             borderRadius: SIZES.radius / 2,
                             paddingVertical: SIZES.base,
-                            maxWidth: SIZES.width * 2 / 3 - 2 * SIZES.padding
-                        }}
 
+                        }}
+                        value={roomName}
+                        onChangeText={(text) => setRoomName(text)}
                     />
 
+                </View>
+
+                <Text
+                    style={{
+                        ...FONTS.body3,
+                    }}
+                >
+                    Số điện thoại
+                </Text>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'baseline'
+                    }}
+                >
+                    <TextInput
+                        style={{
+                            backgroundColor: COLORS.white,
+                            paddingHorizontal: SIZES.base,
+                            flex: 1,
+                            marginVertical: SIZES.base,
+                            borderRadius: SIZES.radius / 2,
+                            paddingVertical: SIZES.base,
+
+                        }}
+                        value={phone}
+                        onChangeText={(text) => { setData({ ...data, phone: text }) }}
+                        keyboardType="phone-pad"
+                    />
                 </View>
 
                 <Text
@@ -59,6 +97,7 @@ const StepFour = ({ data, setData }) => {
                     style={{
                         flexDirection: 'row',
                         alignItems: 'baseline'
+
                     }}
                 >
                     <TextInput
@@ -66,18 +105,20 @@ const StepFour = ({ data, setData }) => {
                             backgroundColor: COLORS.white,
                             paddingHorizontal: SIZES.base,
                             flex: 1,
-                            marginRight: SIZES.padding,
                             marginVertical: SIZES.base,
                             borderRadius: SIZES.radius / 2,
                             paddingVertical: SIZES.base,
-                            maxWidth: SIZES.width * 2 / 3 - 2 * SIZES.padding
-                        }}
+                            height: 100,
+                            justifyContent: "flex-start",
+                            textAlignVertical: 'top'
 
+                        }}
+                        value={description}
+                        onChangeText={(text) => { setData({ ...data, description: text }) }}
+                        multiline={true}
+                        numberOfLines={4}
                     />
                 </View>
-
-
-
             </View>
         </>
     );
