@@ -12,9 +12,10 @@ const StepFour = ({ data, setData, address }) => {
     console.log(address)
 
     const { type, phone, description } = data;
-    const { city, districts, wardsAndStreet } = address.name;
+    // const { city, districts, wardsAndStreet } = address.name;
+    // ${RoomType.filter(typeRoom => typeRoom.value == type)[0].label} ${wardsAndStreet}, ${districts}, ${city}
 
-    const [roomName, setRoomName] = useState(`${RoomType.filter(typeRoom => typeRoom.value == type)[0].label} ${wardsAndStreet}, ${districts}, ${city}`);
+    const [roomName, setRoomName] = useState(`ádasdasd`);
 
     useEffect(() => {
         setData({ ...data, roomName })

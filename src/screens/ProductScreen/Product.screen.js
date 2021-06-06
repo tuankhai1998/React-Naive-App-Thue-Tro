@@ -1,17 +1,22 @@
-import { useQuery } from '@apollo/client'
-import { useLazyQuery } from '@apollo/client'
+import { useLazyQuery, useQuery } from '@apollo/client'
 import { Feather, Fontisto, Ionicons } from '@expo/vector-icons'
 import { useNavigation, useRoute } from '@react-navigation/core'
 import React, { useState } from 'react'
-import { Animated, FlatList, Image, Text, TouchableOpacity, View, Linking, Alert, Platform } from 'react-native'
+import { Alert, Animated, FlatList, Image, Linking, Platform, Text, TouchableOpacity, View } from 'react-native'
+import { Avatar } from 'react-native-paper'
 import Swiper from 'react-native-swiper'
 import { useEffect } from 'react/cjs/react.development'
+import GroupUtilities from '../../components/GroupUtilities'
 import ItemHorizontalList from '../../components/ItemHorizontalList'
+import PrimaryButton from '../../components/PrimaryButton'
 import SubText from '../../components/SubTexxt'
 import { COLORS, FONTS, SIZES } from '../../constants'
+import { Utilities } from '../../constants/values'
+import { URI } from '../../graphql/apollo'
 import { CURRENT_ROOM, FETCH_ROOM } from '../../graphql/room'
 import { ProductHeader } from './components/ProductHeader'
-
+import getDirections from 'react-native-google-maps-directions'
+import * as Location from 'expo-location';
 
 let listImage = [
     "https://loremflickr.com/320/240",
@@ -20,13 +25,15 @@ let listImage = [
     "https://loremflickr.com/320/240"
 ]
 
+let listUtilities = Utilities.map(item => Object.assign({}, item))
+
 export default function ProductScreen() {
     let sex;
     const navigation = useNavigation();
     const scrollY = new Animated.Value(0);
     const route = useRoute();
     const { params } = route;
-    const { idRoom } = params;
+    const { idRoom, rent } = params;
 
     const [fetchSameRoom, { error: errorRoom, data: dataRoom, loading }] = useLazyQuery(FETCH_ROOM);
     const { data: currentRoom, loading: roomLoading, error: currentRoomError } = useQuery(CURRENT_ROOM, {
@@ -35,6 +42,46 @@ export default function ProductScreen() {
         }
     })
     const [sameRooms, setSameRooms] = useState([]);
+
+    console.log(currentRoom)
+
+    const handleGetDirections = ({ longitude, latitude }) => {
+
+        const getLocation = async () => {
+            try {
+                let { status } = await Location.requestPermissionsAsync();
+                if (status !== 'granted') {
+                    setErrorMsg('Permission to access location was denied');
+                    return;
+                }
+                let { coords } = await Location.getCurrentPositionAsync({});
+
+                return coords
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        const data = {
+            source: getLocation(),
+            destination: {
+                latitude,
+                longitude
+            },
+            params: [
+                {
+                    key: "travelmode",
+                    value: "motorcycle "        // may be "walking", "bicycling" or "transit" as well
+                },
+                {
+                    key: "dir_action",
+                    value: "navigate"       // this instantly initializes navigation using the given travel mode
+                }
+            ],
+        }
+
+        getDirections(data)
+    }
 
     useEffect(() => {
         fetchSameRoom({
@@ -78,7 +125,7 @@ export default function ProductScreen() {
                                     width: SIZES.width,
                                     flex: 1,
                                 }}
-                                source={{ uri: item }}
+                                source={{ uri: `${URI}/images/${item}` }}
                             />
                         </View>
 
@@ -86,6 +133,27 @@ export default function ProductScreen() {
                 }
 
             </Swiper>
+        )
+    }
+
+    const renderGroupButton = () => {
+        return (
+            <View style={{
+                flexDirection: 'row',
+                position: "absolute",
+                bottom: SIZES.padding,
+                width: SIZES.width,
+                paddingHorizontal: SIZES.base,
+                justifyContent: 'space-between'
+            }}>
+                <PrimaryButton text="Đã thuê" buttonStyle={{
+                    backgroundColor: COLORS.Google
+                }} />
+
+                <PrimaryButton text="Chỉnh sửa" buttonStyle={{
+                    backgroundColor: COLORS.primary
+                }} />
+            </View>
         )
     }
 
@@ -109,29 +177,24 @@ export default function ProductScreen() {
             .catch(err => console.log(err));
     };
 
-    return (
-        <View
-            style={{
-                flex: 1,
-                backgroundColor: 'rgba(0,0,0,0)'
-            }}
-        >
-            <ProductHeader scrollY={scrollY} />
-            <Animated.ScrollView
-                scrollEventThrottle={1}
-                onScroll={Animated.event(
-                    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-                    { useNativeDriver: false },
-                )}
-                style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}
-            >
+
+    const renderProduct = React.useCallback(() => {
+
+        if (currentRoom) {
+
+            let { room } = currentRoom
+            let { createdBy, images, utilities, address } = room
+
+            let Utilities = utilities.map(item => listUtilities.find((itemUtilities) => itemUtilities.value == item))
+
+            return <>
                 <View
                     style={{
                         height: SIZES.width * 2 / 3,
                         zIndex: 1
                     }}
                 >
-                    {renderSlideProduct(listImage)}
+                    {renderSlideProduct(images)}
                 </View>
                 {/* -------header-------- */}
                 <View
@@ -147,22 +210,22 @@ export default function ProductScreen() {
                             textTransform: 'uppercase',
                             fontSize: 13,
                         }}
-                    >Tìm người thuê. 3 <Ionicons name={sex == 0 ? "male-female-outline" : sex == 1 ? "female-outline" : "female-outline"} size={13} color="black" /></Text>
+                    >Tìm người thuê. {room.peoples} <Ionicons name={room.sex == 0 ? "male-female-outline" : room.sex == 1 ? "female-outline" : "female-outline"} size={13} color="black" /></Text>
                     <Text
                         style={{
                             ...FONTS.body2,
                             color: '#333333'
                         }}
                     >
-                        Phòng cho thuê Đường Phạm Hùng, Quận Cầu Giấy
-                </Text>
+                        {room.roomName}
+                    </Text>
                     <View
                         style={{
                             justifyContent: 'center',
                             alignItems: 'center',
                         }}
                     >
-                        <Text style={{ ...FONTS.h3, color: COLORS.primary, marginVertical: SIZES.base }}>5 triệu VND/phòng</Text>
+                        <Text style={{ ...FONTS.h3, color: COLORS.primary, marginVertical: SIZES.base }}>{room.price.room.price / 1000000} triệu VND/phòng</Text>
                         <View
                             style={{
                                 flexDirection: 'row',
@@ -202,7 +265,7 @@ export default function ProductScreen() {
                                         color: COLORS.primary,
                                         ...FONTS.body3
                                     }}
-                                >30 <SubText base="m" exponent="2" color={COLORS.primary} /></Text>
+                                > {room.acreage} <SubText base="m" exponent="2" color={COLORS.primary} /></Text>
                             </View>
                             <View
                                 style={{
@@ -219,7 +282,7 @@ export default function ProductScreen() {
                                         color: COLORS.primary,
                                         ...FONTS.body3
                                     }}
-                                >5tr </Text>
+                                >{room.price.room.price / 1000000}tr </Text>
                             </View>
                         </View>
 
@@ -246,7 +309,7 @@ export default function ProductScreen() {
                                 style={{
                                     ...FONTS.body4,
                                     marginTop: SIZES.base
-                                }}>3k</Text>
+                                }}>{room.price.electricity.free ? 'free' : `${room.price.electricity.price / 1000}k`}</Text>
                         </View>
                         <View
                             style={{
@@ -259,7 +322,7 @@ export default function ProductScreen() {
                                 style={{
                                     ...FONTS.body4,
                                     marginTop: SIZES.base
-                                }}>3k</Text>
+                                }}>{room.price.water.free ? 'free' : `${room.price.water.price / 1000}k`}</Text>
                         </View>
                         <View
                             style={{
@@ -272,7 +335,7 @@ export default function ProductScreen() {
                                 style={{
                                     ...FONTS.body4,
                                     marginTop: SIZES.base
-                                }}>80k</Text>
+                                }}>{room.price.internet.free ? 'free' : `${room.price.internet.price / 1000}k`}</Text>
                         </View>
                         <View
                             style={{
@@ -285,7 +348,7 @@ export default function ProductScreen() {
                                 style={{
                                     ...FONTS.body4,
                                     marginTop: SIZES.base
-                                }}>80k</Text>
+                                }}>{room.price.internet.free ? 'free' : `${room.price.internet.price / 1000}k`}</Text>
                         </View>
 
                     </View>
@@ -329,153 +392,10 @@ export default function ProductScreen() {
                     </Text>
                     <View style={{
                         width: '100%',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        flexWrap: 'wrap'
-
                     }}>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4,
-                                borderRadius: SIZES.radius,
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: SIZES.base,
-                                width: (SIZES.width - SIZES.padding * 2) / 4
-                            }}
-                        >
-                            <Ionicons name="wifi-outline" size={24} color="black" />
-                            <Text
-                                style={{
-                                    ...FONTS.body4,
-                                    marginTop: SIZES.base / 2
-                                }}>wifi</Text>
-                        </View>
-
+                        <GroupUtilities utilities={Utilities} />
                     </View>
-                    <TouchableOpacity
-                        style={{
-                            marginTop: SIZES.base,
-                            borderTopWidth: 1,
-                            borderColor: COLORS.primaryTextColor,
-                            paddingTop: SIZES.base
 
-                        }}
-                    >
-                        <Text
-                            style={{
-                                textAlign: 'center',
-                                ...FONTS.body3,
-                                color: '#0000EE'
-                            }}
-                        >
-                            Xem Thêm
-                    </Text>
-                    </TouchableOpacity>
                 </View>
                 {/* ---------------Utilities----------- */}
 
@@ -504,10 +424,15 @@ export default function ProductScreen() {
                             flexWrap: 'wrap',
                             marginBottom: SIZES.base
                         }}
+
+                        onPress={() => handleGetDirections({
+                            latitude: address.loc.coordinates[1],
+                            longitude: address.loc.coordinates[0]
+                        })}
                     >
                         <Text>
                             <Feather name="map-pin" size={SIZES.body3} color="black" />
-                            <Text > 127 Đường Phạm Hùng, Trung Hòa, Cầu Giấy, Hà Nội.</Text>
+                            <Text >{room && room.address && `${room.address.name.any}, ${room.address.name.wardsAndStreet}, ${room.address.name.districts},${room.address.name.city}`} </Text>
                             <Text> </Text>
                             <Text style={{ fontSize: SIZES.body3 - 1, color: '#0000EE' }}>
                                 Chỉ đường
@@ -522,12 +447,12 @@ export default function ProductScreen() {
                             flexWrap: 'wrap',
                             marginBottom: SIZES.base
                         }}
-                        onPress={() => callNumber('035 706 0055')}
+                        onPress={() => callNumber(room.phone)}
                     >
                         <Text>
                             <Feather name="phone" size={SIZES.body3} color="black" />
                             <Text>  </Text>
-                            <Text >035 706 0055.</Text>
+                            <Text >{room.phone}</Text>
                         </Text>
                     </TouchableOpacity>
 
@@ -544,97 +469,105 @@ export default function ProductScreen() {
                         alignItems: 'center'
                     }}
                 >
-                    <View
-                        style={{
-                            width: 70,
-                            height: 70,
-                            borderRadius: 50,
-                            overflow: 'hidden',
-                            marginRight: SIZES.padding
-                        }}
-                    >
-                        <Image source={{
-                            uri: 'https://loremflickr.com/320/240',
-                        }}
-                            style={{
-                                resizeMode: 'stretch',
-                                width: '100%',
-                                height: '100%'
-                            }} />
-                    </View>
+
+                    <Avatar.Image size={70} source={{ uri: createdBy && createdBy.avatar ? `${URI}/images/${createdBy.avatar}` : 'https://images.daznservices.com/di/library/GOAL/e8/d1/mason-mount-chelsea_1u2vf25gf8pl31mk1yhvfwoxv9.jpg?t=64552568&amp;quality=60&amp;w=800' }} />
                     <View
                         style={{
                             flex: 1
                         }}
                     >
                         <Text
-                            style={{ ...FONTS.body2 }}
+                            style={{ ...FONTS.body2, marginLeft: SIZES.padding }}
                         >
-                            Đạt 1 Lít
+                            {room.createdBy && room.createdBy.name ? room.createdBy.name : room.createdBy.email}
                         </Text>
-
-                        <Text
-                            style={{ color: COLORS.primary }}
-                        >
-                            n phòng
-                        </Text>
-
                     </View>
                     <Feather name="chevron-right" size={24} color="black" />
 
                 </TouchableOpacity>
                 {/* ---------------Poster-------------- */}
                 {/* ---------------Utilities----------- */}
-                <View
-                    style={{
-                        backgroundColor: COLORS.white,
-                        padding: SIZES.padding,
-                        marginBottom: SIZES.base
-                    }}
-                >
-                    <Text
-                        style={{
-                            ...FONTS.body3
-                        }}
-                    >
-                        Các phòng cùng tiêu chí
-                    </Text>
+
+                {/* ---------------Utilities----------- */}
 
 
-                    <FlatList
-                        contentContainerStyle={{ alignSelf: 'flex-start' }}
-                        numColumns={2}
-                        showsVerticalScrollIndicator={false}
-                        showsHorizontalScrollIndicator={false}
-                        data={sameRooms.length > 0 ? sameRooms : []}
-                        renderItem={({ item, index }) => <ItemHorizontalList index={index} item={item} />}
-                        style={{
-                            marginTop: SIZES.base,
-                        }}
-                    />
-                    <TouchableOpacity
-                        style={{
-                            marginTop: SIZES.base,
-                            borderTopWidth: 1,
-                            borderColor: COLORS.primaryTextColor,
-                            paddingTop: SIZES.base
+            </>
+        }
 
+        return <> </>
+
+    }, [currentRoom])
+
+    return (
+        <View
+            style={{
+                flex: 1,
+                backgroundColor: 'rgba(0,0,0,0)'
+            }}
+        >
+            <ProductHeader scrollY={scrollY} />
+            <Animated.ScrollView
+                scrollEventThrottle={1}
+                onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                    { useNativeDriver: false },
+                )}
+                style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}
+            >
+                {currentRoom && !loading && <>
+                    {renderProduct()}
+                    <View
+                        style={{
+                            backgroundColor: COLORS.white,
+                            padding: SIZES.padding,
+                            marginBottom: rent ? SIZES.padding * 3 : SIZES.base,
                         }}
                     >
                         <Text
                             style={{
-                                textAlign: 'center',
-                                ...FONTS.body3,
-                                color: '#0000EE'
+                                ...FONTS.body3
                             }}
                         >
-                            Xem Thêm
+                            Các phòng cùng tiêu chí
                     </Text>
-                    </TouchableOpacity>
 
-                </View>
-                {/* ---------------Utilities----------- */}
+
+                        <FlatList
+                            contentContainerStyle={{ alignSelf: 'flex-start' }}
+                            numColumns={2}
+                            showsVerticalScrollIndicator={false}
+                            showsHorizontalScrollIndicator={false}
+                            data={sameRooms.length > 0 ? sameRooms : []}
+                            renderItem={({ item, index }) => <ItemHorizontalList index={index} item={item} />}
+                            style={{
+                                marginTop: SIZES.base,
+                            }}
+                        />
+                        <TouchableOpacity
+                            style={{
+                                marginTop: SIZES.base,
+                                borderTopWidth: 1,
+                                borderColor: COLORS.primaryTextColor,
+                                paddingTop: SIZES.base
+
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    textAlign: 'center',
+                                    ...FONTS.body3,
+                                    color: '#0000EE'
+                                }}
+                            >
+                                Xem Thêm
+                    </Text>
+                        </TouchableOpacity>
+
+                    </View>
+                </>}
+
             </Animated.ScrollView>
+            {rent && renderGroupButton()}
         </View >
     )
 }

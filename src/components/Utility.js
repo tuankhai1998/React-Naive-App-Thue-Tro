@@ -7,6 +7,8 @@ let listUtilities = Utilities.map(item => Object.assign({}, item))
 
 export default function Utility({ utilitiesSelected, handleUtilitiesSelect }) {
     const [utilitiessChoose, setUtilitiesChoose] = useState([...listUtilities]);
+
+
     useEffect(() => {
         if (utilitiesSelected.length > 0) {
             setUtilitiesChoose(utilitiesSelected)

@@ -11,7 +11,7 @@ import Utility from '../../../components/Utility';
 export default function StepThree({ data, setData, setValidate }) {
     const { images, utilities } = data
     const [imgResult, setImgResult] = useState([]);
-    const [imageList, setImageList] = useState(['https://vcdn-thethao.vnecdn.net/2021/05/30/chelsea-jpeg-3619-1622324611.jpg'])
+    const [imageList, setImageList] = useState([])
 
     useEffect(() => {
         if (images) {

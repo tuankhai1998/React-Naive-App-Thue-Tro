@@ -220,8 +220,6 @@ const HomeHeader = ({ citySelected, changeCitySelected, city }) => {
                                 backgroundColor: `#E4572E`,
                                 ...styles.headerFindItem
                             }}
-
-
                         >
                             <MaterialCommunityIcons name="google-nearby" size={40} color={COLORS.white} />
                         </View>

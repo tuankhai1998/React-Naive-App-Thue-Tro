@@ -38,16 +38,21 @@ query($idRoom: ID!)
 {room(_id:$idRoom){
     _id
     type
+    sex
     images
+    peoples
     roomNum
     phone 
-            roomName
-            description
+    roomName
+    description
+    acreage
+    utilities
     address{
         name{
             city
             wardsAndStreet
             districts
+            any
         }
         loc{
             coordinates
@@ -58,15 +63,30 @@ query($idRoom: ID!)
             free
             price
         }
+
+        electricity{
+            free
+            price
+        }
+
+        water {
+            free
+            price
+        }
+
+        internet  {
+            free
+            price
+        }
     }
     createdAt
     createdBy {
         name
+        email
         phone
         avatar
         _id
-    }
-        
+    }       
 }}
 `
 

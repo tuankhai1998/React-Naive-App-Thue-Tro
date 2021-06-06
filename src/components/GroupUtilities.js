@@ -17,11 +17,11 @@ const GroupUtilities = ({ utilities, updateState }) => {
     }
 
     useEffect(() => {
-        updateState(unti)
+        updateState && updateState(unti)
     }, [unti]);
 
     return (
-        <View style={[styles.sectionContent, { padding: SIZES.padding }]}>
+        <View style={[styles.sectionContent, { padding: SIZES.padding, marginHorizontal: !updateState ? -SIZES.padding : 0 }]}>
             {
                 unti.map(
                     (item, index) => <IconButton
@@ -31,7 +31,7 @@ const GroupUtilities = ({ utilities, updateState }) => {
                         key={index}
                         selected={item.selected}
                         index={index}
-                        handleSelected={(index, selected) => handleSelected(index, selected)}
+                        handleSelected={(index, selected) => updateState && handleSelected(index, selected)}
                     />
                 )
             }

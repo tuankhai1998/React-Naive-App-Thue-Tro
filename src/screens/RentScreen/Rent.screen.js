@@ -18,8 +18,6 @@ const RentScreen = () => {
         query: ROOM_USER_CREATED
     })
 
-
-
     useFocusEffect(
         React.useCallback(() => {
             getRoomUserCreated()
@@ -42,9 +40,6 @@ const RentScreen = () => {
             )
         }
     }, [data])
-
-    console.log({ loading, data })
-
 
     return (
         <View style={styles.container}>

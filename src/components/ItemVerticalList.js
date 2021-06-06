@@ -5,6 +5,7 @@ import React from 'react';
 import { Alert, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS, FONTS, Images, SIZES } from '../constants';
 import { roomType_FN } from '../constants/variable';
+import { URI } from '../graphql/apollo';
 import { DELETE_ROOM } from '../graphql/room';
 import { TOGGLE_LIKE_ROOM } from '../graphql/user';
 
@@ -40,7 +41,7 @@ const ItemVerticalList = ({ item, index, userLiked, rent }) => {
                 }}
             >
                 <ImageBackground
-                    source={{ uri: item && item.images ? item.images[0] : Images.ImageLoading }}
+                    source={{ uri: item && item.images ? `${URI}/images/${item.images[0]}` : Images.ImageLoading }}
                     style={{
                         width: '100%',
                         height: "100%",
