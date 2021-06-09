@@ -1,7 +1,7 @@
 //import liraries
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
-import Messages from '../../screens/MessagesScreen/Message';
+import Messages from '../../screens/ListChatScreen/Message';
 import MessagesScreen from '../../screens/MessagesScreen/Messages.screen';
 
 const MessagesStack = createStackNavigator();

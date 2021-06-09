@@ -24,6 +24,7 @@ const HOME = require('../../assets/images/home.png');
 const RENT = require('../../assets/images/rent.png');
 const SETTING = require('../../assets/images/settings.png');
 const HEART = require('../../assets/images/heart.png');
+const CHAT = require('../../assets/images/chat.png');
 
 export default {
     SplashScreenBG,

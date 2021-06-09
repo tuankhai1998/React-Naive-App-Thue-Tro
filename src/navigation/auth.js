@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { AuthContext } from '../components/AuthContext';
 import { getStorage } from '../helpers/storage';
 import CreateProduct from '../screens/CreateProduct/CreateProduct.screen';
+import Messages from '../screens/ListChatScreen/Message';
 
 import ListProductSearchScreen from '../screens/ListProductSearch.screen';
 import LoginScreen from '../screens/LoginScreen/Login.screen';
@@ -55,6 +56,7 @@ const Authentication = () => {
                 <AuthStack.Screen name="SearchScreen" component={SearchScreen} />
                 <AuthStack.Screen name="ProductScreen" component={ProductScreen} />
                 <AuthStack.Screen name="CreateProduct" component={CreateProduct} />
+                <AuthStack.Screen name="ChatList" component={Messages} />
 
                 <AuthStack.Screen name="ProductListScreen" component={ListProductSearchScreen} />
             </>) : (<AuthStack.Screen name="LoginScreen" component={() => <LoginScreen handleLogin={() => setLogin(true)} token={token} />} />)}

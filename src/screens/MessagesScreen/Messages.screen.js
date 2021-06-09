@@ -19,7 +19,7 @@ const MessagesScreen = () => {
                         alignItems: 'center'
                     }}
 
-                    onPress={() => navigation.push('Message')}
+                    onPress={() => navigation.push('ChatList')}
                 >
                     <Image source={{ uri: 'https://loremflickr.com/320/240' }}
                         style={{
@@ -46,7 +46,7 @@ const MessagesScreen = () => {
                         alignItems: 'center'
                     }}
 
-                    onPress={() => navigation.push('Message')}
+                    onPress={() => navigation.push('ChatList')}
                 >
                     <Image source={{ uri: 'https://loremflickr.com/320/240' }}
                         style={{

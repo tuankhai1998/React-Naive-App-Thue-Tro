@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Header from '../../components/Header';
-import ChatList from './components/ChatList';
+import ChatList from '../MessagesScreen/components/ChatList';
 
 // create a component
 const Messages = () => {

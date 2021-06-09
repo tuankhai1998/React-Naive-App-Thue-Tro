@@ -5,6 +5,7 @@ import { useRoute } from '@react-navigation/core';
 import React from 'react';
 import { Image } from 'react-native';
 import { COLORS, Images, SIZES } from '../constants';
+import MessagesScreen from '../screens/MessagesScreen/Messages.screen';
 import RentScreen from '../screens/RentScreen/Rent.screen';
 import HomeStackNavigator from './stacknavigator/HomeStackNavigator';
 import LikeStackNavigator from './stacknavigator/LikeStackNavigatior';
@@ -52,6 +53,13 @@ const BottomTabNavigator = () => {
                                 height: 25
                             }} />;
                         }
+                        if (route.name === 'Messages') {
+                            return <Image source={Images.CHAT} style={{
+                                tintColor: color,
+                                width: 25,
+                                height: 25
+                            }} />;
+                        }
                         return <Image source={Images.RENT} style={{
                             tintColor: color,
                             width: 25,
@@ -63,6 +71,7 @@ const BottomTabNavigator = () => {
                 <Tab.Screen name="Home" component={HomeStackNavigator} />
                 <Tab.Screen name="Like" component={LikeStackNavigator} />
                 <Tab.Screen name="Rent" component={RentScreen} />
+                <Tab.Screen name="Messages" component={MessagesScreen} />
                 <Tab.Screen name="Settings" component={SettingStackNavigator} />
             </Tab.Navigator>}
         </>
