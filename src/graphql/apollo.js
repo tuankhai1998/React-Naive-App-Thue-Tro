@@ -6,16 +6,16 @@ import { createUploadLink } from 'apollo-upload-client';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 
-export const URI = "http://192.168.1.184:8686"
+export const URI = "://192.168.1.101:8000/"
 const wsLink = new WebSocketLink({
-    uri: 'ws://192.168.1.184:8686/',
+    uri: `ws${URI}`,
     options: {
         reconnect: true,
     }
 });
 
 
-let httpLink = createUploadLink({ uri: `${URI}/graphql` })
+let httpLink = createUploadLink({ uri: `http${URI}graphql` })
 
 const splitLink = split(
     ({ query }) => {

@@ -122,7 +122,7 @@ export default function ProfileScreen() {
                 >
                     <View>
                         {loading ? <Text>Loading</Text> : <>
-                            <Avatar.Image size={150} source={{ uri: user?.avatar ? `${URI}/images/${user.avatar}` : 'https://images.daznservices.com/di/library/GOAL/e8/d1/mason-mount-chelsea_1u2vf25gf8pl31mk1yhvfwoxv9.jpg?t=64552568&amp;quality=60&amp;w=800' }} />
+                            <Avatar.Image size={150} source={{ uri: user?.avatar ? `http${URI}images/${user.avatar}` : 'https://images.daznservices.com/di/library/GOAL/e8/d1/mason-mount-chelsea_1u2vf25gf8pl31mk1yhvfwoxv9.jpg?t=64552568&amp;quality=60&amp;w=800' }} />
                             <TouchableOpacity
                                 style={{
                                     position: 'absolute',

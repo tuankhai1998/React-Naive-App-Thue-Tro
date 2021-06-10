@@ -57,7 +57,6 @@ const Authentication = () => {
                 <AuthStack.Screen name="ProductScreen" component={ProductScreen} />
                 <AuthStack.Screen name="CreateProduct" component={CreateProduct} />
                 <AuthStack.Screen name="ChatList" component={Messages} />
-
                 <AuthStack.Screen name="ProductListScreen" component={ListProductSearchScreen} />
             </>) : (<AuthStack.Screen name="LoginScreen" component={() => <LoginScreen handleLogin={() => setLogin(true)} token={token} />} />)}
         </AuthStack.Navigator>

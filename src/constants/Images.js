@@ -52,5 +52,6 @@ export default {
     HOME,
     RENT,
     SETTING,
-    HEART
+    HEART,
+    CHAT
 }
