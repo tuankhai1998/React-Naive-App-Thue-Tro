@@ -17,6 +17,8 @@ import { CURRENT_ROOM, FETCH_ROOM } from '../../graphql/room'
 import { ProductHeader } from './components/ProductHeader'
 import getDirections from 'react-native-google-maps-directions'
 import * as Location from 'expo-location';
+import { useMutation } from '@apollo/react-hooks'
+import { CREATE_CHAT_ROOM } from '../../graphql/chat'
 
 let listImage = [
     "https://loremflickr.com/320/240",
@@ -41,9 +43,26 @@ export default function ProductScreen() {
             idRoom
         }
     })
+
+
+    const [createChatRoom] = useMutation(CREATE_CHAT_ROOM, {
+        onCompleted: (data) => {
+            let { members, _id } = data.createRoomChat;
+            let { room } = currentRoom
+
+            let userID = members.find(member => member._id !== room.createdBy._id)
+
+            navigation.push('ChatList', {
+                _id,
+                userID,
+                to: room.createdBy._id
+            })
+        },
+        onError: (err) => console.log(err)
+    })
+
     const [sameRooms, setSameRooms] = useState([]);
 
-    console.log(currentRoom)
 
     const handleGetDirections = ({ longitude, latitude }) => {
 
@@ -181,7 +200,6 @@ export default function ProductScreen() {
     const renderProduct = React.useCallback(() => {
 
         if (currentRoom) {
-
             let { room } = currentRoom
             let { createdBy, images, utilities, address } = room
 
@@ -468,6 +486,15 @@ export default function ProductScreen() {
                         flexDirection: 'row',
                         alignItems: 'center'
                     }}
+
+                    onPress={() => {
+                        console.log(createdBy._id)
+                        createChatRoom({
+                            variables: {
+                                user_id: createdBy._id
+                            }
+                        })
+                    }}
                 >
 
                     <Avatar.Image size={70} source={{ uri: createdBy && createdBy.avatar ? `${URI}/images/${createdBy.avatar}` : 'https://images.daznservices.com/di/library/GOAL/e8/d1/mason-mount-chelsea_1u2vf25gf8pl31mk1yhvfwoxv9.jpg?t=64552568&amp;quality=60&amp;w=800' }} />
@@ -529,7 +556,7 @@ export default function ProductScreen() {
                             }}
                         >
                             Các phòng cùng tiêu chí
-                    </Text>
+                        </Text>
 
 
                         <FlatList
@@ -560,7 +587,7 @@ export default function ProductScreen() {
                                 }}
                             >
                                 Xem Thêm
-                    </Text>
+                            </Text>
                         </TouchableOpacity>
 
                     </View>

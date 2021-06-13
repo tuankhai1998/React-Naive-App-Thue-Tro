@@ -19,15 +19,16 @@ export const NEW_MESSAGES = gql`
 export const SEND_MESSAGE = gql`
 mutation sendMessage(
     $chatRoom: ID!,
-    $messageBody: String,
-    $to: ID
+    $messageBody: String!,
+    $to: ID!
 ){
   sendMessage(data: {
     chatRoom: $chatRoom 
     messageBody: $messageBody
     to : $to
   }) {
-    	chatRoom
+    chatRoom
+    messageBody
     createdAt
     from {
       email
@@ -44,7 +45,10 @@ mutation sendMessage(
 export const CREATE_CHAT_ROOM = gql`
 mutation createChatRoom ($user_id: ID!) {
   createRoomChat (userID: $user_id) {
-    _id
+    _id,
+    members {
+      _id
+    }
     messages{
       from {
         _id
@@ -68,6 +72,24 @@ query {
       avatar
       name
     }
+  }
+}
+`
+
+export const GET_ALL_MESSAGE_ROOM = gql`
+query getAllMessageOfChatRoom($roomID: ID!){
+  getAllMessageOfChatRoom(_id: $roomID) {
+    messageBody
+    messageStatus
+    from{
+      _id
+      name
+    }
+    to{
+      _id
+      name
+    }
+    createdAt
   }
 }
 `

@@ -21,6 +21,7 @@ const MessagesScreen = () => {
     })
 
     let itemChat = ({ index, item }) => {
+
         let itemData = item.members.find(member => member._id !== user._id)
         return (
             <TouchableOpacity
@@ -32,7 +33,8 @@ const MessagesScreen = () => {
 
                 onPress={() => navigation.push('ChatList', {
                     _id: item._id,
-                    userId: user._id
+                    userId: user._id,
+                    to: itemData._id
                 })}
             >
                 <Image source={{ uri: itemData.avatar ? `http${URI}images/${itemData.avatar}` : 'https://loremflickr.com/320/240' }}

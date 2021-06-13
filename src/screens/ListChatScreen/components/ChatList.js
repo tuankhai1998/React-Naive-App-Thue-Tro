@@ -3,69 +3,39 @@ import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'r
 import { COLORS, SHADOW, SIZES } from '../../../constants';
 import NodeChat from './NodeChat';
 
-const ChatList = () => {
-    const [userName, setUserName] = useState('khailt');
-    const [chatInputContent, setChatInputContent] = useState('');
-    const [chatData, setChatData] = useState([
-        { userName: 'khailt', messages: 'HahahaHahahaHahahaHahahaHahahaHahahaHahahaHahahaHahaha Hahaha' },
-        { userName: 'khanhNv', messages: 'hello' },
-        { userName: 'khailt', messages: 'hello 1' },
-        { userName: 'khailt', messages: 'HahahaHahahaHahahaHahahaHahahaHahahaHahahaHahahaHahaha Hahaha' },
-        { userName: 'khanhNv', messages: 'hello' },
-        { userName: 'khailt', messages: 'hello 1' },
-        { userName: 'khailt', messages: 'HahahaHahahaHahahaHahahaHahahaHahahaHahahaHahahaHahaha Hahaha' },
-        { userName: 'khanhNv', messages: 'hello' },
-        { userName: 'khailt', messages: 'hello 1' }, { userName: 'khailt', messages: 'HahahaHahahaHahahaHahahaHahahaHahahaHahahaHahahaHahaha Hahaha' },
-        { userName: 'khanhNv', messages: 'hello' },
-        { userName: 'khailt', messages: 'hello 1' }, { userName: 'khailt', messages: 'HahahaHahahaHahahaHahahaHahahaHahahaHahahaHahahaHahaha Hahaha' },
-        { userName: 'khanhNv', messages: 'hello' },
-        { userName: 'khailt', messages: 'hello 1' }, { userName: 'khailt', messages: 'HahahaHahahaHahahaHahahaHahahaHahahaHahahaHahahaHahaha Hahaha' },
-        { userName: 'khanhNv', messages: 'hello' },
-        { userName: 'khailt', messages: 'ends' },
-        { userName: 'khanhNv', messages: 'not end' },
-    ]);
+const ChatList = ({ chatData, currentUser }) => {
 
     const flatListRef = useRef(null);
 
-    const renderChatLine = (item) => {
-        if (item.userName === userName) {
+    const renderChatLine = ({ item }) => {
+
+
+        if (item?.to?._id && item.to._id !== currentUser) {
             return (
                 <View style={{ alignItems: 'flex-end' }} >
-                    <NodeChat sender="You" chatContent={item.messages} />
+                    <NodeChat sender="You" chatContent={item.messageBody} />
                 </View>
             );
         }
         return (
-            <NodeChat sender={item.userName} chatContent={item.messages} />
+            <NodeChat sender={item.userName} chatContent={item.messageBody} />
         );
     };
     return (
         <View style={styles.container}>
-            <FlatList
-                ref={flatListRef}
-                data={chatData}
-                onContentSizeChange={() => flatListRef.current.scrollToEnd()}
+            {
+                chatData &&
+                <FlatList
+                    ref={flatListRef}
+                    data={chatData}
+                    onContentSizeChange={() => flatListRef.current.scrollToEnd()}
+                    renderItem={renderChatLine}
+                    styles={{ ...SHADOW.shadow1, flex: 1 }}
+                />
+            }
 
-                renderItem={({ item }, index) => renderChatLine(item)}
-                styles={{ ...SHADOW.shadow1, flex: 1 }}
-            />
 
 
-            <View style={{ paddingVertical: SIZES.padding, paddingHorizontal: SIZES.base, marginTop: SIZES.base, backgroundColor: COLORS.white, height: SIZES.height / 10 }} >
-                <View style={styles.chatTextboxView}>
-                    <View style={{ flex: 8 / 10 }} >
-                        <TextInput placeholder="Typing..." value={chatInputContent} onChangeText={(text) => setChatInputContent(text)}
-                            style={{ height: 46, fontSize: 18, borderBottomColor: COLORS.primary, borderBottomWidth: 1, paddingHorizontal: SIZES.base }} />
-                    </View>
-                    <View style={{ flex: 2 / 10 }} >
-                        <TouchableOpacity onPress={() => { }}>
-                            <View style={styles.button}>
-                                <Text style={styles.touchText}>Send</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
         </View >
     )
 

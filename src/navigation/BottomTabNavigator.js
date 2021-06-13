@@ -1,10 +1,12 @@
 
 //import liraries
+import { useApolloClient, useSubscription } from '@apollo/react-hooks';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useRoute } from '@react-navigation/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image } from 'react-native';
 import { COLORS, Images, SIZES } from '../constants';
+import { GET_ALL_MESSAGE_ROOM, NEW_MESSAGES } from '../graphql/chat';
 import MessagesScreen from '../screens/MessagesScreen/Messages.screen';
 import RentScreen from '../screens/RentScreen/Rent.screen';
 import HomeStackNavigator from './stacknavigator/HomeStackNavigator';
@@ -16,9 +18,43 @@ const Tab = createBottomTabNavigator();
 // create a component
 const BottomTabNavigator = () => {
 
+    const client = useApolloClient()
+
+    const { data: newMessage, error: newMessageError } = useSubscription(NEW_MESSAGES);
+
+    useEffect(() => {
+
+        if (newMessageError) console.log(newMessageError)
+
+        if (newMessage) {
+            let dataMessages = client.readQuery({
+                query: GET_ALL_MESSAGE_ROOM,
+                variables: {
+                    roomID: newMessage.newMessage.chatRoom
+                }
+            })
+
+            let data = dataMessages ? dataMessages.getAllMessageOfChatRoom : []
+
+            dataMessages && client.writeQuery({
+                query: GET_ALL_MESSAGE_ROOM,
+                data: {
+                    getAllMessageOfChatRoom: [
+                        ...data,
+                        newMessage.newMessage
+                    ]
+                },
+                variables: {
+                    roomID: newMessage.newMessage.chatRoom
+                }
+            })
+        }
+
+    }, [newMessage, newMessageError])
+
     return (
         <>
-            { <Tab.Navigator
+            {<Tab.Navigator
                 tabBarOptions={{
                     activeTintColor: COLORS.primary,
                     inactiveTintColor: COLORS.primaryTextColor,
@@ -67,6 +103,8 @@ const BottomTabNavigator = () => {
                         }} />;
                     },
                 })}
+
+
             >
                 <Tab.Screen name="Home" component={HomeStackNavigator} />
                 <Tab.Screen name="Like" component={LikeStackNavigator} />

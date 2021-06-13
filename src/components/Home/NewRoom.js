@@ -45,9 +45,6 @@ const NewRoom = ({ city }) => {
         query: GET_LIST_ROOM_LIKED
     });
     const userLiked = user && user?.liked?.map(roomLike => roomLike._id)
-
-
-
     useEffect(() => {
         fetchNewRoom({
             variables: {

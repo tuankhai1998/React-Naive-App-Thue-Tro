@@ -1,17 +1,19 @@
 import { useApolloClient } from '@apollo/client';
+import { useSubscription } from '@apollo/react-hooks';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { AuthContext } from '../components/AuthContext';
+import { GET_ALL_MESSAGE_ROOM, NEW_MESSAGES } from '../graphql/chat';
 import { getStorage } from '../helpers/storage';
 import CreateProduct from '../screens/CreateProduct/CreateProduct.screen';
 import Messages from '../screens/ListChatScreen/Message';
-
 import ListProductSearchScreen from '../screens/ListProductSearch.screen';
 import LoginScreen from '../screens/LoginScreen/Login.screen';
 import ProductScreen from '../screens/ProductScreen/Product.screen';
 import SearchScreen from '../screens/SearchScreen/Search.screen';
-
 import BottomTabNavigator from './BottomTabNavigator';
+
+
 
 
 const AuthStack = createStackNavigator();
@@ -21,8 +23,6 @@ const AuthStack = createStackNavigator();
 const Authentication = () => {
     const [login, setLogin] = useState(false),
         [token, setToken] = useState(null);
-
-    const client = useApolloClient()
 
     useEffect(() => {
         getStorage().then(data => {
@@ -39,7 +39,6 @@ const Authentication = () => {
             logOut: () => {
                 setToken(null)
                 setLogin(false)
-
             }
         }
     ))
