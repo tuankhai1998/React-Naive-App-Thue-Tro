@@ -488,7 +488,6 @@ export default function ProductScreen() {
                     }}
 
                     onPress={() => {
-                        console.log(createdBy._id)
                         createChatRoom({
                             variables: {
                                 user_id: createdBy._id

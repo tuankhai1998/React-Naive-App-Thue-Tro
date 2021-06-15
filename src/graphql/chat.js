@@ -7,8 +7,12 @@ export const NEW_MESSAGES = gql`
             chatRoom
             messageBody
             from{
+              _id
             name
             email
+            }
+            to {
+              _id
             }
             createdAt
             messageStatus

@@ -6,7 +6,7 @@ import { createUploadLink } from 'apollo-upload-client';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 
-export const URI = "://192.168.1.184:8000/"
+export const URI = "://192.168.1.101:8000/"
 
 let getToken = async () => {
     let token = await getStorage();

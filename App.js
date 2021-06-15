@@ -1,6 +1,8 @@
 import { useFonts } from 'expo-font';
 import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { ToastProvider } from 'react-native-paper-toast';
+import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import Main from './Main';
 import theme from './src/constants/theme';
 
@@ -17,9 +19,13 @@ export default function App() {
     'Montserrat-Bold': require('./assets/fonts/Montserrat-Bold.ttf')
   })
   return (
-    <PaperProvider theme={theme}>
-      <Main fontLoaded={fontLoaded} />
-    </PaperProvider>
+    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+      <PaperProvider theme={theme}>
+        <ToastProvider overrides={{ position: 'top', duration: 3000 }}>
+          <Main fontLoaded={fontLoaded} />
+        </ToastProvider>
+      </PaperProvider>
+    </SafeAreaProvider>
   )
 }
 
