@@ -68,7 +68,7 @@ const HomeScreen = () => {
     )
 
     const getCity = () => {
-        return citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'
+        return citySelect == 1 ? "Hồ Chí Minh" : citySelect == 2 ? "Hà Nội" : "Đà Nẵng"
     }
 
     return (

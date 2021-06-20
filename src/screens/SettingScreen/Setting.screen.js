@@ -1,5 +1,6 @@
 //import liraries
 import { useLazyQuery } from '@apollo/client';
+import { useApolloClient } from '@apollo/react-hooks';
 import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -14,12 +15,17 @@ import { removeStorage } from '../../helpers/storage';
 // create a component
 const SettingScreen = () => {
     const navigation = useNavigation();
+    const client = useApolloClient();
     const { logOut } = React.useContext(AuthContext)
 
     const handleLogout = async () => {
         try {
             await removeStorage()
-            logOut()
+            client.clearStore().then(() => {
+                client.resetStore();
+                logOut();
+            })
+
         } catch (error) {
             console.log(error)
         }

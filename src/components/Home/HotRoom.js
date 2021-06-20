@@ -1,26 +1,30 @@
 import { useApolloClient } from '@apollo/client';
 import { useLazyQuery } from '@apollo/client';
+import { useQuery } from '@apollo/react-hooks';
 import { useFocusEffect } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react'
 import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { COLORS, FONTS, SIZES } from '../../constants'
 import { FETCH_ROOM } from '../../graphql/room';
-import { GET_LIST_ROOM_LIKED } from '../../graphql/user';
+import { CURRENT_USER, GET_LIST_ROOM_LIKED } from '../../graphql/user';
 import ItemHorizontalList from '../ItemHorizontalList'
 
 export default function HotRoom({ city }) {
-    const [fetchRoom, { error: errorRoom, data: dataRoom, loading }] = useLazyQuery(FETCH_ROOM);
+    const [fetchRoom, { error: errorRoom, data: dataRoom }] = useLazyQuery(FETCH_ROOM);
     const client = useApolloClient();
-    const { user } = client.readQuery({
+    const listRoomLike = client.readQuery({
         query: GET_LIST_ROOM_LIKED
     });
-    const userLiked = user && user?.liked?.map(roomLike => roomLike._id)
+    const userLiked = listRoomLike?.user && listRoomLike?.user?.liked?.map(roomLike => roomLike._id)
     const [hotRooms, setHotRooms] = useState([]),
         [page, setPage] = useState(0);
+
+    console.log(dataRoom)
 
 
     useFocusEffect(
         React.useCallback(() => {
+
             fetchRoom({
                 variables: {
                     page,
@@ -76,8 +80,6 @@ export default function HotRoom({ city }) {
                     marginTop: SIZES.base,
                 }}
             />
-
-
             <TouchableOpacity
                 onPress={() => setPage(page + 1)}
             >

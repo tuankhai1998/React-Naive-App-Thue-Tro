@@ -25,7 +25,6 @@ const Messages = () => {
 
 
     const [sendMessage] = useMutation(SEND_MESSAGE, {
-
         onCompleted: () => {
             setChatInputContent('')
         },

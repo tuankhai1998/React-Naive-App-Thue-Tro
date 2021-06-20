@@ -44,6 +44,8 @@ export default function ProductScreen() {
         }
     })
 
+    console.log(currentRoomError, idRoom)
+
 
     const [createChatRoom] = useMutation(CREATE_CHAT_ROOM, {
         onCompleted: (data) => {
@@ -131,27 +133,28 @@ export default function ProductScreen() {
                 {
                     itemList.map((item, index) => (
                         <View
-                            key={index}
+                            key={`${index}${item}`}
                             style={{
                                 flex: 1,
                                 justifyContent: 'center',
                                 backgroundColor: 'transparent'
                             }}
                         >
+                            <Text>{`http${URI}images/${item}`}</Text>
                             <Image
                                 resizeMode="stretch"
                                 style={{
                                     width: SIZES.width,
                                     flex: 1,
                                 }}
-                                source={{ uri: `${URI}/images/${item}` }}
+                                source={{ uri: `http${URI}images/${item}` }}
                             />
                         </View>
 
                     ))
                 }
 
-            </Swiper>
+            </Swiper >
         )
     }
 

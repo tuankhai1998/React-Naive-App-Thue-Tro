@@ -13,6 +13,8 @@ export default function ItemHorizontalList({ item, index, userLiked }) {
     const navigation = useNavigation();
     const [handleLikeRoom, { loading }] = useMutation(TOGGLE_LIKE_ROOM);
 
+    console.log(item)
+
     return (
         <TouchableOpacity
             style={{
@@ -35,7 +37,7 @@ export default function ItemHorizontalList({ item, index, userLiked }) {
                 }}
             >
                 <ImageBackground
-                    source={{ uri: item && item.images ? `${URI}/images/${item.images[0]}` : Images.ImageLoading }}
+                    source={{ uri: item && item.images ? `http${URI}images/${item.images[0]}` : Images.ImageLoading }}
                     style={{
                         width: '100%',
                         height: "100%",
@@ -73,7 +75,7 @@ export default function ItemHorizontalList({ item, index, userLiked }) {
                     <View>
                         <Text style={{ ...FONTS.body4, textTransform: "uppercase", fontSize: 12 }}></Text>
                         <Text style={{ ...FONTS.h4 }} numberOfLines={2}>
-                            {`${roomType_FN(item.type)} ${item.address.name.city}, ${item?.address?.name?.districts}`}
+                            {item.roomName ? item.roomName : `${roomType_FN(item.type)} ${item.address.name.city}, ${item?.address?.name?.districts}`}
                         </Text>
                         <Text
                             style={{

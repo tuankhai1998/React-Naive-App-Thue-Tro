@@ -88,6 +88,7 @@ query getAllMessageOfChatRoom($roomID: ID!){
     from{
       _id
       name
+      email
     }
     to{
       _id

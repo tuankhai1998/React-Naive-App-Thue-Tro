@@ -1,10 +1,11 @@
 import { useApolloClient } from '@apollo/client';
 import { useLazyQuery } from '@apollo/client';
+import { useQuery } from '@apollo/react-hooks';
 import React, { useEffect, useState } from 'react'
 import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native'
 import { COLORS, FONTS, Images, SIZES } from '../../constants';
-import { FETCH_ROOM } from '../../graphql/room';
-import { GET_LIST_ROOM_LIKED } from '../../graphql/user';
+import { CURRENT_ROOM, FETCH_ROOM } from '../../graphql/room';
+import { CURRENT_USER, GET_LIST_ROOM_LIKED } from '../../graphql/user';
 import ItemVerticalList from '../ItemVerticalList';
 
 let district = {
@@ -38,13 +39,13 @@ let district = {
 
 const NewRoom = ({ city }) => {
     let [page, setPage] = useState(0);
-    let [fetchNewRoom, { data, loading, error }] = useLazyQuery(FETCH_ROOM);
+    let [fetchNewRoom, { data }] = useLazyQuery(FETCH_ROOM);
     let [newRoom, setNewRoom] = useState([]);
     const client = useApolloClient();
-    const { user } = client.readQuery({
+    const listRoomLike = client.readQuery({
         query: GET_LIST_ROOM_LIKED
     });
-    const userLiked = user && user?.liked?.map(roomLike => roomLike._id)
+    const userLiked = listRoomLike?.user && listRoomLike?.user?.liked?.map(roomLike => roomLike._id)
     useEffect(() => {
         fetchNewRoom({
             variables: {

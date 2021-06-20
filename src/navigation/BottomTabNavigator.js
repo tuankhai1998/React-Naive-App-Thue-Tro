@@ -1,6 +1,6 @@
 
 //import liraries
-import { useApolloClient, useSubscription } from '@apollo/react-hooks';
+import { useApolloClient, useQuery, useSubscription } from '@apollo/react-hooks';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useRoute } from '@react-navigation/core';
 import { useNavigation } from '@react-navigation/native';
@@ -24,19 +24,21 @@ const BottomTabNavigator = () => {
     const navigation = useNavigation()
 
     const client = useApolloClient()
-    let { user } = client.readQuery({
+    const { loading } = useQuery(CURRENT_USER);
+    let currentUser = client.readQuery({
         query: CURRENT_USER
     })
 
+
     const { data: onMessage, error: newMessageError } = useSubscription(NEW_MESSAGES);
 
-    console.log(user)
 
     useEffect(() => {
 
         if (newMessageError) console.log(newMessageError)
 
         if (onMessage) {
+            let { user } = currentUser;
 
             let { newMessage } = onMessage
             let { chatRoom, from, to, messageBody } = newMessage;
@@ -50,12 +52,12 @@ const BottomTabNavigator = () => {
                 }
             })
 
-            if (from._id !== user._id) {
+            if (from._id !== currentUser?.user._id) {
                 toaster.show({
                     message: label, action: () => {
                         navigation.push('ChatList', {
                             _id: chatRoom,
-                            userId: user._id,
+                            userId: currentUser?.user._id,
                             to: from._id
                         })
                     }, actionLabel: 'Xem'
