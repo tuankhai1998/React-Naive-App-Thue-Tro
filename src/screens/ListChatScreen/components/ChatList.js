@@ -8,7 +8,6 @@ const ChatList = ({ chatData, currentUser }) => {
     const flatListRef = useRef(null);
 
     const renderChatLine = ({ item }) => {
-        console.log(item)
         if (item?.to?._id && item.to._id !== currentUser) {
             return (
                 <View style={{ alignItems: 'flex-end' }} >

@@ -20,17 +20,9 @@ import * as Location from 'expo-location';
 import { useMutation } from '@apollo/react-hooks'
 import { CREATE_CHAT_ROOM } from '../../graphql/chat'
 
-let listImage = [
-    "https://loremflickr.com/320/240",
-    "https://loremflickr.com/320/240",
-    "https://loremflickr.com/320/240",
-    "https://loremflickr.com/320/240"
-]
-
 let listUtilities = Utilities.map(item => Object.assign({}, item))
 
 export default function ProductScreen() {
-    let sex;
     const navigation = useNavigation();
     const scrollY = new Animated.Value(0);
     const route = useRoute();
@@ -44,11 +36,10 @@ export default function ProductScreen() {
         }
     })
 
-    console.log(currentRoomError, idRoom)
-
-
     const [createChatRoom] = useMutation(CREATE_CHAT_ROOM, {
         onCompleted: (data) => {
+
+            console.log(data)
             let { members, _id } = data.createRoomChat;
             let { room } = currentRoom
 
@@ -174,7 +165,13 @@ export default function ProductScreen() {
 
                 <PrimaryButton text="Chỉnh sửa" buttonStyle={{
                     backgroundColor: COLORS.primary
-                }} />
+                }}
+                    onclick={() => {
+                        navigation.push('CreateProduct', {
+                            idRoom
+                        })
+                    }}
+                />
             </View>
         )
     }

@@ -16,11 +16,15 @@ const MessagesScreen = () => {
 
     const { data: listRoomChat, loading, error } = useQuery(GET_ALL_CHAT_ROOM)
     const client = useApolloClient();
-    const { user } = client.readQuery({
+    const userData = client.readQuery({
         query: CURRENT_USER
     })
 
     let itemChat = ({ index, item }) => {
+
+        let { user } = userData;
+
+        let { lastMessage } = item;
 
         let itemData = item.members.find(member => member._id !== user._id)
         return (
@@ -51,7 +55,7 @@ const MessagesScreen = () => {
                             ...FONTS.h3
                         }}
                     >{itemData.name ? itemData.name : itemData.email}</Text>
-                    <Text>lorem text lorem text lorem text </Text>
+                    {lastMessage && <Text style={{ ...FONTS.body3, fontWeight: lastMessage.messageStatus ? '100' : '900' }}>{lastMessage.messageBody} </Text>}
                 </View>
             </TouchableOpacity>
         )

@@ -4,6 +4,16 @@ import { FONTS, SHADOW } from '../../../constants';
 
 const NodeChat = ({ sender, chatContent, createdAt }) => {
 
+    const handelCreatedAt = () => {
+        let now = Date.now();
+        let millisBetween = now - createdAt;
+
+        if (millisBetween < 1000 * 3600) return `${(millisBetween / (3600 * 1000) * 60).toFixed(0)} minutes ago`
+        if (millisBetween < 1000 * 3600 * 24) return `${(millisBetween / (1000 * 3600)).toFixed(0)} hours ago`
+
+        return `${(millisBetween / (1000 * 3600 * 24)).toFixed(0)} days ago`
+    }
+
     return (
         <View style={{ ...styles.chatLineView, ...SHADOW.shadow1 }} >
             <View style={{
@@ -13,7 +23,7 @@ const NodeChat = ({ sender, chatContent, createdAt }) => {
                 width: '100%'
             }}>
                 <Text style={styles.itemUserName}>{sender} </Text>
-                <Text>{createdAt}</Text>
+                <Text>{handelCreatedAt()}</Text>
             </View>
 
             <Text style={styles.itemText}>{chatContent}</Text>

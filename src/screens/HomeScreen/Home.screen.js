@@ -68,7 +68,7 @@ const HomeScreen = () => {
     )
 
     const getCity = () => {
-        return citySelect == 1 ? "Hồ Chí Minh" : citySelect == 2 ? "Hà Nội" : "Đà Nẵng"
+        return citySelect == 1 ? "Hồ Chí Minh" : citySelect == 2 ? "Hà Nội"  : "Đà Nẵng"
     }
 
     return (
@@ -105,7 +105,7 @@ const HomeScreen = () => {
                     renderItem={({ item, index }) => <SearchTrend item={item} index={index} />}
                 />
             </View>
-            {!loading && <HotRoom city={citySelect == 1 ? 'Hồ Chí Minh' : citySelect == 2 ? 'Hà Nội' : 'Đà Nẵng'} />}
+            {!loading && <HotRoom city={getCity()} />}
 
 
             <View

@@ -10,8 +10,19 @@ export default function Utility({ utilitiesSelected, handleUtilitiesSelect }) {
 
 
     useEffect(() => {
-        if (utilitiesSelected.length > 0) {
+        if (utilitiesSelected.length > 0 && utilitiesSelected.every(u => typeof (u) !== "number")) {
             setUtilitiesChoose(utilitiesSelected)
+        }
+
+        if (utilitiesSelected.every(u => typeof (u) == "number")) {
+            let d = utilitiessChoose;
+            utilitiesSelected.map((u) => {
+                utilitiessChoose.map((uc, i) => {
+                    if (uc.value === u) d[i].selected = true
+                })
+            })
+
+            setUtilitiesChoose(d)
         }
     }, [utilitiesSelected])
 

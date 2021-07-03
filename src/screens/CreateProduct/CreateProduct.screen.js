@@ -1,13 +1,13 @@
-import { useApolloClient } from '@apollo/client';
 import { useMutation } from '@apollo/client';
+import { useApolloClient } from '@apollo/react-hooks';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/core';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View, Alert, ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Header from '../../components/Header';
 import { COLORS, FONTS, SIZES } from '../../constants';
 import { CreateStep } from '../../constants/values';
-import { CREATE_ROOM } from '../../graphql/room';
+import { CREATE_ROOM, CURRENT_ROOM } from '../../graphql/room';
 import { USER_INFO } from '../../graphql/user';
 import StepFour from './components/StepFour';
 import StepOne from './components/StepOne';
@@ -29,16 +29,20 @@ const CreateProduct = () => {
     })
     const [dataStep3, setDataStep3] = useState({})
     const [dataStep4, setDataStep4] = useState({})
+    const route = useRoute();
+    const { params } = route;
+
 
     const client = useApolloClient();
-    const { user } = client.readQuery({
+    const dataUser = client.readQuery({
         query: USER_INFO
     })
+
     const [validate, setValidate] = useState(false)
 
     const [createRoom, { loading, error }] = useMutation(CREATE_ROOM, {
         onCompleted: () => {
-            navigation.push('Rent')
+            navigation.push('Dashboard')
         }
     });
 
@@ -55,11 +59,26 @@ const CreateProduct = () => {
     }, [step, dataStep1, dataStep2, dataStep3, dataStep4])
 
     useEffect(() => {
-        setDataStep4({ phone: user?.phone ? user?.phone : '' })
-    }, [user]);
+        setDataStep4({ phone: dataUser?.user?.phone ? dataUser?.user?.phone : '' })
+    }, [dataUser]);
 
     useEffect(() => {
         setValidate(false)
+        if (params?.idRoom) {
+            let dataRoom = client.readQuery({
+                query: CURRENT_ROOM,
+                variables: {
+                    idRoom: params.idRoom
+                }
+            })
+
+            let { sex, type, roomNum, acreage, peoples, price, address, images, utilities } = dataRoom.room
+
+            console.log("data room", dataRoom.room)
+            setDataStep1({ sex, type, roomNum, acreage, peoples, price })
+            setDataStep2({ address })
+            setDataStep3({ images, utilities, update: true })
+        }
     }, []);
 
     const renderError = React.useCallback(() => {

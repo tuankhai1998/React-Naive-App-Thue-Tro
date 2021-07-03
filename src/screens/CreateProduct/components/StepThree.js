@@ -8,9 +8,10 @@ import { createImageData } from '../../../helpers/fomatImageUpload';
 import { MaterialIcons } from '@expo/vector-icons'
 import Utility from '../../../components/Utility';
 import { Ionicons } from '@expo/vector-icons';
+import { URI } from '../../../graphql/apollo';
 
 export default function StepThree({ data, setData, setValidate }) {
-    const { images, utilities } = data
+    const { images, utilities, update } = data
     const [imgResult, setImgResult] = useState([]);
     const [imageList, setImageList] = useState([])
 
@@ -75,7 +76,7 @@ export default function StepThree({ data, setData, setValidate }) {
                 >
                     <Ionicons name="close-circle" size={24} color={COLORS.primary} />
                 </TouchableOpacity>
-                <Image style={{ width: '100%', height: '100%', }} source={{ uri: item.uri || item }} />
+                <Image style={{ width: '100%', height: '100%', }} source={update ? { uri: `http${URI}images/${item}` } : { uri: item.uri || item }} />
             </View>
         )
     }

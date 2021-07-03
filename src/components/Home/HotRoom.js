@@ -22,22 +22,20 @@ export default function HotRoom({ city }) {
     console.log(dataRoom)
 
 
-    useFocusEffect(
-        React.useCallback(() => {
 
-            fetchRoom({
-                variables: {
-                    page,
-                    per_page: 6,
-                    query: {
-                        addressName: {
-                            city
-                        }
+    useEffect(() => {
+        fetchRoom({
+            variables: {
+                page,
+                per_page: 6,
+                query: {
+                    addressName: {
+                        city
                     }
                 }
-            })
-        }, [page, city])
-    )
+            }
+        })
+    }, [page, city])
 
 
     useEffect(() => {

@@ -31,8 +31,6 @@ export const FETCH_ROOM = gql`
     }
 `;
 
-
-
 export const CURRENT_ROOM = gql`
 query($idRoom: ID!)
 {room(_id:$idRoom){
@@ -200,6 +198,73 @@ export const DELETE_ROOM = gql`
             _id
         }
     }
+`
+
+export const UPDATE_ROOM = gql`
+mutation updateRoom (
+    $_id: ID!,
+    $room: roomInput,
+    $imagesName: [String] 
+) {
+  updateRoom (  
+    _id:$_id, 
+    room: $room, 
+    imagesName: $images
+  )
+  {
+    _id
+    type
+    sex
+    images
+    peoples
+    roomNum
+    phone 
+    roomName
+    description
+    acreage
+    utilities
+    address{
+        name{
+            city
+            wardsAndStreet
+            districts
+            any
+        }
+        loc{
+            coordinates
+        }
+    }
+    price {
+        room{
+            free
+            price
+        }
+
+        electricity{
+            free
+            price
+        }
+
+        water {
+            free
+            price
+        }
+
+        internet  {
+            free
+            price
+        }
+    }
+    createdAt
+    createdBy {
+        name
+        email
+        phone
+        avatar
+        _id
+    }       
+  }
+}
 `
 
 

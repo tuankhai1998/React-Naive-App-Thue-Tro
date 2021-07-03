@@ -8,34 +8,6 @@ import { CURRENT_ROOM, FETCH_ROOM } from '../../graphql/room';
 import { CURRENT_USER, GET_LIST_ROOM_LIKED } from '../../graphql/user';
 import ItemVerticalList from '../ItemVerticalList';
 
-let district = {
-    1: [
-        {
-            name: "Hai Bà Trưng",
-            image: Images.HBT
-        },
-        {
-            name: "Đống Đa",
-            image: Images.DONGDA
-        },
-        {
-            name: "Cầu Giấy",
-            image: Images.CAUGIAY
-        },
-        {
-            name: "Nam Từ Liêm",
-            image: Images.NAMTULIEM
-        },
-        {
-            name: "Bắc Từ Liêm",
-            image: Images.BACTULIEM
-        },
-        {
-            name: "Hoàng Mai",
-            image: Images.HOANGMAI
-        }
-    ]
-}
 
 const NewRoom = ({ city }) => {
     let [page, setPage] = useState(0);
@@ -119,7 +91,7 @@ const NewRoom = ({ city }) => {
                     contentContainerStyle={{ alignSelf: 'flex-start' }}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
-                    data={newRoom.length > 0 ? newRoom : district['1']}
+                    data={newRoom.length > 0 ? newRoom : []}
                     renderItem={({ item, index }) => <ItemVerticalList item={item} index={index} userLiked={userLiked} />}
                     style={{
                         marginTop: SIZES.base,

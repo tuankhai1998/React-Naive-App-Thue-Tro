@@ -60,7 +60,6 @@ mutation createChatRoom ($user_id: ID!) {
       to {
         _id
       }
-      chatRoom
     }
   }
 }
@@ -75,6 +74,11 @@ query {
       email
       avatar
       name
+    }
+    lastMessage{
+      messageBody
+      messageStatus
+      createdAt
     }
   }
 }

@@ -56,7 +56,6 @@ export default function StepTwo({ data, setData, setValidate }) {
             setValidate(false)
             // await Location.setGoogleApiKey("AIzaSyDAtJK7wLInUeBcKvbDjoFhkoDrZFpJwhs")
             if (any && wardsAndStreet && districts && city) {
-                console.log(`${any}, ${wardsAndStreet}, ${districts},${city}`)
                 setValidate(true)
                 try {
                     let res = await Location.geocodeAsync(` ${any}, ${wardsAndStreet}, ${districts},${city}`);

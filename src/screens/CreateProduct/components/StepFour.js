@@ -9,8 +9,6 @@ import { USER_INFO } from '../../../graphql/user';
 // create a component
 const StepFour = ({ data, setData, address }) => {
 
-    console.log(address)
-
     const { type, phone, description } = data;
     // const { city, districts, wardsAndStreet } = address.name;
     // ${RoomType.filter(typeRoom => typeRoom.value == type)[0].label} ${wardsAndStreet}, ${districts}, ${city}

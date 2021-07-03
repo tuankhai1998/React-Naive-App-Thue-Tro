@@ -10,7 +10,6 @@ import { RoomType, Sex } from '../../../constants/values';
 // create a component
 const StepOne = ({ data, setData, setValidate }) => {
     const { sex, type, roomNum, acreage, peoples, price } = data;
-
     const { room, electricity, internet, water } = price;
     let checkPrice = () => {
         let number = 0;
@@ -49,14 +48,14 @@ const StepOne = ({ data, setData, setValidate }) => {
                     }}
                 >
                     Thông tin
-				</Text>
+                </Text>
                 <Text
                     style={{
                         ...FONTS.body3,
                     }}
                 >
                     Loại phòng
-				</Text>
+                </Text>
                 <RadioButton
                     data={RoomType}
                     selected={type}
@@ -68,7 +67,7 @@ const StepOne = ({ data, setData, setValidate }) => {
                     }}
                 >
                     Diện Tích
-				</Text>
+                </Text>
                 <View
                     style={{
                         flexDirection: 'row',
@@ -82,7 +81,7 @@ const StepOne = ({ data, setData, setValidate }) => {
                             maxWidth: (SIZES.width * 2) / 3 - 2 * SIZES.padding,
                         }}
                         keyboardType="number-pad"
-                        value={acreage ? acreage : ''}
+                        value={acreage ? `${acreage}` : ''}
                         onChangeText={(text) => setData({ ...data, acreage: parseInt(text) })}
                     />
                     <SubText base="m" exponent="2" />
@@ -94,7 +93,7 @@ const StepOne = ({ data, setData, setValidate }) => {
                     }}
                 >
                     Số phòng
-				</Text>
+                </Text>
                 <View
                     style={{
                         flexDirection: 'row',
@@ -107,7 +106,7 @@ const StepOne = ({ data, setData, setValidate }) => {
                             ...styles.inputStyle,
                             maxWidth: (SIZES.width * 2) / 3 - 2 * SIZES.padding,
                         }}
-                        value={roomNum ? roomNum : ''}
+                        value={roomNum ? `${roomNum}` : ''}
                         onChangeText={(text) => setData({ ...data, roomNum: parseInt(text) })}
                         keyboardType="number-pad"
                     />
@@ -120,7 +119,7 @@ const StepOne = ({ data, setData, setValidate }) => {
                     }}
                 >
                     Số người
-				</Text>
+                </Text>
 
                 <View
                     style={{
@@ -135,7 +134,7 @@ const StepOne = ({ data, setData, setValidate }) => {
                             maxWidth: (SIZES.width * 2) / 3 - 2 * SIZES.padding,
                         }}
                         keyboardType="number-pad"
-                        value={peoples ? peoples : ''}
+                        value={peoples ? peoples.toString() : ''}
                         onChangeText={(text) => setData({ ...data, peoples: parseInt(text) })}
                     />
                     <Text>người</Text>
@@ -147,7 +146,7 @@ const StepOne = ({ data, setData, setValidate }) => {
                     }}
                 >
                     Gới tính
-				</Text>
+                </Text>
                 <RadioButton data={Sex} selected={sex} setSelected={(values) => setData({ ...data, sex: values })} />
 
                 <Text
@@ -158,7 +157,7 @@ const StepOne = ({ data, setData, setValidate }) => {
                     }}
                 >
                     Chi phí
-				</Text>
+                </Text>
 
                 <Text
                     style={{
@@ -166,7 +165,7 @@ const StepOne = ({ data, setData, setValidate }) => {
                     }}
                 >
                     Giá phòng
-				</Text>
+                </Text>
                 <View
                     style={{
                         flexDirection: 'row',
@@ -178,7 +177,7 @@ const StepOne = ({ data, setData, setValidate }) => {
                             backgroundColor: COLORS.white,
                             ...styles.inputStyle,
                         }}
-                        value={price && room && room?.price ? room?.price : ''}
+                        value={price && room && room?.price ? room?.price.toString() : ''}
                         onChangeText={(text) =>
                             setData({
                                 ...data,
@@ -201,7 +200,7 @@ const StepOne = ({ data, setData, setValidate }) => {
                     }}
                 >
                     Giá điện
-				</Text>
+                </Text>
                 <View
                     style={{
                         flexDirection: 'row',
@@ -222,7 +221,7 @@ const StepOne = ({ data, setData, setValidate }) => {
                                 backgroundColor: electricity?.free ? COLORS.lightGray : COLORS.white,
                                 ...styles.inputStyle,
                             }}
-                            value={price && electricity && electricity?.price ? electricity?.price : ''}
+                            value={price && electricity && electricity?.price ? electricity?.price.toString() : ''}
                             onChangeText={(text) => {
                                 setData({
                                     ...data,
@@ -270,7 +269,7 @@ const StepOne = ({ data, setData, setValidate }) => {
                     }}
                 >
                     Giá nước
-				</Text>
+                </Text>
                 <View
                     style={{
                         flexDirection: 'row',
@@ -291,7 +290,7 @@ const StepOne = ({ data, setData, setValidate }) => {
                                 backgroundColor: COLORS.white,
                                 ...styles.inputStyle,
                             }}
-                            value={price && water && water?.price ? water?.price : ''}
+                            value={price && water && water?.price ? water?.price.toString() : ''}
                             onChangeText={(text) =>
                                 setData({
                                     ...data,
@@ -340,7 +339,7 @@ const StepOne = ({ data, setData, setValidate }) => {
                     }}
                 >
                     Internet
-				</Text>
+                </Text>
                 <View
                     style={{
                         flexDirection: 'row',
@@ -361,7 +360,7 @@ const StepOne = ({ data, setData, setValidate }) => {
                                 backgroundColor: COLORS.white,
                                 ...styles.inputStyle,
                             }}
-                            value={price && internet && internet?.price ? internet?.price : ''}
+                            value={price && internet && internet?.price ? internet?.price.toString() : ''}
                             onChangeText={(text) =>
                                 setData({
                                     ...data,

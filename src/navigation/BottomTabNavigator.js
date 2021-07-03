@@ -1,6 +1,6 @@
 
 //import liraries
-import { useApolloClient, useQuery, useSubscription } from '@apollo/react-hooks';
+import { gql, useApolloClient, useQuery, useSubscription } from '@apollo/react-hooks';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useRoute } from '@react-navigation/core';
 import { useNavigation } from '@react-navigation/native';
@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 import { Image } from 'react-native';
 import { useToast } from 'react-native-paper-toast';
 import { COLORS, Images, SIZES } from '../constants';
-import { GET_ALL_MESSAGE_ROOM, NEW_MESSAGES } from '../graphql/chat';
+import { GET_ALL_CHAT_ROOM, GET_ALL_MESSAGE_ROOM, NEW_MESSAGES } from '../graphql/chat';
 import { CURRENT_USER } from '../graphql/user';
 import MessagesScreen from '../screens/MessagesScreen/Messages.screen';
 import RentScreen from '../screens/RentScreen/Rent.screen';
@@ -50,6 +50,10 @@ const BottomTabNavigator = () => {
                 variables: {
                     roomID: newMessage.chatRoom
                 }
+            })
+
+            let getChatRoom = client.readQuery({
+                query: GET_ALL_CHAT_ROOM
             })
 
             if (from._id !== currentUser?.user._id) {
