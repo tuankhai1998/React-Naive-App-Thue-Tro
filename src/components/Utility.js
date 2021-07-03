@@ -21,8 +21,7 @@ export default function Utility({ utilitiesSelected, handleUtilitiesSelect }) {
                     if (uc.value === u) d[i].selected = true
                 })
             })
-
-            setUtilitiesChoose(d)
+            handleUtilitiesSelect(d)
         }
     }, [utilitiesSelected])
 

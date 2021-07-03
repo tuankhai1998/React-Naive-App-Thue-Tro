@@ -11,13 +11,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { URI } from '../../../graphql/apollo';
 
 export default function StepThree({ data, setData, setValidate }) {
-    const { images, utilities, update } = data
+    const { images, utilities, update, imagesName } = data
     const [imgResult, setImgResult] = useState([]);
     const [imageList, setImageList] = useState([])
 
+    console.log({ images })
+
     useEffect(() => {
         if (images) {
-            setImageList(images)
+            setImageList([...images, ...imagesName])
         }
         const getPermissionAsync = async () => {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -43,7 +45,8 @@ export default function StepThree({ data, setData, setValidate }) {
     useEffect(() => {
         setData({
             ...data,
-            images: imgResult
+            images: imgResult,
+            imagesName: imagesName.filter(i => typeof (i) == 'string')
         })
     }, [imgResult])
 
@@ -76,7 +79,7 @@ export default function StepThree({ data, setData, setValidate }) {
                 >
                     <Ionicons name="close-circle" size={24} color={COLORS.primary} />
                 </TouchableOpacity>
-                <Image style={{ width: '100%', height: '100%', }} source={update ? { uri: `http${URI}images/${item}` } : { uri: item.uri || item }} />
+                <Image style={{ width: '100%', height: '100%', }} source={update && typeof (item) == 'string' ? { uri: `http${URI}images/${item}` } : { uri: item.uri || item }} />
             </View>
         )
     }

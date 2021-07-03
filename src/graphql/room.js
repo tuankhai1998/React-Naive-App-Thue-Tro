@@ -203,13 +203,37 @@ export const DELETE_ROOM = gql`
 export const UPDATE_ROOM = gql`
 mutation updateRoom (
     $_id: ID!,
-    $room: roomInput,
+    $sex: Int, 
+    $type: Int, 
+    $address: addressInput,  
+    $images: [Upload], 
+    $roomNum: Int, 
+    $peoples: Int,  
+    $acreage: Int, 
+    $utilities: [Int],
+    $price: priceInput,
+    $phone: String,
+    $roomName: String,
+    $description: String
     $imagesName: [String] 
 ) {
   updateRoom (  
     _id:$_id, 
-    room: $room, 
-    imagesName: $images
+    room: {
+        sex: $sex, 
+        type: $type, 
+        address:  $address,
+        images: $images,
+        roomNum: $roomNum, 
+        peoples: $peoples, 
+        acreage: $acreage, 
+        utilities: $utilities, 
+        price:  $price
+        phone: $phone
+        roomName: $roomName
+        description : $description
+        },
+    imagesName: $imagesName
   )
   {
     _id

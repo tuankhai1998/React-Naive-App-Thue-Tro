@@ -9,15 +9,21 @@ import { USER_INFO } from '../../../graphql/user';
 // create a component
 const StepFour = ({ data, setData, address }) => {
 
-    const { type, phone, description } = data;
-    // const { city, districts, wardsAndStreet } = address.name;
-    // ${RoomType.filter(typeRoom => typeRoom.value == type)[0].label} ${wardsAndStreet}, ${districts}, ${city}
+    const { type, phone, description, roomName: title } = data;
+    const { name } = address;
+    const { city, districts, wardsAndStreet } = name;
 
-    const [roomName, setRoomName] = useState(`ádasdasd`);
+
+    const [roomName, setRoomName] = useState(`Cho thuê ${wardsAndStreet}, ${districts}, ${city}`);
 
     useEffect(() => {
         setData({ ...data, roomName })
     }, [roomName])
+
+    useEffect(() => {
+        console.log(title)
+        setRoomName(title)
+    }, [])
 
 
     return (

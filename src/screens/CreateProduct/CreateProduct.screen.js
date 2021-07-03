@@ -7,7 +7,7 @@ import { ActivityIndicator, Alert, ScrollView, Text, TouchableOpacity, View } fr
 import Header from '../../components/Header';
 import { COLORS, FONTS, SIZES } from '../../constants';
 import { CreateStep } from '../../constants/values';
-import { CREATE_ROOM, CURRENT_ROOM } from '../../graphql/room';
+import { CREATE_ROOM, CURRENT_ROOM, UPDATE_ROOM } from '../../graphql/room';
 import { USER_INFO } from '../../graphql/user';
 import StepFour from './components/StepFour';
 import StepOne from './components/StepOne';
@@ -38,7 +38,9 @@ const CreateProduct = () => {
         query: USER_INFO
     })
 
+
     const [validate, setValidate] = useState(false)
+    const [isUpdate, setIsUpdate] = useState('')
 
     const [createRoom, { loading, error }] = useMutation(CREATE_ROOM, {
         onCompleted: () => {
@@ -46,12 +48,19 @@ const CreateProduct = () => {
         }
     });
 
+    const [updateRoom, { loading: updateLoading, error: updateErr }] = useMutation(UPDATE_ROOM, {
+        onCompleted: () => {
+            navigation.push('Dashboard')
+        }
+    });
+
+
     const stepRender = useCallback(() => {
         switch (step) {
             case 1: return <StepOne data={dataStep1} setData={(values) => setDataStep1(values)} setValidate={(value) => setValidate(value)} />;
             case 2: return <StepTwo data={dataStep2} setData={(values) => setDataStep2(values)} setValidate={(value) => setValidate(value)} />;
             case 3: return <StepThree data={dataStep3} setData={(values) => setDataStep3(values)} setValidate={(value) => setValidate(value)} />;
-            case 4: return <StepFour data={dataStep4} setData={(values) => setDataStep4(values)} setValidate={(value) => setValidate(value)} address={dataStep2} />;
+            case 4: return <StepFour data={dataStep4} setData={(values) => setDataStep4(values)} setValidate={(value) => setValidate(value)} address={dataStep2.address} />;
             default:
                 return <StepOne data={dataStep1} setData={(values) => setDataStep1(values)} setValidate={(value) => setValidate(value)} />
         }
@@ -72,19 +81,21 @@ const CreateProduct = () => {
                 }
             })
 
-            let { sex, type, roomNum, acreage, peoples, price, address, images, utilities } = dataRoom.room
+            let { sex, type, roomNum, acreage, peoples, price, address, images, utilities, roomName, phone, description } = dataRoom.room
 
-            console.log("data room", dataRoom.room)
+            setIsUpdate(dataRoom.room._id)
+
             setDataStep1({ sex, type, roomNum, acreage, peoples, price })
             setDataStep2({ address })
-            setDataStep3({ images, utilities, update: true })
+            setDataStep3({ images: [], utilities, update: true, imagesName: images })
+            setDataStep4({ phone, description, roomName })
         }
     }, []);
 
     const renderError = React.useCallback(() => {
         let messageError = "";
-        if (error) {
-            messageError = error.message
+        if (error || updateErr) {
+            messageError = error.message || updateErr.message
         }
         if (messageError) {
             return (
@@ -106,7 +117,7 @@ const CreateProduct = () => {
                 </View>
             )
         }
-    }, [error])
+    }, [error, updateErr])
 
     return (
         <>
@@ -160,7 +171,7 @@ const CreateProduct = () => {
                     }}
                 >
                     <View>
-                        {loading ? <ActivityIndicator size="large" color={COLORS.primary} /> : stepRender()}
+                        {loading || updateLoading ? <ActivityIndicator size="large" color={COLORS.primary} /> : stepRender()}
                     </View>
                     <View>
                         <TouchableOpacity
@@ -174,21 +185,49 @@ const CreateProduct = () => {
                                 }
                                 if (step == 4 && validate) {
 
-                                    let data = { ...dataStep1, ...dataStep2, ...dataStep3, ...dataStep4 };
-                                    const { utilities } = data;
-                                    let utilitiesFormat = utilities.filter(item => {
-                                        if (item.selected) {
-                                            return item.value
-                                        }
-                                    }).map(item => item.value)
-                                    console.log({ ...data, utilities: utilitiesFormat })
+                                    if (isUpdate) {
+                                        const { utilities } = dataStep3;
 
-                                    createRoom({
-                                        variables: {
-                                            ...data,
-                                            utilities: utilitiesFormat
-                                        }
-                                    })
+                                        console.log(utilities)
+                                        let utilitiesFormat = utilities.filter(item => {
+                                            if (item.selected) {
+                                                return item.value
+                                            }
+                                        }).map(item => item.value)
+                                        let data = { ...dataStep1, ...dataStep2, images: dataStep3.images, ...dataStep4, utilities: utilitiesFormat };
+
+                                        console.log({
+                                            _id: isUpdate,
+                                            room: { ...data },
+                                            imagesName: dataStep3.imagesName
+                                        })
+
+                                        updateRoom({
+                                            variables: {
+                                                _id: isUpdate,
+                                                room: { ...data },
+                                                imagesName: dataStep3.imagesName
+                                            }
+                                        })
+
+                                    } else {
+                                        let data = { ...dataStep1, ...dataStep2, ...dataStep3, ...dataStep4 };
+                                        const { utilities } = data;
+                                        let utilitiesFormat = utilities.filter(item => {
+                                            if (item.selected) {
+                                                return item.value
+                                            }
+                                        }).map(item => item.value)
+                                        console.log({ ...data, utilities: utilitiesFormat })
+                                        createRoom({
+                                            variables: {
+                                                ...data,
+                                                utilities: utilitiesFormat
+                                            }
+                                        })
+
+                                    }
+
                                 }
                             }}
                             style={{
@@ -204,7 +243,7 @@ const CreateProduct = () => {
                                 style={{
                                     ...FONTS.body3,
                                 }}
-                            >{step == 4 ? 'Hoàn thành' : 'Tiếp theo'}</Text>
+                            >{step < 4 ? 'Tiếp theo' : 'Hoàn thành'}</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
